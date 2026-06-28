@@ -571,7 +571,7 @@ body.light-theme .raid-info-group {
 }
 
 /* Respects \n parsed from JSON */
-.raid-sub-events, .raid-details {
+.raid-sub-events, .raid-details, .raid-info-value {
     white-space: pre-line;
 }
 
@@ -1020,6 +1020,83 @@ body.light-theme .resource-card.highlight .resource-glow {
 .footer-subtext {
     font-size: 0.8rem;
     opacity: 0.75;
+}
+
+/* ==========================================================================
+   Schedule Dropdown Details (Collapsible Sub-Events)
+   ========================================================================== */
+.raid-schedule-group {
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.raid-schedule-group .raid-info-value {
+    width: 100%;
+}
+
+.schedule-dropdown {
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    transition: border-color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+}
+
+.schedule-dropdown:last-child {
+    margin-bottom: 0;
+}
+
+.schedule-dropdown[open] {
+    border-color: var(--accent);
+    background-color: var(--bg-secondary);
+}
+
+.schedule-summary {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    list-style: none; /* Hide default arrow in Chrome/Firefox */
+    position: relative;
+    padding-right: 2.5rem;
+    user-select: none;
+    transition: background-color var(--transition-speed) ease;
+}
+
+.schedule-summary::-webkit-details-marker {
+    display: none; /* Hide default arrow in Safari */
+}
+
+/* Custom indicator arrow */
+.schedule-summary::after {
+    content: '▼';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%) scale(0.85);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    transition: transform var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275), color var(--transition-speed) ease;
+}
+
+.schedule-dropdown[open] .schedule-summary::after {
+    transform: translateY(-50%) rotate(180deg) scale(0.85);
+    color: var(--accent);
+}
+
+.schedule-summary:hover {
+    background-color: var(--bg-tertiary);
+}
+
+.schedule-dropdown-content {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
 }
 
 /* ==========================================================================

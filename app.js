@@ -198,10 +198,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const feeItem = createInfoItem('Fees', raid.fee);
             infoGroup.appendChild(feeItem);
 
-            // Sub Events Info (Supports multi-line display)
+            // Sub Events Info (Supports string or array of collapsible schedule items)
             if (raid.subEvents) {
-                const subEventsItem = createInfoItem('Schedule', raid.subEvents);
-                subEventsItem.querySelector('.raid-info-value').classList.add('raid-sub-events');
+                const subEventsItem = document.createElement('div');
+                subEventsItem.className = 'raid-info-item raid-schedule-group';
+
+                const labelSpan = document.createElement('span');
+                labelSpan.className = 'raid-info-label';
+                labelSpan.textContent = 'Schedule';
+                subEventsItem.appendChild(labelSpan);
+
+                const valueSpan = document.createElement('div');
+                valueSpan.className = 'raid-info-value';
+
+                if (Array.isArray(raid.subEvents)) {
+                    raid.subEvents.forEach(sub => {
+                        const detailsEl = document.createElement('details');
+                        detailsEl.className = 'schedule-dropdown';
+
+                        const summaryEl = document.createElement('summary');
+                        summaryEl.className = 'schedule-summary';
+                        summaryEl.textContent = sub.title;
+
+                        const contentDiv = document.createElement('div');
+                        contentDiv.className = 'schedule-dropdown-content raid-sub-events';
+                        contentDiv.textContent = sub.details;
+
+                        detailsEl.appendChild(summaryEl);
+                        detailsEl.appendChild(contentDiv);
+                        valueSpan.appendChild(detailsEl);
+                    });
+                } else {
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'raid-sub-events';
+                    textSpan.textContent = raid.subEvents;
+                    valueSpan.appendChild(textSpan);
+                }
+
+                subEventsItem.appendChild(valueSpan);
                 infoGroup.appendChild(subEventsItem);
             }
 
@@ -221,16 +255,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 Object.entries(raid.links).forEach(([linkName, url]) => {
                     const anchor = document.createElement('a');
                     anchor.className = 'raid-link';
-                    anchor.href = url;
-                    anchor.target = '_blank';
-                    anchor.rel = 'noopener noreferrer';
-                    anchor.innerHTML = `
-                        <span>${escapeHTML(linkName)}</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    `;
+                    
+                    if (linkName.toLowerCase() === 'notes') {
+                        anchor.href = `render.html?file=${encodeURIComponent(url)}`;
+                        anchor.innerHTML = `
+                            <span>View Notes</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        `;
+                    } else {
+                        anchor.href = url;
+                        anchor.target = '_blank';
+                        anchor.rel = 'noopener noreferrer';
+                        anchor.innerHTML = `
+                            <span>${escapeHTML(linkName)}</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                        `;
+                    }
                     linksWrapper.appendChild(anchor);
                 });
 

@@ -1,39 +1,29 @@
 [
   {
-    "title": "National Tech Fest 2026",
-    "dateRange": "July 12 - July 14, 2026",
-    "subEvents": "Day 1: Hackathon & Competitive Programming\nDay 2: Line Following Robot & Project Showcase\nDay 3: Grand Finale & Prize Giving Ceremony",
-    "fee": "500 BDT per team",
-    "venue": "UITS Permanent Campus Auditorium & Lab Rooms",
+    "title": "Phoenix Summit 2026",
+    "dateRange": "June 23 - June 27, 2026",
+    "venue": "Bangabandhu International Conference Center (BICC), Dhaka, Bangladesh",
+    "fee": "Exhibition Pass: 200 BDT\nTechnical Pass (with Swag): 700 BDT\nStudent Workshops: 10,000 BDT\nProfessional Workshops: 15,000 BDT (Early Bird: 12,000 BDT)",
+    "subEvents": [
+      {
+        "title": "June 23-25: Pre-Summit Workshops (09:00 AM - 06:00 PM)",
+        "details": "- Practical Cyber Investigation (Invite-only, APNIC)\n- DevSecOps for Practitioners (Open)\n- Master Application Security & Penetration Testing\n- Ransomware Mechanics & Defensive Engineering"
+      },
+      {
+        "title": "June 26: Blue Team Day (Technical Stage @ Hall of Fame)",
+        "details": "- 09:00 AM: Telecom Attack Detection Using AI (Pasan Maduranga)\n- 09:30 AM: Security Engineering & Orchestration (Syed Golam Abid)\n- 10:00 AM: Reducing Alert Fatigue with AI Agents (Nur Qurratu Aini)\n- 11:00 AM: Opening Ceremony & Shadow Server Keynote (Piotr Kijewski)\n- 02:30 PM: Ransomware Ecosystem Forensics (Md. Azim Uddin)\n- 03:00 PM: National DNSSEC Deployment (Joyeeta Sen Rimpee)\n- 03:30 PM: Cyber Workforce Panel (A S M Shamim Reza, GP, Dtech, Brain Station)\n- 04:40 PM: SANS International Keynote (Arindam Roy)\n- 05:10 PM: Panel: Digital Trust in Education & Academic Integrity\n- 05:40 PM: Real-Time IoC Detection with Wazuh (Imtiaz Rahman)\n- 06:30 PM: Musical Concert"
+      },
+      {
+        "title": "June 27: Red Team Day (Technical Stage @ Hall of Fame)",
+        "details": "- 09:00 AM: AI in Offensive Security & Bug Bounty (Ayon Hasan)\n- 09:30 AM: Exploiting JWTs & Library Gaps (Eftasib Araf Depro)\n- 10:00 AM: Thailand's Cybersecurity Readiness (Paramin Chuangmanee)\n- 11:00 AM: Panel: AI, Quantum & the New Cyber Threat Battlefield\n- 11:40 AM: Antivirus Bypass Reality & Detection Logic (Md Sameull Islam)\n- 12:20 PM: AI Subversion & Red Teaming (Md. Safwan Luban)\n- 02:30 PM: AI-Generated Code Review Gaps (Asyrique Thevendran)\n- 03:00 PM: Security Hardening (Pratima Pradhan, btCERT)\n- 03:20 PM: Panel: Deepfakes & Synthetic Manipulation Defense\n- 04:30 PM: Closing Ceremony, Awards & Keynote (Fauzia Idrees)\n- 06:30 PM: Musical Concert"
+      }
+    ],
     "links": {
-      "Registration Portal": "https://example.com/register-techfest",
-      "Rulebook & Guide": "https://example.com/rules-techfest",
-      "Event Location": "https://maps.google.com/?q=UITS"
+      "Official Site": "https://phoenixsummit.net/",
+      "Register/Tickets": "https://phoenixsummit.net/register",
+      "Schedule": "https://phoenixsummit.net/schedule",
+      "notes": "doc/notes/phoenix-summit-2026.md"
     },
-    "details": "We are assembling a massive group to raid this year's National Tech Fest!\n\nWhether you are competing in the hackathon, show-casing your projects, or just going as a visitor to cheer on and support our teams, join our squad so we can coordinate transportation, seats, and team support together.\n\nLet's dominate the leaderboards and represent oU1TS with pride!"
-  },
-  {
-    "title": "Intra-University Programming Contest",
-    "dateRange": "May 20, 2026 (09:00 AM - 02:00 PM)",
-    "subEvents": "09:00 AM - 09:30 AM: Registration Verification\n10:00 AM - 01:00 PM: Coding Contest (3 Hours)\n01:30 PM - 02:00 PM: Editorial & Winner Announcement",
-    "fee": "Free for all registered students",
-    "venue": "Computer Science Lab 4 & 5, Academic Building",
-    "links": {
-      "Contest Registration": "https://example.com/iupc-2026",
-      "Mock Platform (Toph)": "https://toph.co"
-    },
-    "details": "Ready to test your algorithms and speed? The Event Raiders are hosting a collaborative preparation and participation drive for the upcoming Intra-UITS programming contest.\n\nWe will have study groups, practice sessions beforehand, and will march into the labs together. Perfect for beginners and advanced problem solvers alike!"
-  },
-  {
-    "title": "UI/UX & Web Development Boot Camp",
-    "dateRange": "April 05 - April 08, 2026",
-    "subEvents": "Day 1: Modern Typography & CSS Layouts (Flex/Grid)\nDay 2: Dynamic JS, APIs & SPA Architecture\nDay 3: Design systems & Glassmorphism Aesthetics\nDay 4: Showcase & Deployment on Netlify",
-    "fee": "100 BDT (Includes snacks and certificates)",
-    "venue": "Seminar Library Room, UITS Permanent Campus",
-    "links": {
-      "Join Discord Channel": "https://discord.gg/example-uits",
-      "Slide Resources": "https://example.com/bootcamp-slides"
-    },
-    "details": "A hands-on, intensive boot camp focused on building modern web applications.\n\nWe raided this boot camp in full force with 45+ members to learn the exact technologies used to build this website. A fantastic learning experience for everyone who wants to build awesome projects in the future."
+    "details": "Phoenix Summit 2026 is Bangladesh's flagship cybersecurity convergence platform connecting government, industry, academia, and global experts.\n\nWe are organizing a massive squad of Event Raiders to attend. This is an unparalleled opportunity to learn from international specialists (APNIC, Shadow Server, SANS), witness live technical demonstrations, and network with leading security companies.\n\nVerify your student status with the maintainers in the 'Join Us' tab to book group transportation and tickets together!"
   }
 ]
