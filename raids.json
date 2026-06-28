@@ -1,0 +1,39 @@
+[
+  {
+    "title": "National Tech Fest 2026",
+    "dateRange": "July 12 - July 14, 2026",
+    "subEvents": "Day 1: Hackathon & Competitive Programming\nDay 2: Line Following Robot & Project Showcase\nDay 3: Grand Finale & Prize Giving Ceremony",
+    "fee": "500 BDT per team",
+    "venue": "UITS Permanent Campus Auditorium & Lab Rooms",
+    "links": {
+      "Registration Portal": "https://example.com/register-techfest",
+      "Rulebook & Guide": "https://example.com/rules-techfest",
+      "Event Location": "https://maps.google.com/?q=UITS"
+    },
+    "details": "We are assembling a massive group to raid this year's National Tech Fest!\n\nWhether you are competing in the hackathon, show-casing your projects, or just going as a visitor to cheer on and support our teams, join our squad so we can coordinate transportation, seats, and team support together.\n\nLet's dominate the leaderboards and represent oU1TS with pride!"
+  },
+  {
+    "title": "Intra-University Programming Contest",
+    "dateRange": "May 20, 2026 (09:00 AM - 02:00 PM)",
+    "subEvents": "09:00 AM - 09:30 AM: Registration Verification\n10:00 AM - 01:00 PM: Coding Contest (3 Hours)\n01:30 PM - 02:00 PM: Editorial & Winner Announcement",
+    "fee": "Free for all registered students",
+    "venue": "Computer Science Lab 4 & 5, Academic Building",
+    "links": {
+      "Contest Registration": "https://example.com/iupc-2026",
+      "Mock Platform (Toph)": "https://toph.co"
+    },
+    "details": "Ready to test your algorithms and speed? The Event Raiders are hosting a collaborative preparation and participation drive for the upcoming Intra-UITS programming contest.\n\nWe will have study groups, practice sessions beforehand, and will march into the labs together. Perfect for beginners and advanced problem solvers alike!"
+  },
+  {
+    "title": "UI/UX & Web Development Boot Camp",
+    "dateRange": "April 05 - April 08, 2026",
+    "subEvents": "Day 1: Modern Typography & CSS Layouts (Flex/Grid)\nDay 2: Dynamic JS, APIs & SPA Architecture\nDay 3: Design systems & Glassmorphism Aesthetics\nDay 4: Showcase & Deployment on Netlify",
+    "fee": "100 BDT (Includes snacks and certificates)",
+    "venue": "Seminar Library Room, UITS Permanent Campus",
+    "links": {
+      "Join Discord Channel": "https://discord.gg/example-uits",
+      "Slide Resources": "https://example.com/bootcamp-slides"
+    },
+    "details": "A hands-on, intensive boot camp focused on building modern web applications.\n\nWe raided this boot camp in full force with 45+ members to learn the exact technologies used to build this website. A fantastic learning experience for everyone who wants to build awesome projects in the future."
+  }
+]
