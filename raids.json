@@ -1,5 +1,29 @@
 [
   {
+    "title": "AMD Developer Hackathon: ACT II",
+    "dateRange": "6-11 July, 2026",
+    "venue": "Online (lablab.ai)",
+    "fee": "Free (Requires registration to AMD AI Developer Program)",
+    "subEvents": [
+      {
+        "title": "Track 1: Hybrid Token-Efficient Routing Agent (Beginner AI Agent Track)",
+        "details": "Build an AI agent that completes tasks autonomously while minimizing token costs by choosing in real time between a local model and a remote model via Fireworks AI credits. Judging is based on token count and output accuracy."
+      },
+      {
+        "title": "Track 2: Video Captioning (Beginner Friendly)",
+        "details": "Build a pipeline to generate captions/summaries for fixed short video clips (30s to 2min) in four distinct styles: formal, sarcastic, humorous-tech, and humorous-non-tech. Permitting fine-tuning and open datasets; evaluated by an LLM-Judge."
+      },
+      {
+        "title": "Track 3: Unicorn Track (All Levels)",
+        "details": "Product- or startup-oriented track with no fixed performance benchmarks or constraints. Build using any open-source models/frameworks alongside AMD infrastructure. Evaluated on creativity, originality, completeness, and market potential."
+      }
+    ],
+    "links": {
+      "Platform/Registration": "https://tinyurl.com/2p9jpuea"
+    },
+    "details": "A hands-on online event focused on building AI agents and high-performance AI applications on AMD GPUs in the cloud using the AMD AI Developer Cloud, ROCm, and Fireworks AI API. Features a $15,000 total prize pool, plus perks for new AMD AI Developer Program sign-ups including $100 in AMD Cloud GPU credits and $50 in Fireworks AI API credits."
+  },
+  {
     "title": "Phoenix Summit 2026",
     "dateRange": "June 23 - June 27, 2026",
     "venue": "Bangabandhu International Conference Center (BICC), Dhaka, Bangladesh",
