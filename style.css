@@ -527,11 +527,44 @@ body.light-theme .btn-primary {
 .raid-meta {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.raid-date-wrapper {
+    display: flex;
+    align-items: center;
     gap: 0.75rem;
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--accent);
-    margin-bottom: 1rem;
+}
+
+.status-badge {
+    font-size: 0.725rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid currentColor;
+    line-height: 1.2;
+}
+
+.status-future {
+    color: var(--success-color);
+    background-color: var(--success-bg);
+}
+
+.status-past {
+    color: var(--text-muted);
+    background-color: rgba(255, 255, 255, 0.03);
+    border-color: var(--border-color);
+}
+
+body.light-theme .status-past {
+    background-color: rgba(0, 0, 0, 0.03);
 }
 
 .raid-title {

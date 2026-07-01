@@ -2,6 +2,8 @@
   {
     "title": "MarXcellence 2026 (International Inter-University Digital Marketing Case Competition)",
     "dateRange": "Workshop 1 Begins: 10 July, 2026",
+    "Status": "Future",
+    "endDate": "2026-07-10",
     "venue": "North South University (NSU Main Auditorium) | Hybrid format for international participants",
     "fee": "Free",
     "subEvents": [
@@ -36,6 +38,8 @@
   {
     "title": "AMD Developer Hackathon: ACT II",
     "dateRange": "6-11 July, 2026",
+    "Status": "Future",
+    "endDate": "2026-07-11",
     "venue": "Online (lablab.ai)",
     "fee": "Free (Requires registration to AMD AI Developer Program)",
     "subEvents": [
@@ -60,6 +64,8 @@
   {
     "title": "Phoenix Summit 2026",
     "dateRange": "June 23 - June 27, 2026",
+    "Status": "Past",
+    "endDate": "2026-06-27",
     "venue": "Bangabandhu International Conference Center (BICC), Dhaka, Bangladesh",
     "fee": "Exhibition Pass: 200 BDT\nTechnical Pass (with Swag): 700 BDT\nStudent Workshops: 10,000 BDT\nProfessional Workshops: 15,000 BDT (Early Bird: 12,000 BDT)",
     "subEvents": [
