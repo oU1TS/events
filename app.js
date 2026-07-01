@@ -186,9 +186,18 @@ document.addEventListener('DOMContentLoaded', () => {
             titleEl.textContent = raid.title;
             card.appendChild(titleEl);
 
+            // Details Dropdown (Venue, Fees, Sub Events)
+            const detailsDropdown = document.createElement('details');
+            detailsDropdown.className = 'details-dropdown';
+
+            const detailsSummary = document.createElement('summary');
+            detailsSummary.className = 'details-summary';
+            detailsSummary.textContent = 'Details';
+            detailsDropdown.appendChild(detailsSummary);
+
             // Information Group
             const infoGroup = document.createElement('div');
-            infoGroup.className = 'raid-info-group';
+            infoGroup.className = 'details-content raid-info-group';
 
             // Venue Info
             const venueItem = createInfoItem('Venue', raid.venue);
@@ -239,7 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 infoGroup.appendChild(subEventsItem);
             }
 
-            card.appendChild(infoGroup);
+            detailsDropdown.appendChild(infoGroup);
+            card.appendChild(detailsDropdown);
 
             // Detailed Description (Supports multi-line display via pre-line)
             const detailsEl = document.createElement('p');

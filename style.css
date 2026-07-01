@@ -1111,6 +1111,85 @@ body.light-theme .resource-card.highlight .resource-glow {
 }
 
 /* ==========================================================================
+   Details Dropdown Style
+   ========================================================================== */
+.details-dropdown {
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
+    background-color: var(--bg-tertiary);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+}
+
+.details-dropdown:hover {
+    border-color: rgba(var(--accent-rgb), 0.45);
+    box-shadow: 0 4px 20px -5px rgba(var(--accent-rgb), 0.1);
+}
+
+.details-dropdown[open] {
+    border-color: var(--accent);
+    background-color: var(--bg-secondary);
+    box-shadow: 0 8px 25px -5px rgba(var(--accent-rgb), 0.2), var(--glow-shadow);
+}
+
+body.light-theme .details-dropdown[open] {
+    box-shadow: 0 8px 25px -5px rgba(var(--accent-rgb), 0.15);
+}
+
+.details-summary {
+    padding: 0.9rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 2.5rem;
+    user-select: none;
+    transition: all var(--transition-speed) ease;
+    font-family: var(--font-heading);
+    border-left: 3px solid transparent;
+}
+
+.details-dropdown[open] .details-summary {
+    border-left: 3px solid var(--accent);
+    background-color: rgba(var(--accent-rgb), 0.04);
+}
+
+.details-summary::-webkit-details-marker {
+    display: none;
+}
+
+.details-summary::after {
+    content: '▼';
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%) scale(0.85);
+    font-size: 0.75rem;
+    color: var(--accent);
+    transition: transform var(--transition-speed) cubic-bezier(0.175, 0.885, 0.32, 1.275), color var(--transition-speed) ease;
+}
+
+.details-dropdown[open] .details-summary::after {
+    transform: translateY(-50%) rotate(180deg) scale(0.85);
+}
+
+.details-summary:hover {
+    background-color: rgba(var(--accent-rgb), 0.08);
+}
+
+.details-content.raid-info-group {
+    margin-bottom: 0;
+    background-color: transparent;
+    border: none;
+    border-top: 1px solid var(--border-color);
+    border-radius: 0;
+    padding: 1.25rem;
+}
+
+/* ==========================================================================
    Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 992px) {
