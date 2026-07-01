@@ -1,5 +1,39 @@
 [
   {
+    "title": "MarXcellence 2026 (International Inter-University Digital Marketing Case Competition)",
+    "dateRange": "Workshop 1 Begins: 10 July, 2026",
+    "venue": "North South University (NSU Main Auditorium) | Hybrid format for international participants",
+    "fee": "Free",
+    "subEvents": [
+      {
+        "title": "Workshop 1 (Orientation & Foundational Knowledge)",
+        "details": "Held on 10th July, 2026. Led by digital marketing professionals. Focuses on the practical application of digital marketing tools, data collection fundamentals, and marketing analytics to equip teams for the opening case."
+      },
+      {
+        "title": "Round 1: The Xploration Phase",
+        "details": "An intensive online case-solving segment where teams tackle a real-world digital marketing case problem. A select number of top-tier submissions will advance to the subsequent tier."
+      },
+      {
+        "title": "Workshop 2 (Advanced Strategy & Corporate Networking)",
+        "details": "Led by industry veterans and corporate marketing experts. Breaks down complex branding mechanics, cross-channel promotional execution, and consumer behavioral research while serving as a direct networking gateway."
+      },
+      {
+        "title": "Semi-Final: The Xpression Studio",
+        "details": "Qualifying teams must produce a comprehensive digital marketing layout paired alongside a supporting Online Video Commercial (OVC). Domestic teams present live at the NSU campus; international teams present virtually."
+      },
+      {
+        "title": "Grand Finale: The Xcellence Showdown",
+        "details": "Finalists deliver disruptive, data-driven marketing presentations using advanced analytical models before an executive panel of judges. Concludes with a grand gala celebration and live prize award distribution."
+      }
+    ],
+    "links": {
+      "Registration Portal": "https://marxcellence.com",
+      "Organizer Site": "https://nsumibc.org/",
+      "Event Page": "https://www.facebook.com/events/2310378769794887/"
+    },
+    "details": "Presented by Dhaka Bank PLC, Co-Sponsored by Transcom Group, and Powered by Vatika Naturals, MarXcellence 2026 is Bangladesh's premier hybrid digital marketing case tournament hosted by NSU MIBC. Open globally to undergraduate student teams (2 to 4 members; cross-university teams fully permitted). Features a comprehensive BDT 520,000 total prize pool breakdowns: Champions receive BDT 225,000; 1st Runners-Up receive BDT 150,000; 2nd Runners-Up receive BDT 100,000; and the remaining 3 finalists receive BDT 15,000 each. Registration closes on July 8, 2026 (11:59 PM)."
+  },
+  {
     "title": "AMD Developer Hackathon: ACT II",
     "dateRange": "6-11 July, 2026",
     "venue": "Online (lablab.ai)",
