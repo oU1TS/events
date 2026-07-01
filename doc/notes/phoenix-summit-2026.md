@@ -23,7 +23,7 @@ Strategic Professional Preparation & Execution
 
 Guidelines and insights shared by seniors:
 
-### Rezwan bhai (CSE 47)
+### [Rezwan bhai (CSE 47)](https://www.linkedin.com/in/md-rezwan-a26a0a216/)
 
 Rezwan bhai’s core advice focuses on self-paced educational certifications, constructing infrastructure at home, and gaining visibility into centralized network telemetry:
 
