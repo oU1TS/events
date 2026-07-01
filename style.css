@@ -486,6 +486,7 @@ body.light-theme .btn-primary {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 2.5rem;
+    align-items: start;
 }
 
 .raid-card {
@@ -627,12 +628,41 @@ body.light-theme .raid-info-group {
     font-size: 0.95rem;
     color: var(--text-secondary);
     line-height: 1.6;
-    margin-bottom: 2rem;
-    flex: 1;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.raid-details.expanded {
+    display: block;
+    overflow: visible;
+    margin-bottom: 1.5rem;
 }
 
 .see-more-btn {
-    display: none;
+    display: inline-block;
+    color: var(--accent);
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+    text-align: left;
+    align-self: flex-start;
+    border-bottom: 1px dashed var(--accent);
+    transition: color var(--transition-speed) ease;
+    font-family: var(--font-body);
+}
+
+.see-more-btn:hover {
+    color: var(--accent-hover);
+    border-color: var(--accent-hover);
 }
 
 .raid-links-wrapper {
@@ -1335,42 +1365,5 @@ body.light-theme .details-dropdown[open] {
 
     .raid-title {
         font-size: 1.3rem;
-    }
-
-    .raid-details {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        margin-bottom: 0.5rem;
-    }
-
-    .raid-details.expanded {
-        display: block;
-        overflow: visible;
-        margin-bottom: 1.5rem;
-    }
-
-    .see-more-btn {
-        display: inline-block;
-        color: var(--accent);
-        background: transparent;
-        border: none;
-        font-size: 0.8rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        padding: 0;
-        margin-bottom: 1.5rem;
-        cursor: pointer;
-        text-align: left;
-        align-self: flex-start;
-        border-bottom: 1px dashed var(--accent);
-        transition: color var(--transition-speed) ease;
-    }
-
-    .see-more-btn:hover {
-        color: var(--accent-hover);
-        border-color: var(--accent-hover);
     }
 }
