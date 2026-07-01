@@ -79,18 +79,18 @@ A mapped list of new professional connection links established or tracked during
 | --- | --- | --- | --- |
 | **Pasan Maduranga** | University of Sri Jayewardenepura (AI Telecom Attack Detection) | [linkedin.com/in/pasan-maduranga-02a82724](https://www.linkedin.com/in/pasan-maduranga-02a82724/) |  |
 | **Syed Golam Abid** | Wazuh Ambassador (Security Engineering & Orchestration) | [linkedin.com/in/syed-golam-abid](https://www.linkedin.com/in/syed-golam-abid) |  |
-| **Nur Qurratu Aini Rohizan** | Cyber Security Malaysia (AI Agent Alert Fatigue Management) | [linkedin.com/in/nur-qurratu-aini-rohizan](https://www.linkedin.com/in/nur-qurratu-aini-rohizan) |  |
-| **A S M Shamim Reza** | Founder & MD, TTPG (Opening Remarks / Panel 1 Moderator) | [linkedin.com/in/asm-shamim-reza](https://www.linkedin.com/in/asm-shamim-reza) |  |
+| **Nur Qurratu Aini Rohizan** | Cyber Security Malaysia (AI Agent Alert Fatigue Management) | [linkedin.com/in/nur-qurratu-aini-rohizan](#) |  |
+| **A S M Shamim Reza** | Founder & MD, TTPG (Opening Remarks / Panel 1 Moderator) | [linkedin.com/in/asm-shamim-reza](#) |  |
 | **Piotr Kijewski** | CEO, Shadow Server Foundation (Opening Keynote Speaker) | [linkedin.com/in/piotrkijewski](https://www.linkedin.com/in/piotrkijewski) |  |
-| **Md. Azim Uddin** | Pipeline Inc. (Ransomware Ecosystem Forensics) | [linkedin.com/in/md-azim-uddin](https://www.linkedin.com/in/md-azim-uddin) |  |
-| **Joyeeta Sen Rimpee** | BTCL (National DNSSEC Deployment Journey) | [linkedin.com/in/joyeeta-sen-rimpee](https://www.linkedin.com/in/joyeeta-sen-rimpee) |  |
-| **Md Showkat Ali** | Head of Information Security, Grameenphone Ltd. (Panel 1) | [linkedin.com/in/md-showkat-ali](https://www.linkedin.com/in/md-showkat-ali) |  |
-| **Syed Akram Abbas** | CEO, Dtech Online Limited (Panel 1 / Panel 2 Moderator) | [linkedin.com/in/syedakramabbas](https://www.linkedin.com/in/syedakramabbas) |  |
-| **Raisul Kabir** | CEO, Brain Station 23 (Panel One Guest Speaker) | [linkedin.com/in/raisulkabir](https://www.linkedin.com/in/raisulkabir) |  |
+| **Md. Azim Uddin** | Pipeline Inc. (Ransomware Ecosystem Forensics) | [linkedin.com/in/md-azim-uddin](#) |  |
+| **Joyeeta Sen Rimpee** | BTCL (National DNSSEC Deployment Journey) | [linkedin.com/in/joyeeta-sen-rimpee](#) |  |
+| **Md Showkat Ali** | Head of Information Security, Grameenphone Ltd. (Panel 1) | [linkedin.com/in/md-showkat-ali](#) |  |
+| **Syed Akram Abbas** | CEO, Dtech Online Limited (Panel 1 / Panel 2 Moderator) | [linkedin.com/in/syedakramabbas](#) |  |
+| **Raisul Kabir** | CEO, Brain Station 23 (Panel One Guest Speaker) | [linkedin.com/in/raisulkabir](#) |  |
 | **Mr. Arindam Roy** | Country Director - South Asia, SANS (International Keynote) | [linkedin.com/in/arindam-roy-sans](https://www.linkedin.com/in/arindam-roy-sans) |  |
-| **Dr. Mohammed Shafiul Alam Khan** | Professor, IIT, University of Dhaka (Panel Two Guest) | [linkedin.com/in/msakhan](https://www.linkedin.com/in/msakhan) |  |
-| **Muhammed Abdullah Al Mamun** | Head of Information Security, City Bank PLC (Panel Two Guest) | [linkedin.com/in/muhammed-abdullah-al-mamun](https://www.linkedin.com/in/muhammed-abdullah-al-mamun) |  |
-| **Imtiaz Rahman** | SBAC Bank PLC, Wazuh Ambassador (Real-time IoC Detection) | [linkedin.com/in/imtiaz-rahman](https://linkedin.com/in/imtiaz-rahman) |  |
+| **Dr. Mohammed Shafiul Alam Khan** | Professor, IIT, University of Dhaka (Panel Two Guest) | [linkedin.com/in/msakhan](#) |  |
+| **Muhammed Abdullah Al Mamun** | Head of Information Security, City Bank PLC (Panel Two Guest) | [linkedin.com/in/muhammed-abdullah-al-mamun](#) |  |
+| **Imtiaz Rahman** | SBAC Bank PLC, Wazuh Ambassador (Real-time IoC Detection) | [linkedin.com/in/imtiaz-rahman](#) |  |
 
 ---
 
@@ -102,18 +102,18 @@ A mapped list of new professional connection links established or tracked during
 | **Eftasib Araf Depro** | The Team Phoenix Group / Uttara University GS | [medium.com/@eftasib-araf-depro](https://medium.com/@depro0x),  [linkedin.com/in/depro0x](https://www.linkedin.com/in/depro0x/) | ✔️ |
 | **Mr. Paramin Chuangmanee** | CERT Manager, Thailand Banking Sector CERT | [linkedin.com/in/paramin-chuangmanee](https://www.linkedin.com/in/paramin-ch/) | ✔️ |
 | **Muhibbul Muktadir Tanim** | Head of Cybersecurity, Brain Station 23 / GS, BDSAF (Panel 3) | [linkedin.com/in/muhibbul-muktadir-tanim](https://www.linkedin.com/in/mmtanim/) |  |
-| **Lt Col Rakibul Hassan (Retd)** | AI Business & Transformation, Link3 Technologies Ltd (Panel 3) | [linkedin.com/in/rakibul-hassan](https://www.linkedin.com/in/rakibul-hassan) |  |
+| **Lt Col Rakibul Hassan (Retd)** | AI Business & Transformation, Link3 Technologies Ltd (Panel 3) | [linkedin.com/in/rakibul-hassan](https://www.linkedin.com/in/raqueeb/) |  |
 | **Md. Mahbubul Alam (Rafel)** | Head of InfoSec Division, Prime Bank PLC (Panel 3 Guest) | [linkedin.com/in/md-mahbubul-alam](https://www.linkedin.com/in/md-mahbubul-alam) |  |
 | **Muhammad Abul Kalam Azad** | CISO, Eastern Bank PLC & Secretary, ISACA Dhaka (Panel 3) | [linkedin.com/in/makazad](https://www.linkedin.com/in/makazad) |  |
 | **Md Sameull Islam** | DongIT B.V. (Modern Antivirus & Bypass Realities) | [linkedin.com/in/samiul-islam](https://www.linkedin.com/in/sameull/) | ✔️ |
-| **Md. Safwan Luban** | Shorborno Holdings LTD. (Breaking the Black Box AI Subversion) | [linkedin.com/in/safwan-luban](https://www.linkedin.com/in/safwan-luban) |  |
-| **Asyrique Thevendran** | Paywatch (AI-Generated Code Review Risks) | [linkedin.com/in/asyrique](https://www.linkedin.com/in/asyrique/) |  |
+| **Md. Safwan Luban** | Shorborno Holdings LTD. (Breaking the Black Box AI Subversion) | [linkedin.com/in/safwan-luban](https://www.linkedin.com/in/safwanluban/) |  |
+| **Asyrique Thevendran** | Paywatch (AI-Generated Code Review Risks) | [linkedin.com/in/asyrique](https://www.linkedin.com/in/asyrique/) | ✔️ |
 | **Pratima Pradhan** | btCERT, Government Technology Agency (Security Hardening v2.0) | [bt.linkedin.com/in/pratima-pradhan-957bb821](https://bt.linkedin.com/in/pratima-pradhan-957bb821) | ✔️ |
-| **Shariful Anwar** | Academic Dean, Glenrich International School (Panel 4 Moderator) | [linkedin.com/in/shariful-anwar](https://www.linkedin.com/in/shariful-anwar) |  |
-| **Mohammad Shahadat Hossain** | Head of 3rd Party Risk Management, Grameenphone (Panel 4) | [linkedin.com/in/mshossain](https://www.linkedin.com/in/mshossain) |  |
-| **Neranjan Dissanayake** | Managing Director & CEO, Techneura Labs (Panel 4 Guest) | [linkedin.com/in/neranjan-dissanayake](https://www.linkedin.com/in/neranjan-dissanayake) |  |
-| **Dr. Shankar Karuppayah** | Deputy Director & Assoc Professor, Cybersecurity Research Centre | [linkedin.com/in/shankar-karuppayah](https://www.linkedin.com/in/shankar-karuppayah) |  |
-| **Fauzia Idrees** | University of Royal Holloway (Closing Keynote Speaker) | [linkedin.com/in/fauziaidrees](https://www.linkedin.com/in/fauziaidrees) |  |
+| **Shariful Anwar** | Academic Dean, Glenrich International School (Panel 4 Moderator) | [linkedin.com/in/shariful-anwar](https://www.linkedin.com/in/shariful-anwar/) |  |
+| **Mohammad Shahadat Hossain** | Head of 3rd Party Risk Management, Grameenphone (Panel 4) | [linkedin.com/in/mshossain](#) |  |
+| **Neranjan Dissanayake** | Managing Director & CEO, Techneura Labs (Panel 4 Guest) | [linkedin.com/in/neranjan-dissanayake](#) |  |
+| **Dr. Shankar Karuppayah** | Deputy Director & Assoc Professor, Cybersecurity Research Centre | [linkedin.com/in/shankar-karuppayah](#) |  |
+| **Fauzia Idrees** | University of Royal Holloway (Closing Keynote Speaker) | [linkedin.com/in/fauziaidrees](#) |  |
 
 
 ---
