@@ -1,51 +1,176 @@
 # Event Raiders Delegation Notes: Phoenix Summit 2026
 
-Welcome to the official UITS Event Raiders coordination handbook for the **Phoenix Summit 2026** (June 23–27, 2026). This document covers ticket registration, travel details, recommended tracks, and critical cybersecurity guidelines.
+UITS Event Raiders event notes for the **Phoenix Summit 2026** (June 26–27, 2026).
 
 ---
 
-## 📋 Pre-Departure Checklist
-- [ ] **Verify Student Status:** Submit a clear photo of your UITS Student ID card to our maintainers to book group tickets.
-- [ ] **Save Contacts:** Save the maintainer's phone number to your contacts before joining the WhatsApp group to ensure chat history synchronizes correctly.
-- [ ] **Secure Your Ticket:** Download and print your registration PDF from the portal. Group ticket codes will be distributed via WhatsApp.
-- [ ] **Prepare Devices:** Charge all powerbanks, update your systems, and review the security checklist below.
+## Event Realizations
+
+Strategic Professional Preparation & Execution
+
+* **Study/Prepare the Target Expertise for the Event:** Shift from a passive spectator to an active participant by studying target domains of attending experts before the event kicks off.
+
+
+* **Gather People, Ask Communities If They Going:** Coordinate with user groups and communities to track attendance, build network cohorts, and maximize collaborative learning ahead of time.
+
+
+* **Maintain Professionalism, Be a Good Audience:** Respect the speakers, follow event decorum, and provide active, constructive engagement throughout the tracks.
+
+
+* **Bring a Bag (for Goodies):** Always come equipped with a bag to easily collect swag, resources, books, and promotional items distributed during the summit.
 
 ---
 
-## 🎟️ Ticket & Pricing Guide
-* **Exhibition Pass (200 BDT):** Provides access to the Exhibition, Experience, and Food zones. Great if you are just looking to network and view company pavilions.
-* **Technical Pass (700 BDT):** Includes full access to the Technical Stages (Hall of Fame) where key speakers present, and the official Event Swag Pack. *Recommended for most members.*
-* **Student Workshop (10,000 BDT):** Provides access to the specialized pre-summit trainings (June 23-25).
+Guidelines and insights shared by seniors:
+
+### Rezwan bhai (CSE 47)
+
+Rezwan bhai’s core advice focuses on self-paced educational certifications, constructing infrastructure at home, and gaining visibility into centralized network telemetry:
+
+* **TryHackMe Certification:** Pursue structured pathways on TryHackMe to solidify hands-on knowledge and build a structured background in technical assessments.
+
+
+* **Home Lab Construction:** Build a local home lab environment to safely mimic corporate network setups, test vulnerabilities, and practice offensive/defensive playbooks.
+
+
+* **Wazuh Project:** Launch and deploy a dedicated project using the Wazuh SIEM to master real-world log evaluation, ingestion pipelines, and rule orchestration.
+
+
 
 ---
 
-## 📍 Travel & Meeting Points
-* **Venue:** Bangabandhu International Conference Center (BICC), Sher-E-Bangla Nagar, Dhaka.
-* **Meeting Time:** 07:45 AM sharp at the UITS Permanent Campus Main Gates for the chartered bus.
-* **Alternative Route:** If traveling independently, meet our delegation at the **BICC Entrance Plaza Fountain** at 08:30 AM.
+### Arif Absar (AIUB) – Bdata
+
+Arif Absar’s insights center around real-world team shifts caused by high-velocity AI engineering tools and the modern realities of development pipelines:
+
+* **Developer Workforces & Agent Automation:** Traditional development roles are rapidly evolving; certain teams have laid off developers after successfully automating repetitive internal workflows using tools like Claude Code. 
+
+
+* **The Transition to Review-Focused Roles:** Traditional code writing roles are increasingly being swapped out for autonomous agent skills. The core human responsibility on modern teams is shifting to serving as a critical reviewer right before code hits a Pull Request (PR).
+
+* **Agentic Automation vs. Dev Pipelines:** Engineering roles are shifting from active coding tasks to agent oversight roles. Teams have integrated agent skills (such as Claude Code) to automate bulk execution, positioning human engineers as critical review checkposts directly preceding Pull Request (PR) merging.
+
+* **The "First-Come, First-Served" Application Window:** Modern corporate Application Tracking Systems (ATS) heavily prioritize early applicants. High-demand internship pipelines (such as bnext, Grameenphone Nextern, BRAC, and Banglalink) rely heavily on application timing rather than just matching exhaustive keyword criteria. Job description requirements are rarely absolute rigid barriers—strategic presence and immediate dispatch during the hiring window matter.
 
 ---
 
-## 🛡️ Critical Cybersecurity Rules (Summit Edition)
-Since this is Bangladesh's flagship cybersecurity convergence platform, you will be surrounded by top-tier security analysts, hackers, and red-teamers. Basic hygiene is critical:
-1. **Wireless Lockdown:** Disable Wi-Fi and Bluetooth on all your devices. **Do not** connect to any public, free, or "Official Summit" Wi-Fi networks unless verified by a maintainer. Use mobile data.
-2. **Keep Bluetooth Off:** Hackers frequently scan for active Bluetooth devices to test scanning tools and exploits (e.g. Bluejacking, Bluesnarfing).
-3. **No Unknown USBs:** Never insert any promotional USB drives, chargers, or hardware giveaways directly into your laptop without analyzing them in a sandbox first. Use a USB data blocker.
-4. **Use a VPN:** Keep your virtual private network active at all times when checking emails or accessing portals.
+
+## New Connections
+
+A mapped list of new professional connection links established or tracked during the conference for networking and technical insights:
+
+| Professional Name | Key Organization / Context Area | Strategic Profile Anchor |
+| --- | --- | --- |
+| **Md Ashiqul Hoque Abdullah** | Verification Specialist @ LaunchGood | [linkedin.com/in/asyrique](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fasyrique%2F)<br> |
+| **Sayeed Rafan** (??) | Red Team Tactics / Core Exploitation Research | [x.com/r4f4n_r00t](https://www.google.com/search?q=https%3A%2F%2Fx.com%2Fr4f4n_r00t)[cite: 2] |
+
+> **Operational Note:** Maintain professional communication channels with these profiles to track open-source research releases, analyze real-world case studies, and identify incoming industry apprenticeship tracks. Use these connections to build deep technical expertise in specialized domains.
+> 
 
 ---
 
-## 📅 Recommended Raids (Sessions)
-Here are the sessions our group is prioritizing for unified attendance:
+## Speakers
 
-### Day 1: Blue Team Day (June 26)
-* **09:00 AM:** *Telecom Attack Detection Using AI* (Learn how AI models predict carrier threats).
-* **09:30 AM:** *Security Engineering with Wazuh* (A must-attend for students studying SIEM).
-* **11:00 AM:** *Opening Ceremony & Shadow Server Keynote* (Piotr Kijewski).
-* **02:30 PM:** *Ransomware Ecosystem Forensics* (Deep dive into malicious payloads).
+---
 
-### Day 2: Red Team Day (June 27)
-* **09:00 AM:** *AI in Offensive Security & Bug Bounty* (Great for freelance penetration testing).
-* **11:40 AM:** *Modern Antivirus Bypass Reality* (Learn how threat actors evade static detection).
-* **12:20 PM:** *Red Teamer’s Guide to Total AI Subversion* (Advanced threat analysis).
-* **04:30 PM:** *Closing Ceremony & Women in Cyber Security Awards*.
+### 🔹 Blue Team Day — 26 June 2026
+
+| Speaker Name | Role / Session Track | Profile / Social Link | Attended? (✔️) |
+| --- | --- | --- | --- |
+| **Pasan Maduranga** | University of Sri Jayewardenepura (AI Telecom Attack Detection)[cite: 5] | [linkedin.com/in/pasan-maduranga-02a82724](https://www.google.com/search?q=https://www.linkedin.com/in/pasan-maduranga-02a82724/) |  |
+| **Syed Golam Abid** | Wazuh Ambassador (Security Engineering & Orchestration)[cite: 5] | [linkedin.com/in/syed-golam-abid](https://www.google.com/search?q=https://www.linkedin.com/in/syed-golam-abid) |  |
+| **Nur Qurratu Aini Rohizan** | Cyber Security Malaysia (AI Agent Alert Fatigue Management)[cite: 5] | [linkedin.com/in/nur-qurratu-aini-rohizan](https://www.google.com/search?q=https://www.linkedin.com/in/nur-qurratu-aini-rohizan) |  |
+| **A S M Shamim Reza** | Founder & MD, TTPG (Opening Remarks / Panel 1 Moderator)[cite: 5] | [linkedin.com/in/asm-shamim-reza](https://www.google.com/search?q=https://www.linkedin.com/in/asm-shamim-reza) |  |
+| **Piotr Kijewski** | CEO, Shadow Server Foundation (Opening Keynote Speaker)[cite: 5] | [linkedin.com/in/piotrkijewski](https://www.google.com/search?q=https://www.linkedin.com/in/piotrkijewski) |  |
+| **Md. Azim Uddin** | Pipeline Inc. (Ransomware Ecosystem Forensics)[cite: 5] | [linkedin.com/in/md-azim-uddin](https://www.google.com/search?q=https://www.linkedin.com/in/md-azim-uddin) |  |
+| **Joyeeta Sen Rimpee** | BTCL (National DNSSEC Deployment Journey)[cite: 5] | [linkedin.com/in/joyeeta-sen-rimpee](https://www.google.com/search?q=https://www.linkedin.com/in/joyeeta-sen-rimpee) |  |
+| **Md Showkat Ali** | Head of Information Security, Grameenphone Ltd. (Panel 1)[cite: 5] | [linkedin.com/in/md-showkat-ali](https://www.google.com/search?q=https://www.linkedin.com/in/md-showkat-ali) |  |
+| **Syed Akram Abbas** | CEO, Dtech Online Limited (Panel 1 / Panel 2 Moderator)[cite: 5] | [linkedin.com/in/syedakramabbas](https://www.google.com/search?q=https://www.linkedin.com/in/syedakramabbas) |  |
+| **Raisul Kabir** | CEO, Brain Station 23 (Panel One Guest Speaker)[cite: 5] | [linkedin.com/in/raisulkabir](https://www.google.com/search?q=https://www.linkedin.com/in/raisulkabir) |  |
+| **Mr. Arindam Roy** | Country Director - South Asia, SANS (International Keynote)[cite: 5] | [linkedin.com/in/arindam-roy-sans](https://www.google.com/search?q=https://www.linkedin.com/in/arindam-roy-sans) |  |
+| **Dr. Mohammed Shafiul Alam Khan** | Professor, IIT, University of Dhaka (Panel Two Guest)[cite: 5] | [linkedin.com/in/msakhan](https://www.google.com/search?q=https://www.linkedin.com/in/msakhan) |  |
+| **Muhammed Abdullah Al Mamun** | Head of Information Security, City Bank PLC (Panel Two Guest)[cite: 5] | [linkedin.com/in/muhammed-abdullah-al-mamun](https://www.google.com/search?q=https://www.linkedin.com/in/muhammed-abdullah-al-mamun) |  |
+| **Imtiaz Rahman** | SBAC Bank PLC, Wazuh Ambassador (Real-time IoC Detection)[cite: 5] | [linkedin.com/in/imtiaz-rahman](https://www.google.com/search?q=https://linkedin.com/in/imtiaz-rahman)[cite: 1] |  |
+
+---
+
+### 🔸 Red Team Day — 27 June 2026
+
+| Speaker Name | Role / Session Track | Profile / Social Link | Attended? (✔️) |
+| --- | --- | --- | --- |
+| **Ayon Hasan** | Sec Miners BD (AI in Offensive Security & Bug Bounty)[cite: 6] | [linkedin.com/in/ayonhasan](https://www.google.com/search?q=https://www.linkedin.com/in/ayonhasan) |  |
+| **Eftasib Araf Depro** | The Team Phoenix Group / Uttara University GS[cite: 6] | [medium.com/@eftasib-araf-depro](https://medium.com/@fteagleeye1) |  |
+| **Mr. Paramin Chuangmanee** | CERT Manager, Thailand Banking Sector CERT[cite: 6] | [linkedin.com/in/paramin-chuangmanee](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fparamin-chuangmanee) |  |
+| **Muhibbul Muktadir Tanim** | Head of Cybersecurity, Brain Station 23 / GS, BDSAF (Panel 3)[cite: 6] | [linkedin.com/in/muhibbul-muktadir-tanim](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fmuhibbul-muktadir-tanim) |  |
+| **Lt Col Rakibul Hassan (Retd)** | AI Business & Transformation, Link3 Technologies Ltd (Panel 3)[cite: 6] | [linkedin.com/in/rakibul-hassan](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Frakibul-hassan) |  |
+| **Md. Mahbubul Alam (Rafel)** | Head of InfoSec Division, Prime Bank PLC (Panel 3 Guest)[cite: 6] | [linkedin.com/in/md-mahbubul-alam](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fmd-mahbubul-alam) |  |
+| **Muhammad Abul Kalam Azad** | CISO, Eastern Bank PLC & Secretary, ISACA Dhaka (Panel 3)[cite: 6] | [linkedin.com/in/makazad](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fmakazad) |  |
+| **Md Sameull Islam** | DongIT B.V. (Modern Antivirus & Bypass Realities)[cite: 6] | [linkedin.com/in/samiul-islam](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fsamiul-islam)[cite: 4] |  |
+| **Md. Safwan Luban** | Shorborno Holdings LTD. (Breaking the Black Box AI Subversion)[cite: 6] | [linkedin.com/in/safwan-luban](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fsafwan-luban) |  |
+| **Asyrique Thevendran** | Paywatch (AI-Generated Code Review Risks)[cite: 6] | [linkedin.com/in/asyrique](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fasyrique%2F)[cite: 2, 4] |  |
+| **Pratima Pradhan** | btCERT, Government Technology Agency (Security Hardening v2.0)[cite: 6] | [bt.linkedin.com/in/pratima-pradhan-957bb821](https://www.google.com/search?q=https%3A%2F%2Fbt.linkedin.com%2Fin%2Fpratima-pradhan-957bb821)[cite: 4] |  |
+| **Shariful Anwar** | Academic Dean, Glenrich International School (Panel 4 Moderator)[cite: 6] | [linkedin.com/in/shariful-anwar](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fshariful-anwar) |  |
+| **Mohammad Shahadat Hossain** | Head of 3rd Party Risk Management, Grameenphone (Panel 4)[cite: 6] | [linkedin.com/in/mshossain](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fmshossain) |  |
+| **Neranjan Dissanayake** | Managing Director & CEO, Techneura Labs (Panel 4 Guest)[cite: 6] | [linkedin.com/in/neranjan-dissanayake](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fneranjan-dissanayake) |  |
+| **Dr. Shankar Karuppayah** | Deputy Director & Assoc Professor, Cybersecurity Research Centre[cite: 6] | [linkedin.com/in/shankar-karuppayah](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fshankar-karuppayah) |  |
+| **Fauzia Idrees** | University of Royal Holloway (Closing Keynote Speaker)[cite: 6] | [linkedin.com/in/fauziaidrees](https://www.google.com/search?q=https%3A%2F%2Fwww.linkedin.com%2Fin%2Ffauziaidrees) |  |
+
+
+---
+
+
+### Other Technical Notes
+
+
+* **The Reality of AI-Generated Shipments:** Developers are rapidly deploying automated code output without extensive human code auditing, creating distinct blind spots in software integrity and testing infrastructure.
+
+
+* **SIEM Evolution:** Traditional, rigid metric dashboards are transitioning toward context-aware conversational layers. Incorporating tools like Claude and the Model Context Protocol (MCP) directly into security monitoring infrastructure (e.g., Wazuh clusters) enables teams to evaluate security events through plain-language reasoning queries.
+
+
+* **Windows API (WinAPI) & Malware Architecture:** Exploring the foundational mechanics of software interactions through WinAPI execution provides deeper insights into payload generation and evasion vectors.
+
+
+* **Defense & Defensive Layers:** Standard detection rules must balance log analysis with runtime defense mechanisms (such as file integrity monitoring and immutable snapshots) to survive systematic brute-force, antivirus evasion, and ransomware delivery models.
+
+
+
+---
+
+### Integrated Tech Notes & Deep-Dives | Defensive Engineering: Wazuh Cluster Architecture
+
+Deploying a scalable, context-aware SIEM ecosystem requires balancing ingestion nodes with analysis clusters:
+
+```
+                     [ Endpoints with Wazuh Agents ]
+               (Server, Desktop, Laptop, Cloud, VM nodes)
+                                   │
+                                   ▼
+         ┌───────────────────────────────────────────────────┐
+         │              Wazuh Central Components             │
+         │                                                   │
+         │   ┌───────────────────────────────────────────┐   │
+         │   │              Server Cluster               │   │
+         │   │                                           │   │
+         │   │   ┌──────────────┐    ┌──────────────┐    │   │
+         │   │   │ Master Node  │───►│ Worker Node  │    │   │
+         │   │   └──────────────┘    └──────────────┘    │   │
+         │   └─────────────────────┬─────────────────────┘   │
+         │                         │                         │
+         │                         ▼                         │
+         │   ┌───────────────────────────────────────────┐   │
+         │   │             Wazuh Indexer Cluster         │   │
+         │   │        (Multi-node distributed index)     │   │
+         │   └─────────────────────┬─────────────────────┘   │
+         │                         │                         │
+         │                         ▼                         │
+         │   ┌───────────────────────────────────────────┐   │
+         │   │               Wazuh Dashboard             │   │
+         │   │            (Web UI Interface Layer)       │   │
+         │   └───────────────────────────────────────────┘   │
+         └───────────────────────────────────────────────────┘
+
+```
+
+
+---
