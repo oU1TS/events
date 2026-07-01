@@ -631,6 +631,10 @@ body.light-theme .raid-info-group {
     flex: 1;
 }
 
+.see-more-btn {
+    display: none;
+}
+
 .raid-links-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -1327,5 +1331,46 @@ body.light-theme .details-dropdown[open] {
     .social-link-btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .raid-title {
+        font-size: 1.3rem;
+    }
+
+    .raid-details {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+    }
+
+    .raid-details.expanded {
+        display: block;
+        overflow: visible;
+        margin-bottom: 1.5rem;
+    }
+
+    .see-more-btn {
+        display: inline-block;
+        color: var(--accent);
+        background: transparent;
+        border: none;
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0;
+        margin-bottom: 1.5rem;
+        cursor: pointer;
+        text-align: left;
+        align-self: flex-start;
+        border-bottom: 1px dashed var(--accent);
+        transition: color var(--transition-speed) ease;
+    }
+
+    .see-more-btn:hover {
+        color: var(--accent-hover);
+        border-color: var(--accent-hover);
     }
 }

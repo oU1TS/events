@@ -2,6 +2,8 @@
 
 Welcome to the technical documentation of the **UITS Event Raiders** Single Page Application (SPA). This document outlines the initiative's context, the project's technical architecture, component design, and its version change history.
 
+Repository: https://github.com/oU1TS/events
+
 ---
 
 ## 1. Initiative Context
@@ -68,7 +70,15 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.3.0 — Notes Renderer & Theme Sync Integration (Current)
+### 🚀 v1.4.0 — Details Dropdown, Mobile Clamp & Future Roadmap Context (Current)
+* **Features:**
+  * **Collapsible Details**: Wrapped Venue, Fee, and subEvents (Schedule) inside a single premium-styled, collapsible `<details>` element labeled "Details". Styled it with dynamic theme-accented borders, custom carets, left-side indicator bars, and hover scaling.
+  * **Raid Roadmap Context**: Updated the main portal context from "Past Raids" to "Raid Campaigns" and changed the hero CTA button to "View Raid Plans".
+  * **Dynamic Status Badges**: Added `"Status"` and `"endDate"` tags to `raids.json`. Implemented dynamic status checks in `app.js` that automatically shift status from `"Future"` to `"Past"` once the current date passes `endDate`, rendering matching badge chips.
+  * **Mobile Layout Polish**: Decreased title size on mobile viewports to `1.3rem`, placed the main description above the Details dropdown, and added a line-clamped description box with a highlighted **See More** toggle button for screens `< 768px`.
+  * **Tab Behaviors**: Standardized target attributes so all links in `raids.json` (including the local `"notes"` markdown rendering link) open in a new browser tab.
+
+### 🚀 v1.3.0 — Notes Renderer & Theme Sync Integration
 * **Features:**
   * Integrated a local Markdown reader (`render.html`, `render.js`, and `css/render.css`) into the workspace to view campaign reports locally.
   * Added a `syncTheme` method to `render.js` to automatically match the viewer's theme with the homepage choice saved in `localStorage`.

@@ -204,6 +204,22 @@ document.addEventListener('DOMContentLoaded', () => {
             titleEl.textContent = raid.title;
             card.appendChild(titleEl);
 
+            // Detailed Description (Supports multi-line display via pre-line)
+            const detailsEl = document.createElement('p');
+            detailsEl.className = 'raid-details';
+            detailsEl.textContent = raid.details;
+            card.appendChild(detailsEl);
+
+            // Highlighted "See More" / "See Less" Button for Mobile
+            const seeMoreBtn = document.createElement('button');
+            seeMoreBtn.className = 'see-more-btn';
+            seeMoreBtn.textContent = 'See More';
+            seeMoreBtn.addEventListener('click', () => {
+                const isExpanded = detailsEl.classList.toggle('expanded');
+                seeMoreBtn.textContent = isExpanded ? 'See Less' : 'See More';
+            });
+            card.appendChild(seeMoreBtn);
+
             // Details Dropdown (Venue, Fees, Sub Events)
             const detailsDropdown = document.createElement('details');
             detailsDropdown.className = 'details-dropdown';
@@ -269,11 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
             detailsDropdown.appendChild(infoGroup);
             card.appendChild(detailsDropdown);
 
-            // Detailed Description (Supports multi-line display via pre-line)
-            const detailsEl = document.createElement('p');
-            detailsEl.className = 'raid-details';
-            detailsEl.textContent = raid.details;
-            card.appendChild(detailsEl);
+
 
             // Important Links Section
             if (raid.links && Object.keys(raid.links).length > 0) {
