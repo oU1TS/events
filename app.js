@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // State Variables
     let pastRaidsData = null;
     let isDataLoading = false;
+    let pendingRaidScroll = null;
 
     /* ==========================================================================
        1. Theme Management (Light / Dark Mode)
@@ -55,6 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
        ========================================================================== */
     function routePage() {
         let currentHash = window.location.hash;
+        let targetRaidNum = null;
+
+        // Parse hash to see if it's a raid link, e.g., #raid-1
+        if (currentHash.startsWith('#raid-')) {
+            targetRaidNum = parseInt(currentHash.replace('#raid-', ''), 10);
+            currentHash = '#past-raids';
+        }
 
         // Default route fallback if hash is empty or invalid
         if (!currentHash || !validRoutes.includes(currentHash)) {
@@ -84,14 +92,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 3. Trigger Data Fetching when entering Past Raids
         if (currentHash === '#past-raids') {
-            loadPastRaids();
+            if (targetRaidNum) {
+                if (pastRaidsData) {
+                    scrollToRaid(targetRaidNum);
+                } else {
+                    pendingRaidScroll = targetRaidNum;
+                    loadPastRaids();
+                }
+            } else {
+                loadPastRaids();
+            }
         }
 
-        // 4. Scroll to top on navigation change
-        window.scrollTo({ top: 0, behavior: 'instant' });
+        // 4. Scroll to top on navigation change (only if not scrolling to a specific raid card)
+        if (!targetRaidNum) {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
 
         // 5. Close mobile navigation menu if open
         closeMobileMenu();
+    }
+
+    function scrollToRaid(raidNum) {
+        // Wait slightly to ensure elements are rendered and transition finished
+        setTimeout(() => {
+            const card = document.getElementById(`raid-card-${raidNum}`);
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.classList.add('highlighted');
+                card.addEventListener('animationend', () => {
+                    card.classList.remove('highlighted');
+                }, { once: true });
+            }
+        }, 200);
     }
 
     // Hash change event listener
@@ -165,6 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create Card Element
             const card = document.createElement('div');
             card.className = 'raid-card';
+            card.id = `raid-card-${raid.Raid_Num}`;
 
             // Meta Section
             const metaDiv = document.createElement('div');
@@ -194,8 +228,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     </svg>
                     <span>${escapeHTML(raid.dateRange)}</span>
                 </div>
-                <span class="status-badge ${statusClass}">${escapeHTML(statusText)}</span>
+                <div class="raid-meta-right">
+                    <button class="copy-raid-link-btn" title="Copy link to this raid" aria-label="Copy link to this raid">
+                        <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                    <span class="status-badge ${statusClass}">${escapeHTML(statusText)}</span>
+                </div>
             `;
+
+            const copyBtn = metaDiv.querySelector('.copy-raid-link-btn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const raidUrl = window.location.href.split('#')[0] + '#raid-' + raid.Raid_Num;
+                    navigator.clipboard.writeText(raidUrl).then(() => {
+                        copyBtn.classList.add('copied');
+                        copyBtn.innerHTML = `
+                            <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        `;
+                        setTimeout(() => {
+                            copyBtn.classList.remove('copied');
+                            copyBtn.innerHTML = `
+                                <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            `;
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy link: ', err);
+                    });
+                });
+            }
+
             card.appendChild(metaDiv);
 
             // Title
@@ -331,6 +401,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Append Card to container
             raidsContainer.appendChild(card);
         });
+
+        // Check for pending raid scroll
+        if (pendingRaidScroll) {
+            scrollToRaid(pendingRaidScroll);
+            pendingRaidScroll = null;
+        }
     }
 
     function createInfoItem(label, value) {

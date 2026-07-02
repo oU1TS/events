@@ -1,5 +1,6 @@
 [
   {
+    "Raid_Num": 1,
     "title": "International AI Builders Congress 2026",
     "dateRange": "June 30 — December 26, 2026",
     "Status": "Future",
@@ -28,11 +29,13 @@
       "Official Event Portal": "https://cloudcampbd.com/ai-builders-congress",
       "Registration Link": "https://cloudcampbd.com/ai-builders-congress/register",
       "faq": "https://cloudcampbd.com/ai-builders-congress#faq",
-      "sessions": "https://cloudcampbd.com/ai-builders-congress#sessions"
+      "sessions": "https://cloudcampbd.com/ai-builders-congress#sessions",
+      "Event Page": "https://www.facebook.com/events/1351253453738188"
     },
     "details": "Hosted by CloudCamp Bangladesh, the International AI Builders Congress 2026 is a premier structural execution platform designed to transition developers, innovators, and students from localized prototypes into production-grade global solutions. The comprehensive initiative focuses on key application scopes including product building, economic development, and job creation by bridging the gap between local talent and Non-Resident Bangladeshi (NRB) technology practitioners."
   },
   {
+    "Raid_Num": 2,
     "title": "MarXcellence 2026 (International Inter-University Digital Marketing Case Competition)",
     "dateRange": "Workshop 1 Begins: 10 July, 2026",
     "Status": "Future",
@@ -69,6 +72,7 @@
     "details": "Presented by Dhaka Bank PLC, Co-Sponsored by Transcom Group, and Powered by Vatika Naturals, MarXcellence 2026 is Bangladesh's premier hybrid digital marketing case tournament hosted by NSU MIBC. Open globally to undergraduate student teams (2 to 4 members; cross-university teams fully permitted). Features a comprehensive BDT 520,000 total prize pool breakdowns: Champions receive BDT 225,000; 1st Runners-Up receive BDT 150,000; 2nd Runners-Up receive BDT 100,000; and the remaining 3 finalists receive BDT 15,000 each. Registration closes on July 8, 2026 (11:59 PM)."
   },
   {
+    "Raid_Num": 3,
     "title": "AMD Developer Hackathon: ACT II",
     "dateRange": "6-11 July, 2026",
     "Status": "Future",
@@ -95,6 +99,7 @@
     "details": "A hands-on online event focused on building AI agents and high-performance AI applications on AMD GPUs in the cloud using the AMD AI Developer Cloud, ROCm, and Fireworks AI API. Features a $15,000 total prize pool, plus perks for new AMD AI Developer Program sign-ups including $100 in AMD Cloud GPU credits and $50 in Fireworks AI API credits."
   },
   {
+    "Raid_Num": 4,
     "title": "Phoenix Summit 2026",
     "dateRange": "June 23 - June 27, 2026",
     "Status": "Past",

@@ -66,11 +66,25 @@ events/
 * **Libraries:** Uses `marked.js` for MD parsing, `DOMPurify` for sanitizing markup, `highlight.js` for syntax highlighting, and `KaTeX` for mathematical LaTeX equations.
 * **Table of Contents (ToC):** Dynamically parses headers (`h1`, `h2`, `h3`, `h4`) and compiles a slide-out navigation panel with sticky header offsets.
 
+### E. Raid Card Deep Linking & Highlight Animation
+* **Deep Linking**: SPA hash routing intercepts hashes matching `#raid-<number>` (e.g. `#raid-1`), internally redirects the user to the `#past-raids` section, and identifies the target raid card.
+* **Smooth Scrolling**: Once the dynamic raid data loads and renders, the page automatically performs a smooth scroll centering the targeted card in the viewport.
+* **Highlight Animation**: Applies a brief pulse animation (`highlightPulse`) which scales the card slightly, updates the border to the accent color, and casts a glowing box shadow using the theme's accent color (gold for dark, blue for light).
+* **Copy Link Button**: Each card features a highlighted copy button next to the status badge. Clicking it copies the absolute URL of the specific card to the clipboard and triggers a 2-second visual feedback (checkmark icon change).
+
 ---
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.4.0 — Details Dropdown, Mobile Clamp & Future Roadmap Context (Current)
+### 🚀 v1.5.0 — Deep Linking, Copy-to-Clipboard Buttons & Highlight Animations (Current)
+* **Features:**
+  * **Deep Linking to Raids**: Extended SPA hash routing to support `#raid-<number>` paths. The portal auto-routes to "Raid Campaigns", smooth-scrolls to the target card, and triggers a highlight effect.
+  * **Copy Link Button**: Added a dedicated copy icon button next to the status badge on each card. Clicking copies the direct deep link (e.g. `index.html#raid-1`) to the user's clipboard.
+  * **Interactive Feedback**: Implemented visual success state where the copy icon turns into a checkmark for 2 seconds.
+  * **Highlight Pulse Animation**: Created `@keyframes highlightPulse` to animate the border-color and box-shadow with the theme-specific accent color glow upon deep-link activation.
+  * **Data Layer Variables**: Added sequential `"Raid_Num"` properties to all objects in `raids.json` matching card positions.
+
+### 🚀 v1.4.0 — Details Dropdown, Mobile Clamp & Future Roadmap Context
 * **Features:**
   * **Collapsible Details**: Wrapped Venue, Fee, and subEvents (Schedule) inside a single premium-styled, collapsible `<details>` element labeled "Details". Styled it with dynamic theme-accented borders, custom carets, left-side indicator bars, and hover scaling.
   * **Raid Roadmap Context**: Updated the main portal context from "Past Raids" to "Raid Campaigns" and changed the hero CTA button to "View Raid Plans".

@@ -533,6 +533,76 @@ body.light-theme .btn-primary {
     margin-bottom: 1rem;
 }
 
+.raid-meta-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.copy-raid-link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    padding: 6px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                color 0.2s ease, 
+                background-color 0.2s ease, 
+                border-color 0.2s ease;
+}
+
+.copy-raid-link-btn:hover {
+    color: var(--accent-hover);
+    background-color: rgba(var(--accent-rgb), 0.15);
+    border-color: rgba(var(--accent-rgb), 0.3);
+    transform: scale(1.1);
+}
+
+.copy-raid-link-btn:active {
+    transform: scale(0.95);
+}
+
+.copy-raid-link-btn.copied {
+    color: var(--success-color);
+    background-color: var(--success-bg);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.copy-icon,
+.check-icon {
+    display: block;
+    flex-shrink: 0;
+}
+
+/* Highlight Animation for Raid Card */
+@keyframes highlightPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.8), var(--card-shadow);
+        border-color: var(--accent);
+        transform: scale(1.01);
+    }
+    30% {
+        box-shadow: 0 0 35px 12px rgba(var(--accent-rgb), 0.5), var(--card-shadow);
+        border-color: var(--accent);
+        transform: scale(1.01);
+    }
+    100% {
+        box-shadow: var(--card-shadow);
+        border-color: var(--border-color);
+        transform: scale(1);
+    }
+}
+
+.raid-card.highlighted {
+    animation: highlightPulse 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    z-index: 10;
+    border-color: var(--accent) !important;
+}
+
 .raid-date-wrapper {
     display: flex;
     align-items: center;
