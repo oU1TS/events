@@ -1,3 +1,7 @@
+<!--
+  tags: event-trackers, platforms, hackathons, conferences, game-jams, competitive-programming, directories
+  -->
+
 # Event Trackers & Developer Competitions Master Directory
 
 This document contains a curated list of platforms, portals, and trackers for technology events, hackathons, game jams, data science competitions, and tech community gatherings.

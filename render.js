@@ -21,6 +21,15 @@
         let currentMarkdownContent = '';
         let currentMarkdownFilename = '';
 
+        // Search feature state
+        let docSentences = [];
+        let isSearchOpen = false;
+        let isPaginationMode = false;
+        let searchQuery = '';
+        let searchResults = [];
+        let currentMatchIndex = -1;
+        let currentDocumentTags = [];
+
         /**
          * Converts standard GitHub URL to raw.githubusercontent.com URL
          */
@@ -47,6 +56,8 @@
          * Fetches and renders the markdown file
          */
         async function loadMarkdown(filePath) {
+            resetSearch();
+
             if (!filePath) {
                 showError("No markdown file specified.", "Specify a file using ?file=path/to/file.md");
                 return;
@@ -126,6 +137,12 @@
 
                 // Generate Table of Contents
                 generateToC();
+
+                // Index document and show search button
+                indexDocument();
+                currentDocumentTags = parseTags(rawMarkdown);
+                const searchToggle = document.getElementById('floating-search-toggle');
+                if (searchToggle) searchToggle.style.display = 'flex';
 
                 window.scrollTo(0, 0);
 
@@ -243,6 +260,11 @@
 
             // Hide ToC toggle on error
             document.getElementById('toc-toggle').style.display = 'none';
+
+            // Hide search button and close search on error
+            const searchToggle = document.getElementById('floating-search-toggle');
+            if (searchToggle) searchToggle.style.display = 'none';
+            closeSearch();
         }
 
         /**
@@ -323,6 +345,539 @@
             URL.revokeObjectURL(url);
         });
 
+        // Reset search function to clear state
+        function resetSearch() {
+            isPaginationMode = false;
+            isSearchOpen = false;
+            searchQuery = '';
+            searchResults = [];
+            currentMatchIndex = -1;
+            currentDocumentTags = [];
+            
+            const searchContainer = document.getElementById('search-container');
+            if (searchContainer) {
+                searchContainer.classList.add('search-container-hidden');
+                searchContainer.classList.remove('pagination-mode');
+            }
+            
+            const toggleBtn = document.getElementById('floating-search-toggle');
+            if (toggleBtn) {
+                toggleBtn.classList.remove('active');
+            }
+            
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (clearBtn) {
+                clearBtn.style.display = 'none';
+            }
+            
+            const resultsList = document.getElementById('search-results-list');
+            if (resultsList) {
+                resultsList.innerHTML = '';
+            }
+
+            const tagsContainer = document.getElementById('search-tags-container');
+            if (tagsContainer) {
+                tagsContainer.style.display = 'none';
+            }
+
+            const tagsList = document.getElementById('search-tags-list');
+            if (tagsList) {
+                tagsList.innerHTML = '';
+            }
+            
+            const prevBtn = document.getElementById('search-prev-btn');
+            const nextBtn = document.getElementById('search-next-btn');
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            
+            const listBtn = document.getElementById('search-list-btn');
+            if (listBtn) listBtn.style.display = 'none';
+            
+            removeHighlights();
+        }
+
+        /**
+         * Floating Search and Pagination Feature
+         */
+
+        function indexDocument() {
+            docSentences = [];
+            const textElements = findTextElements(contentEl);
+            let sentenceIndex = 0;
+            
+            textElements.forEach(el => {
+                const text = getCleanText(el);
+                const sentences = splitIntoSentences(text);
+                sentences.forEach(s => {
+                    docSentences.push({
+                        text: s,
+                        element: el,
+                        index: sentenceIndex++
+                    });
+                });
+            });
+        }
+
+        function findTextElements(node, list = []) {
+            if (!node) return list;
+            
+            // Skip code blocks, math blocks, scripts, styles, page breaks
+            if (node.tagName === 'PRE' || node.tagName === 'CODE' || 
+                node.classList?.contains('katex') || node.classList?.contains('katex-display') ||
+                node.tagName === 'SCRIPT' || node.tagName === 'STYLE' ||
+                node.classList?.contains('page-break')) {
+                return list;
+            }
+            
+            const searchableTags = ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'TD', 'TH', 'BLOCKQUOTE', 'FIGCAPTION', 'LI'];
+            
+            // If it's a searchable tag, index it and do not recurse into its children
+            let hasSearchableChild = false;
+            for (let i = 0; i < node.children.length; i++) {
+                const child = node.children[i];
+                if (searchableTags.includes(child.tagName) || child.querySelector(searchableTags.join(','))) {
+                    hasSearchableChild = true;
+                    break;
+                }
+            }
+            
+            if (searchableTags.includes(node.tagName) && !hasSearchableChild) {
+                list.push(node);
+            } else {
+                for (let i = 0; i < node.children.length; i++) {
+                    findTextElements(node.children[i], list);
+                }
+            }
+            return list;
+        }
+
+        function getCleanText(el) {
+            const clone = el.cloneNode(true);
+            const unwanted = clone.querySelectorAll('pre, code, .katex, style, script, .page-break');
+            unwanted.forEach(node => node.remove());
+            return clone.textContent;
+        }
+
+        function splitIntoSentences(text) {
+            if (!text) return [];
+            const cleanText = text.replace(/\s+/g, ' ').trim();
+            if (!cleanText) return [];
+            
+            const regex = /[^.!?]+(?:[.!?]+|$)/g;
+            const sentences = [];
+            let match;
+            while ((match = regex.exec(cleanText)) !== null) {
+                const sentence = match[0].trim();
+                if (sentence.length > 3) { // ignore very short text snippets
+                    sentences.push(sentence);
+                }
+            }
+            return sentences;
+        }
+
+        function parseTags(markdown) {
+            if (!markdown) return [];
+            const regex = /<!--[\s\S]*?tags:\s*([^\r\n\--->]+)[\s\S]*?-->/i;
+            const match = markdown.match(regex);
+            if (match) {
+                return match[1].split(',').map(t => t.trim()).filter(Boolean);
+            }
+            return [];
+        }
+
+        function renderTags() {
+            const tagsContainer = document.getElementById('search-tags-container');
+            const tagsList = document.getElementById('search-tags-list');
+            if (!tagsContainer || !tagsList) return;
+            
+            if (currentDocumentTags.length > 0) {
+                tagsList.innerHTML = '';
+                currentDocumentTags.forEach(tag => {
+                    const pill = document.createElement('span');
+                    pill.className = 'search-tag-pill';
+                    pill.textContent = tag;
+                    pill.addEventListener('click', () => {
+                        const searchInput = document.getElementById('search-input');
+                        if (searchInput) {
+                            searchInput.value = tag;
+                            performSearch();
+                            searchInput.focus();
+                        }
+                    });
+                    tagsList.appendChild(pill);
+                });
+                tagsContainer.style.display = 'block';
+            } else {
+                tagsContainer.style.display = 'none';
+            }
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                }[tag] || tag)
+            );
+        }
+
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function removeHighlights() {
+            const highlights = contentEl.querySelectorAll('mark.search-match');
+            highlights.forEach(mark => {
+                const textNode = document.createTextNode(mark.textContent);
+                mark.parentNode.replaceChild(textNode, mark);
+            });
+            contentEl.normalize();
+        }
+
+        function highlightQuery(query) {
+            removeHighlights();
+            if (!query) return;
+            
+            const regex = new RegExp(escapeRegExp(query), 'gi');
+            const textNodes = [];
+            
+            function findTextNodes(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    if (node.textContent.trim().length > 0) {
+                        textNodes.push(node);
+                    }
+                } else {
+                    const skipTags = ['PRE', 'CODE', 'SCRIPT', 'STYLE'];
+                    if (skipTags.includes(node.tagName) || node.classList?.contains('katex') || node.classList?.contains('page-break')) {
+                        return;
+                    }
+                    for (let child of node.childNodes) {
+                        findTextNodes(child);
+                    }
+                }
+            }
+            
+            const textElements = findTextElements(contentEl);
+            textElements.forEach(el => {
+                for (let child of el.childNodes) {
+                    findTextNodes(child);
+                }
+            });
+            
+            for (let i = textNodes.length - 1; i >= 0; i--) {
+                const node = textNodes[i];
+                const text = node.textContent;
+                let match;
+                regex.lastIndex = 0;
+                
+                const parent = node.parentNode;
+                if (!parent) continue;
+                
+                const matches = [];
+                while ((match = regex.exec(text)) !== null) {
+                    matches.push({
+                        start: match.index,
+                        end: regex.lastIndex,
+                        matchText: match[0]
+                    });
+                }
+                
+                if (matches.length > 0) {
+                    const fragment = document.createDocumentFragment();
+                    let lastIndex = 0;
+                    
+                    matches.forEach(m => {
+                        if (m.start > lastIndex) {
+                            fragment.appendChild(document.createTextNode(text.substring(lastIndex, m.start)));
+                        }
+                        const mark = document.createElement('mark');
+                        mark.className = 'search-match';
+                        mark.textContent = m.matchText;
+                        fragment.appendChild(mark);
+                        lastIndex = m.end;
+                    });
+                    
+                    if (lastIndex < text.length) {
+                        fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
+                    }
+                    
+                    parent.replaceChild(fragment, node);
+                }
+            }
+        }
+
+        function updatePaginationHighlights() {
+            highlightQuery(searchQuery);
+            const marks = contentEl.querySelectorAll('mark.search-match');
+            const prevBtn = document.getElementById('search-prev-btn');
+            const nextBtn = document.getElementById('search-next-btn');
+            
+            if (marks.length > 0) {
+                if (prevBtn) prevBtn.disabled = false;
+                if (nextBtn) nextBtn.disabled = false;
+                
+                if (currentMatchIndex < 0 || currentMatchIndex >= marks.length) {
+                    currentMatchIndex = 0;
+                }
+                scrollToActiveMatch(marks);
+            } else {
+                if (prevBtn) prevBtn.disabled = true;
+                if (nextBtn) nextBtn.disabled = true;
+                currentMatchIndex = -1;
+            }
+        }
+
+        function scrollToActiveMatch(marks) {
+            if (!marks || marks.length === 0) return;
+            
+            marks.forEach(m => m.classList.remove('search-match-active'));
+            
+            if (currentMatchIndex < 0) currentMatchIndex = 0;
+            if (currentMatchIndex >= marks.length) currentMatchIndex = marks.length - 1;
+            
+            const activeMark = marks[currentMatchIndex];
+            if (activeMark) {
+                activeMark.classList.add('search-match-active');
+                
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const rect = activeMark.getBoundingClientRect();
+                const absoluteTop = window.pageYOffset + rect.top;
+                const targetScroll = absoluteTop - headerHeight - 60;
+                
+                window.scrollTo({
+                    top: targetScroll,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        function navigateMatch(direction) {
+            const marks = contentEl.querySelectorAll('mark.search-match');
+            if (marks.length === 0) return;
+            
+            currentMatchIndex += direction;
+            if (currentMatchIndex < 0) {
+                currentMatchIndex = marks.length - 1;
+            } else if (currentMatchIndex >= marks.length) {
+                currentMatchIndex = 0;
+            }
+            scrollToActiveMatch(marks);
+        }
+
+        function enterPaginationMode() {
+            if (!searchQuery) return;
+            isPaginationMode = true;
+            document.getElementById('search-container').classList.add('pagination-mode');
+            document.getElementById('search-list-btn').style.display = 'flex';
+            updatePaginationHighlights();
+        }
+
+        function exitPaginationMode() {
+            isPaginationMode = false;
+            document.getElementById('search-container').classList.remove('pagination-mode');
+            document.getElementById('search-list-btn').style.display = 'none';
+            removeHighlights();
+            currentMatchIndex = -1;
+        }
+
+        function openSearch() {
+            isSearchOpen = true;
+            document.getElementById('search-container').classList.remove('search-container-hidden');
+            document.getElementById('floating-search-toggle').classList.add('active');
+            
+            // Sync search state UI
+            performSearch();
+            
+            setTimeout(() => {
+                document.getElementById('search-input').focus();
+            }, 100);
+            
+            if (isPaginationMode && searchQuery) {
+                updatePaginationHighlights();
+            }
+        }
+
+        function closeSearch() {
+            isSearchOpen = false;
+            document.getElementById('search-container').classList.add('search-container-hidden');
+            document.getElementById('floating-search-toggle').classList.remove('active');
+            removeHighlights();
+        }
+
+        function toggleSearch() {
+            if (isSearchOpen) {
+                closeSearch();
+            } else {
+                openSearch();
+            }
+        }
+
+        function performSearch() {
+            const inputVal = document.getElementById('search-input').value;
+            searchQuery = inputVal.trim();
+            
+            const clearBtn = document.getElementById('search-clear-btn');
+            const resultsList = document.getElementById('search-results-list');
+            const prevBtn = document.getElementById('search-prev-btn');
+            const nextBtn = document.getElementById('search-next-btn');
+            const tagsContainer = document.getElementById('search-tags-container');
+            
+            if (!searchQuery) {
+                clearBtn.style.display = 'none';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                
+                // Show tag suggestions if available, otherwise show standard placeholder
+                if (currentDocumentTags.length > 0) {
+                    renderTags();
+                    resultsList.innerHTML = '';
+                } else {
+                    if (tagsContainer) tagsContainer.style.display = 'none';
+                    resultsList.innerHTML = '<div class="search-no-results">Type to search sentences...</div>';
+                }
+                
+                if (isPaginationMode) {
+                    removeHighlights();
+                    currentMatchIndex = -1;
+                }
+                return;
+            }
+            
+            if (tagsContainer) tagsContainer.style.display = 'none';
+            clearBtn.style.display = 'flex';
+            
+            const queryLower = searchQuery.toLowerCase();
+            searchResults = docSentences.filter(s => s.text.toLowerCase().includes(queryLower));
+            
+            resultsList.innerHTML = '';
+            
+            if (searchResults.length === 0) {
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                resultsList.innerHTML = '<div class="search-no-results">No matching sentences found.</div>';
+                if (isPaginationMode) {
+                    removeHighlights();
+                    currentMatchIndex = -1;
+                }
+            } else {
+                prevBtn.disabled = false;
+                nextBtn.disabled = false;
+                
+                const escapedQuery = escapeRegExp(searchQuery);
+                const regex = new RegExp(`(${escapedQuery})`, 'gi');
+                
+                searchResults.forEach(match => {
+                    const escapedText = escapeHTML(match.text);
+                    const highlightedText = escapedText.replace(regex, '<mark class="match-highlight">$1</mark>');
+                    
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.innerHTML = highlightedText;
+                    
+                    item.addEventListener('click', () => {
+                        const headerHeight = document.querySelector('header').offsetHeight;
+                        const rect = match.element.getBoundingClientRect();
+                        const absoluteTop = window.pageYOffset + rect.top;
+                        const targetScroll = absoluteTop - headerHeight - 60;
+                        
+                        window.scrollTo({
+                            top: targetScroll,
+                            behavior: 'smooth'
+                        });
+                        
+                        match.element.classList.remove('flash-highlight');
+                        void match.element.offsetWidth; // trigger reflow
+                        match.element.classList.add('flash-highlight');
+                        setTimeout(() => {
+                            match.element.classList.remove('flash-highlight');
+                        }, 1500);
+                    });
+                    
+                    resultsList.appendChild(item);
+                });
+                
+                if (isPaginationMode) {
+                    updatePaginationHighlights();
+                }
+            }
+        }
+
+        // Setup Event Listeners for Search Panel
+        function setupSearchEventListeners() {
+            const toggleBtn = document.getElementById('floating-search-toggle');
+            const searchInput = document.getElementById('search-input');
+            const clearBtn = document.getElementById('search-clear-btn');
+            const closeBtn = document.getElementById('search-close-btn');
+            const listBtn = document.getElementById('search-list-btn');
+            const prevBtn = document.getElementById('search-prev-btn');
+            const nextBtn = document.getElementById('search-next-btn');
+            
+            toggleBtn.addEventListener('click', toggleSearch);
+            closeBtn.addEventListener('click', closeSearch);
+            
+            searchInput.addEventListener('input', performSearch);
+            
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                performSearch();
+                searchInput.focus();
+            });
+            
+            listBtn.addEventListener('click', exitPaginationMode);
+            
+            prevBtn.addEventListener('click', () => {
+                if (!isPaginationMode) {
+                    enterPaginationMode();
+                    currentMatchIndex = -1;
+                    navigateMatch(-1);
+                } else {
+                    navigateMatch(-1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                if (!isPaginationMode) {
+                    enterPaginationMode();
+                    currentMatchIndex = -1;
+                    navigateMatch(1);
+                } else {
+                    navigateMatch(1);
+                }
+            });
+            
+            document.addEventListener('keydown', (e) => {
+                if (!isSearchOpen) return;
+                
+                if (e.key === 'Escape') {
+                    closeSearch();
+                    return;
+                }
+                
+                if (isPaginationMode) {
+                    if (e.key === 'ArrowDown' || e.key === 'Enter') {
+                        e.preventDefault();
+                        navigateMatch(1);
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        navigateMatch(-1);
+                    }
+                } else {
+                    if (e.key === 'Enter' && searchQuery) {
+                        e.preventDefault();
+                        enterPaginationMode();
+                    }
+                }
+            });
+        }
+
         // Theme Sync with Main Website
         function syncTheme() {
             const storedTheme = localStorage.getItem('theme');
@@ -335,6 +890,7 @@
 
         // Initial Load
         syncTheme();
+        setupSearchEventListeners();
         window.addEventListener('popstate', () => {
             const urlParams = new URLSearchParams(window.location.search);
             loadMarkdown(urlParams.get('file'));

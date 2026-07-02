@@ -1,3 +1,7 @@
+<!--
+  tags: competitions, contests, programming, hackathons, ctf, ai, ml, cse, bangladesh
+  -->
+
 # Competitions for CSE Students of Bangladesh
 Source: https://tamimehsan.github.io/interview-questions-bangladesh/companies/competitions
 

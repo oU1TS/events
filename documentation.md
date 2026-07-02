@@ -1,3 +1,7 @@
+<!--
+  tags: documentation, architecture, spa, routing, theme-engine, changelog, events
+  -->
+
 # UITS Event Raiders - Project Documentation
 
 Welcome to the technical documentation of the **UITS Event Raiders** Single Page Application (SPA). This document outlines the initiative's context, the project's technical architecture, component design, and its version change history.

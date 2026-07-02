@@ -81,6 +81,43 @@
 
     <footer class="render-footer">oU1TS Community</footer>
 
+    <!-- Floating Search Container -->
+    <div id="search-container" class="search-container-hidden">
+        <div class="search-bar-header">
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-input-icon"></i>
+                <input type="text" id="search-input" placeholder="Search document..." autocomplete="off">
+                <button id="search-clear-btn" title="Clear Search" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="search-arrows">
+                <button id="search-prev-btn" title="Previous Match" disabled>
+                    <i class="fa-solid fa-chevron-up"></i>
+                </button>
+                <button id="search-next-btn" title="Next Match" disabled>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </div>
+            <button id="search-list-btn" title="Back to List View" style="display: none;">
+                <i class="fa-solid fa-list"></i>
+            </button>
+            <button id="search-close-btn" title="Close Search">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div id="search-tags-container" class="search-tags-container" style="display: none;">
+            <div class="search-tags-title">Common terms:</div>
+            <div id="search-tags-list" class="search-tags-list"></div>
+        </div>
+        <div id="search-results-list" class="search-results-list"></div>
+    </div>
+
+    <!-- Floating Search Button -->
+    <button id="floating-search-toggle" title="Search Document" style="display: none;">
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+
     <!-- Scripts -->
     <!-- Marked for Markdown Parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

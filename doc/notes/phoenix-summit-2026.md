@@ -1,3 +1,7 @@
+<!--
+  tags: phoenix-summit, delegation-notes, cybersecurity, blue-team, red-team, wazuh, ai-agents, career-advice
+  -->
+
 # Event Raiders Delegation Notes: Phoenix Summit 2026
 
 UITS Event Raiders event notes for the **Phoenix Summit 2026** (June 26–27, 2026).
