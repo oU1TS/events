@@ -810,8 +810,8 @@
             }
         }
 
-        // Setup Event Listeners for Search Panel
-        function setupSearchEventListeners() {
+        // Setup Event Listeners for Search Panel & Theme Toggle
+        function setupEventListeners() {
             const toggleBtn = document.getElementById('floating-search-toggle');
             const searchInput = document.getElementById('search-input');
             const clearBtn = document.getElementById('search-clear-btn');
@@ -819,39 +819,47 @@
             const listBtn = document.getElementById('search-list-btn');
             const prevBtn = document.getElementById('search-prev-btn');
             const nextBtn = document.getElementById('search-next-btn');
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
             
-            toggleBtn.addEventListener('click', toggleSearch);
-            closeBtn.addEventListener('click', closeSearch);
+            if (toggleBtn) toggleBtn.addEventListener('click', toggleSearch);
+            if (closeBtn) closeBtn.addEventListener('click', closeSearch);
+            if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
             
-            searchInput.addEventListener('input', performSearch);
+            if (searchInput) searchInput.addEventListener('input', performSearch);
             
-            clearBtn.addEventListener('click', () => {
-                searchInput.value = '';
-                performSearch();
-                searchInput.focus();
-            });
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    performSearch();
+                    searchInput.focus();
+                });
+            }
             
-            listBtn.addEventListener('click', exitPaginationMode);
+            if (listBtn) listBtn.addEventListener('click', exitPaginationMode);
             
-            prevBtn.addEventListener('click', () => {
-                if (!isPaginationMode) {
-                    enterPaginationMode();
-                    currentMatchIndex = -1;
-                    navigateMatch(-1);
-                } else {
-                    navigateMatch(-1);
-                }
-            });
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    if (!isPaginationMode) {
+                        enterPaginationMode();
+                        currentMatchIndex = -1;
+                        navigateMatch(-1);
+                    } else {
+                        navigateMatch(-1);
+                    }
+                });
+            }
             
-            nextBtn.addEventListener('click', () => {
-                if (!isPaginationMode) {
-                    enterPaginationMode();
-                    currentMatchIndex = -1;
-                    navigateMatch(1);
-                } else {
-                    navigateMatch(1);
-                }
-            });
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    if (!isPaginationMode) {
+                        enterPaginationMode();
+                        currentMatchIndex = -1;
+                        navigateMatch(1);
+                    } else {
+                        navigateMatch(1);
+                    }
+                });
+            }
             
             document.addEventListener('keydown', (e) => {
                 if (!isSearchOpen) return;
@@ -878,19 +886,54 @@
             });
         }
 
-        // Theme Sync with Main Website
-        function syncTheme() {
-            const storedTheme = localStorage.getItem('theme');
-            if (storedTheme === 'light') {
+        // Theme Helper Functions
+        function setTheme(theme) {
+            localStorage.setItem('theme', theme);
+            updateThemeUI(theme);
+        }
+
+        function updateThemeUI(theme) {
+            const themeToggleIcon = document.getElementById('theme-toggle-icon');
+            if (theme === 'light') {
                 document.body.classList.add('light-theme');
+                document.body.classList.remove('dark-theme');
+                if (themeToggleIcon) {
+                    themeToggleIcon.className = 'fa-solid fa-moon';
+                }
             } else {
+                document.body.classList.add('dark-theme');
                 document.body.classList.remove('light-theme');
+                if (themeToggleIcon) {
+                    themeToggleIcon.className = 'fa-solid fa-sun';
+                }
             }
+        }
+
+        // Toggle theme between light and dark
+        function toggleTheme() {
+            let currentTheme = localStorage.getItem('theme');
+            if (!currentTheme) {
+                const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                currentTheme = systemPrefersDark ? 'dark' : 'light';
+            }
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(nextTheme);
+        }
+
+        // Theme Sync on Initial Load
+        function syncTheme() {
+            let storedTheme = localStorage.getItem('theme');
+            if (!storedTheme) {
+                const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                storedTheme = systemPrefersDark ? 'dark' : 'light';
+            }
+            updateThemeUI(storedTheme);
         }
 
         // Initial Load
         syncTheme();
-        setupSearchEventListeners();
+        setupEventListeners();
+
         window.addEventListener('popstate', () => {
             const urlParams = new URLSearchParams(window.location.search);
             loadMarkdown(urlParams.get('file'));
