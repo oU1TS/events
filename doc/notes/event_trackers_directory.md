@@ -81,7 +81,7 @@ Every time you enter an event discovered through these trackers, ensure it feeds
 
 ---
 
-> ## 💡 Here are some more
+> ## Here are some more
 > 
 > 
 > The following external resources have been aggregated, ranked, and structured below based on their industry reputation, daily active listings, and specific utility for engineers, developers, and tech organizers.
