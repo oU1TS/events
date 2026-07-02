@@ -1,5 +1,38 @@
 [
   {
+    "title": "International AI Builders Congress 2026",
+    "dateRange": "June 30 — December 26, 2026",
+    "Status": "Future",
+    "endDate": "2026-12-26",
+    "venue": "Daffodil International University, Ashulia Campus, Dhaka, Bangladesh",
+    "fee": "Free / Variable based on journey tracks",
+    "subEvents": [
+      {
+        "title": "Program Schedule",
+        "details": "Spans a multi-month structural continuum starting from onboarding sessions, routine technical check-ins, validation sprints, and interactive global mentorship labs, culminating in an expansive physical global gathering on December 26, 2026 (7:00 AM – 7:30 PM)."
+      },
+      {
+        "title": "Domains & Challenges",
+        "details": "Features structured development tasks running across 10 strategic technical domains and 50 global grand challenges. Highlighted areas focus on shipping secure, responsible, and enterprise-grade tools across healthcare, finance, legal networks, climate intelligence, agricultural modeling, civic frameworks, commerce, and fundamental AI infrastructure."
+      },
+      {
+        "title": "Judging Criteria",
+        "details": "Solutions undergo strict evaluation across core metrics: Innovation & Originality (20%), Technical Execution & Structural Integrity (20%), Business Model & Global Sustainability Pathways (20%), alongside Measurable Real-World Impact & Ethical Compliance Protocols (20%)."
+      },
+      {
+        "title": "Phases & Stages",
+        "details": "Divided into progressive execution horizons: Phase 1 maps initial team configuration, problem identification, and technical onboarding. Phase 2 covers architecture build-outs and product development sprints under global practitioners. Phase 3 drives deployment testing, real-user validations, and international scalability readiness leading up to the final showcases."
+      }
+    ],
+    "links": {
+      "Official Event Portal": "https://cloudcampbd.com/ai-builders-congress",
+      "Registration Link": "https://cloudcampbd.com/ai-builders-congress/register",
+      "faq": "https://cloudcampbd.com/ai-builders-congress#faq",
+      "sessions": "https://cloudcampbd.com/ai-builders-congress#sessions"
+    },
+    "details": "Hosted by CloudCamp Bangladesh, the International AI Builders Congress 2026 is a premier structural execution platform designed to transition developers, innovators, and students from localized prototypes into production-grade global solutions. The comprehensive initiative focuses on key application scopes including product building, economic development, and job creation by bridging the gap between local talent and Non-Resident Bangladeshi (NRB) technology practitioners."
+  },
+  {
     "title": "MarXcellence 2026 (International Inter-University Digital Marketing Case Competition)",
     "dateRange": "Workshop 1 Begins: 10 July, 2026",
     "Status": "Future",
