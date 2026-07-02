@@ -94,11 +94,11 @@ Highly recommended platforms with massive global reach, offering regular financi
 
 | Platform / Tracker | Description / Focus |
 | --- | --- |
-| **[Major League Hacking (MLH)](https%3A%2F%2Fmlh.io%2Fseasons%2F2026%2Fevents)** | The governing body for official student hackathons. Essential for student-athletes in tech and junior ecosystem pipelines.|
-| **[Unstop](https%3A%2F%2Funstop.com%2F)** | A rapidly growing global hub consolidating corporate hackathons, hiring sprints, technology quizzes, and case competitions.|
-| **[HackerEarth Hackathons](https%3A%2F%2Fwww.hackerearth.com%2Fchallenges%2F)** | A major corporate and enterprise developer ecosystem linking algorithmic challenges and high-stakes hackathons directly to recruitment pipelines.|
-| **[HackJunction](https%3A%2F%2Fhackjunction.app%2F)** | Originating in Europe, this platform tracks and coordinates massive physical and digital hacker operations across the continent.|
-| **[Eventornado](https%3A%2F%2Feventornado.com%2F)** | A comprehensive framework tracking high-impact environmental, social, and enterprise software innovation challenges.|
+| **[Major League Hacking (MLH)](https://mlh.io/seasons/2026/events)** | The governing body for official student hackathons. Essential for student-athletes in tech and junior ecosystem pipelines.|
+| **[Unstop](https://unstop.com/)** | A rapidly growing global hub consolidating corporate hackathons, hiring sprints, technology quizzes, and case competitions.|
+| **[HackerEarth Hackathons](https://www.hackerearth.com/challenges/)** | A major corporate and enterprise developer ecosystem linking algorithmic challenges and high-stakes hackathons directly to recruitment pipelines.|
+| **[HackJunction](https://hackjunction.app/)** | Originating in Europe, this platform tracks and coordinates massive physical and digital hacker operations across the continent.|
+| **[Eventornado](https://eventornado.com/)** | A comprehensive framework tracking high-impact environmental, social, and enterprise software innovation challenges.|
 
 ### Specialty Tier: AI, Data Science & Machine Learning Competitions
 
@@ -106,10 +106,10 @@ Platforms focused explicitly on algorithmic modeling, quantitative prediction da
 
 | Platform / Tracker | Description / Focus |
 | --- | --- |
-| **[Kaggle Competitions](https%3A%2F%2Fwww.kaggle.com%2Fcompetitions)** | The premier, Google-backed global standard for data science and machine learning benchmark challenges.|
-| **[AICrowd](https%3A%2F%2Fwww.aicrowd.com%2F)** | Hosts highly technical research challenges, autonomous vehicle simulations, and university-backed AI problem-solving milestones.|
-| **[Analytics Vidhya](https%3A%2F%2Fwww.analyticsvidhya.com%2Fhackathons%2F)** | Tracks data science sprints, beginner-friendly hackathons, and highly competitive hiring tests tailored to analytical engineering.|
-| **[DrivenData](https%3A%2F%2Fwww.drivendata.org%2Fcompetitions%2F)** | Combines cutting-edge predictive data science models with social impact agendas, tracking challenges tied to public health, ecology, and global safety.|
+| **[Kaggle Competitions](https://www.kaggle.com/competitions)** | The premier, Google-backed global standard for data science and machine learning benchmark challenges.|
+| **[AICrowd](https://www.aicrowd.com/)** | Hosts highly technical research challenges, autonomous vehicle simulations, and university-backed AI problem-solving milestones.|
+| **[Analytics Vidhya](https://www.analyticsvidhya.com/hackathons/)** | Tracks data science sprints, beginner-friendly hackathons, and highly competitive hiring tests tailored to analytical engineering.|
+| **[DrivenData](https://www.drivendata.org/competitions/)** | Combines cutting-edge predictive data science models with social impact agendas, tracking challenges tied to public health, ecology, and global safety.|
 
 ### Industry Tier: Tech Conferences, Modern Meetups & Speaker CFPs
 
@@ -117,12 +117,12 @@ Best for professional tracking, tracking technology trends, corporate keynotes, 
 
 | Platform / Tracker | Description / Focus |
 | --- | --- |
-| **[Luma (lu.ma)](https%3A%2F%2Flu.ma%2F)** | The modern standard tracker for decentralized tech meetups, specialized hacker houses, web3 demo days, and AI ecosystem gatherings.|
-| **[Techmeme Events](https%3A%2F%2Fevents.techmeme.com%2F)** | A continuously updated macro-level corporate tracker featuring the dates and locations of major global technology keynotes and conferences (e.g., CES, AWS re:Invent, Google I/O).|
-| **[Confs.tech](https%3A%2F%2Fconfs.tech%2F)** | An open-source, community-maintained dashboard mapping front-end, back-end, and devops development conferences worldwide.|
-| **[Developers.events](https%3A%2F%2Fdevelopers.events%2F)** | A meticulous tracking board highlighting worldwide tech schedules alongside active Call for Papers (CFP) timelines for aspiring tech speakers.|
-| **[Meetup](https%3A%2F%2Fwww.meetup.com%2F)** | The foundational directory for searching localized tech chapters, coding clubs, and grassroots community sessions.|
-| **[Eventbrite](https%3A%2F%2Fwww.eventbrite.com%2F)** | A commercial ticketing leader valuable for identifying general engineering webinars, institutional workshops, and regional technology conferences.|
+| **[Luma (lu.ma)](https://lu.ma/)** | The modern standard tracker for decentralized tech meetups, specialized hacker houses, web3 demo days, and AI ecosystem gatherings.|
+| **[Techmeme Events](https://events.techmeme.com/)** | A continuously updated macro-level corporate tracker featuring the dates and locations of major global technology keynotes and conferences (e.g., CES, AWS re:Invent, Google I/O).|
+| **[Confs.tech](https://confs.tech/)** | An open-source, community-maintained dashboard mapping front-end, back-end, and devops development conferences worldwide.|
+| **[Developers.events](https://developers.events/)** | A meticulous tracking board highlighting worldwide tech schedules alongside active Call for Papers (CFP) timelines for aspiring tech speakers.|
+| **[Meetup](https://www.meetup.com/)** | The foundational directory for searching localized tech chapters, coding clubs, and grassroots community sessions.|
+| **[Eventbrite](https://www.eventbrite.com/)** | A commercial ticketing leader valuable for identifying general engineering webinars, institutional workshops, and regional technology conferences.|
 
 ### Competitive Programming Tier: Pure Algorithmic & Speed Contests
 
@@ -130,9 +130,9 @@ Geared toward core logic puzzle-solving, quantitative finance preparation, and r
 
 | Platform / Tracker | Description / Focus |
 | --- | --- |
-| **[Codeforces](https%3A%2F%2Fcodeforces.com%2F)** | The dominant global platform tracking real-time algorithmic coding rounds and managing international participant ELO ratings.|
-| **[LeetCode Contests](https%3A%2F%2Fleetcode.com%2Fcontest%2F)** | Weekly and bi-weekly tracked problem-solving sets heavily optimized for tech interview preparation.|
-| **[CodeChef](https%3A%2F%2Fwww.codechef.com%2F)** | Hosts standard structured calendar-based contests (including long-form challenges) geared towards engineering students.|
+| **[Codeforces](https://codeforces.com/)** | The dominant global platform tracking real-time algorithmic coding rounds and managing international participant ELO ratings.|
+| **[LeetCode Contests](https://leetcode.com/contest/)** | Weekly and bi-weekly tracked problem-solving sets heavily optimized for tech interview preparation.|
+| **[CodeChef](https://www.codechef.com/)** | Hosts standard structured calendar-based contests (including long-form challenges) geared towards engineering students.|
 
 ### Creative Tier: Game Jams & Interactive Design
 
@@ -140,5 +140,5 @@ Best for multidisciplinary teams including game developers, digital artists, 3D 
 
 | Platform / Tracker | Description / Focus |
 | --- | --- |
-| **[Global Game Jam](https%3A%2F%2Fglobalgamejam.org%2F)** | The world's largest physical game-building event occurring annually across thousands of synchronous local hubs.|
-| **[Ludum Dare](https%3A%2F%2Fldjam.com%2F)** | A highly historic and legendary accelerated solo/team game creation engine tracker running regular weekend sprints.|
+| **[Global Game Jam](https://globalgamejam.org/)** | The world's largest physical game-building event occurring annually across thousands of synchronous local hubs.|
+| **[Ludum Dare](https://ldjam.com/)** | A highly historic and legendary accelerated solo/team game creation engine tracker running regular weekend sprints.|
