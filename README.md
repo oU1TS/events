@@ -73,3 +73,5 @@ Then navigate to `http://localhost:8080` in your browser.
 * **Official Facebook Guild:** [UITS Event Raiders Page](https://tinyurl.com/bdhsf7b4)
 * **Main Open-Source Collective:** [oU1TS Community Project](https://ou1ts.netlify.app/)
 * **Project Web Portal:** [oU1TS Events App](https://ou1ts.github.io/events)
+
+<br>
