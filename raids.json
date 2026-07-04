@@ -1,9 +1,92 @@
 [
   {
+    "Raid_Num": 7,
+    "title": "Techathon Nationals & Rover Summit 2026",
+    "dateRange": "10 - 11 July 2026",
+    "Status": "Future",
+    "startDate": "2026-07-10",
+    "endDate": "2026-07-11",
+    "venue": "IUT Campus",
+    "fee": "Not Specified",
+    "subEvents": [
+      {
+        "title": "Rover Summit & Core Engineering Showcase",
+        "details": "Bangladesh's first-ever Rover Summit featuring premier national rover teams collaborating, exchanging knowledge, and conducting technical showcases. Includes specialized robotics and engineering segments such as Project Showcasing, Poster Presentation, and RoboCAD design challenges."
+      },
+      {
+        "title": "Robotics Competitions",
+        "details": "High-octane robotics tracks featuring SoccerBot, Line Follower Robot (LFR), Death Race, Drone Fury, and Battle Bot matchups testing control hardware, engineering constraints, and design execution."
+      },
+      {
+        "title": "Academic & Innovation Tracks",
+        "details": "Problem-solving and strategic thinking environments including a Hackathon, STEM & Robo Olympiad, Mega Quiz, BizComp, and the upcoming Shark Tank University entrepreneurship layout."
+      },
+      {
+        "title": "Gaming Segments",
+        "details": "Competitive esports segments featuring Valorant, Fifa 26, and eFootball Mobile tracks running alongside the main technical events."
+      }
+    ],
+    "links": {
+      "Event Page": "https://www.facebook.com/share/18etetDvYF/",
+      "Event Website": "https://techathon.iutrs.com/",
+      "Organizer Site": "https://www.iutrs.com/",
+      "Source Post": "https://www.facebook.com/share/1ClientKYr1m2p/"
+    },
+    "details": "Organized by the IUT Robotics Society (IUTRS) at the Islamic University of Technology, Techathon Nationals & Rover Summit 2026 serves as a massive milestone platform bringing together robotics enthusiasts, student innovators, and engineering minds from all over Bangladesh. The tech fest fields diverse technical, creative, and gaming segments alongside a highly anticipated collective prize pool distribution across multiple structural tracks."
+  },
+  {
+    "Raid_Num": 6,
+    "title": "5th Intra Math Carnival 2026",
+    "dateRange": "31st July 2026",
+    "Status": "Future",
+    "startDate": "2026-07-31",
+    "endDate": "2026-07-31",
+    "venue": "St. Gregory's High School & College",
+    "fee": "Not Specified",
+    "subEvents": [
+      {
+        "title": "Solo Segments",
+        "details": "Includes Math Olympiad (1 hour, 8 BDMO-standard integer-answer questions, calculators prohibited), Sudoku (20-30 minutes, speed-based puzzle solving), Rubik's Cube Solving (3x3 format with preliminary and elimination-based final rounds), History of Math (30 minutes, 25 trivia and short math questions regarding mathematicians), and Mathematical Games (1 hour 20 minutes, rapid-fire calculations and logic under pressure)."
+      },
+      {
+        "title": "Team Segments: Math Relay",
+        "details": "A 1-hour chained problem-solving challenge for teams of 3 members. Each member must sequentially solve their designated question using the answer submitted by the preceding teammate. The top 3 fastest teams with entirely correct answers win."
+      }
+    ],
+    "links": {
+      "Event Page": "https://www.facebook.com/share/14aURCp59j7/"
+    },
+    "details": "A vibrant celebration of logic and numbers hosted at St. Gregory's High School & College, featuring competitive tracks spread across six distinct academic tiers from Class 1 up to HSC-26 candidates. The festival balances classical analytical testing with fast-paced problem-solving modules to reward structural ingenuity and speed."
+  },
+  {
+    "Raid_Num": 5,
+    "title": "BDSec CTF 2026",
+    "dateRange": "20-21th July",
+    "Status": "Future",
+    "startDate": "2026-07-20",
+    "endDate": "2026-07-21",
+    "venue": "Online (Jeopardy-style)",
+    "fee": "Free",
+    "subEvents": [
+      {
+        "title": "Core Competition Tracks",
+        "details": "A 24-hour international Jeopardy-style competition challenging participants across key domains including Web Exploitation, Pwn (Binary Exploitation), Reverse Engineering, Cryptography, Forensics/DFIR, and OSINT."
+      }
+    ],
+    "links": {
+      "Official Site": "https://bdsec-ctf.com/",
+      "Event Site": "https://2026.bdsec-ctf.com/",
+      "Organizer Site": "https://knightsquad.org/",
+      "Facebook Post": "https://www.facebook.com/share/p/1asRiXpziq/"
+    },
+    "details": "Organized annually by Knight Squad, a prominent cybersecurity team from Bangladesh, BDSec CTF is a premier international event open to global participants ranging from newcomers to seasoned professionals. The competition design seamlessly balances approachable, beginner-friendly entry barriers with advanced, high-scaling infrastructure puzzles to test problem-solving endurance under pressure."
+  },
+  {
     "Raid_Num": 4,
     "title": "International AI Builders Congress 2026",
     "dateRange": "June 30 — December 26, 2026",
     "Status": "Future",
+    "startDate": "2026-06-30",
     "endDate": "2026-12-26",
     "venue": "Daffodil International University, Ashulia Campus, Dhaka, Bangladesh",
     "fee": "Free / Variable based on journey tracks",
@@ -30,7 +113,7 @@
       "Registration Link": "https://cloudcampbd.com/ai-builders-congress/register",
       "faq": "https://cloudcampbd.com/ai-builders-congress#faq",
       "sessions": "https://cloudcampbd.com/ai-builders-congress#sessions",
-      "Event Page": "https://www.facebook.com/events/1351253453738188"
+      "Facebook Post": "https://www.facebook.com/events/1351253453738188"
     },
     "details": "Hosted by CloudCamp Bangladesh, the International AI Builders Congress 2026 is a premier structural execution platform designed to transition developers, innovators, and students from localized prototypes into production-grade global solutions. The comprehensive initiative focuses on key application scopes including product building, economic development, and job creation by bridging the gap between local talent and Non-Resident Bangladeshi (NRB) technology practitioners."
   },
@@ -39,6 +122,7 @@
     "title": "MarXcellence 2026 (International Inter-University Digital Marketing Case Competition)",
     "dateRange": "Workshop 1 Begins: 10 July, 2026",
     "Status": "Future",
+    "startDate": "2026-07-10",
     "endDate": "2026-07-10",
     "venue": "North South University (NSU Main Auditorium) | Hybrid format for international participants",
     "fee": "Free",
@@ -76,6 +160,7 @@
     "title": "AMD Developer Hackathon: ACT II",
     "dateRange": "6-11 July, 2026",
     "Status": "Future",
+    "startDate": "2026-07-06",
     "endDate": "2026-07-11",
     "venue": "Online (lablab.ai)",
     "fee": "Free (Requires registration to AMD AI Developer Program)",
@@ -103,6 +188,7 @@
     "title": "Phoenix Summit 2026",
     "dateRange": "June 23 - June 27, 2026",
     "Status": "Past",
+    "startDate": "2026-06-23",
     "endDate": "2026-06-27",
     "venue": "Bangabandhu International Conference Center (BICC), Dhaka, Bangladesh",
     "fee": "Exhibition Pass: 200 BDT\nTechnical Pass (with Swag): 700 BDT\nStudent Workshops: 10,000 BDT\nProfessional Workshops: 15,000 BDT (Early Bird: 12,000 BDT)",

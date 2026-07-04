@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const raidsContainer = document.getElementById('raids-container');
 
     // Available SPA Routes
-    const validRoutes = ['#home', '#past-raids', '#join', '#learn-more'];
+    const validRoutes = ['#home', '#raids', '#join', '#learn-more'];
 
     // State Variables
     let pastRaidsData = null;
@@ -55,13 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
        2. SPA Hash Routing
        ========================================================================== */
     function routePage() {
+        if (window.closeCalendarModal) {
+            window.closeCalendarModal();
+        }
         let currentHash = window.location.hash;
         let targetRaidNum = null;
 
         // Parse hash to see if it's a raid link, e.g., #raid-1
         if (currentHash.startsWith('#raid-')) {
             targetRaidNum = parseInt(currentHash.replace('#raid-', ''), 10);
-            currentHash = '#past-raids';
+            currentHash = '#raids';
+        }
+
+        // Support backward compatibility for legacy hash
+        if (currentHash === '#past-raids') {
+            currentHash = '#raids';
+            history.replaceState(null, null, currentHash);
         }
 
         // Default route fallback if hash is empty or invalid
@@ -91,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // 3. Trigger Data Fetching when entering Past Raids
-        if (currentHash === '#past-raids') {
+        if (currentHash === '#raids') {
             if (targetRaidNum) {
                 if (pastRaidsData) {
                     scrollToRaid(targetRaidNum);
@@ -101,6 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 loadPastRaids();
+            }
+            if (window.enableFloatingCalendarBtn) {
+                window.enableFloatingCalendarBtn(true);
+            }
+        } else {
+            if (window.enableFloatingCalendarBtn) {
+                window.enableFloatingCalendarBtn(false);
             }
         }
 
@@ -453,8 +469,304 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
-       5. Initialize Application
+       5. Campaign Calendar Controller
+       ========================================================================== */
+    function initCalendar() {
+        const openCalendarBtn = document.getElementById('open-calendar-btn');
+        const floatingCalendarBtn = document.getElementById('floating-calendar-btn');
+        const closeCalendarBtn = document.getElementById('close-calendar-btn');
+        const calendarModal = document.getElementById('calendar-modal');
+        const calendarBackdrop = document.getElementById('calendar-modal-backdrop');
+        const calendarMonthYear = document.getElementById('calendar-month-year');
+        const calendarDays = document.getElementById('calendar-days');
+        const prevMonthBtn = document.getElementById('prev-month-btn');
+        const nextMonthBtn = document.getElementById('next-month-btn');
+        
+        const dayEventsOverlay = document.getElementById('day-events-overlay');
+        const overlayDateLabel = document.getElementById('overlay-date-label');
+        const overlayEventsList = document.getElementById('overlay-events-list');
+        const closeOverlayBtn = document.getElementById('close-overlay-btn');
+
+        // State for currently displayed calendar month (Default: July 2026)
+        let calendarYear = 2026;
+        let calendarMonth = 6; // July (0-indexed)
+
+        if (!openCalendarBtn || !calendarModal) return;
+
+        // State variables for routing page & scroll states
+        let isRaidsActive = false;
+        let isStaticBtnScrolledAway = false;
+
+        const updateFloatingBtnVisibility = () => {
+            if (floatingCalendarBtn) {
+                if (isRaidsActive && isStaticBtnScrolledAway) {
+                    floatingCalendarBtn.classList.add('show');
+                } else {
+                    floatingCalendarBtn.classList.remove('show');
+                }
+            }
+        };
+
+        // Window hook to enable/disable floating button from the router
+        window.enableFloatingCalendarBtn = (active) => {
+            isRaidsActive = active;
+            updateFloatingBtnVisibility();
+        };
+
+        // Floating button observer: trigger floating style when static container scrolls out of view
+        const calendarBtnContainer = document.querySelector('.calendar-btn-container');
+        if (calendarBtnContainer) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    isStaticBtnScrolledAway = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+                    updateFloatingBtnVisibility();
+                });
+            }, { threshold: 0 });
+            observer.observe(calendarBtnContainer);
+        }
+
+        const openModalWithData = () => {
+            if (!pastRaidsData) {
+                loadPastRaids().then(() => {
+                    renderCalendarGrid();
+                    openModal();
+                });
+            } else {
+                renderCalendarGrid();
+                openModal();
+            }
+        };
+
+        // Open modal
+        openCalendarBtn.addEventListener('click', openModalWithData);
+        if (floatingCalendarBtn) {
+            floatingCalendarBtn.addEventListener('click', openModalWithData);
+        }
+
+        // Close modal
+        closeCalendarBtn.addEventListener('click', closeModal);
+        if (calendarBackdrop) {
+            calendarBackdrop.addEventListener('click', closeModal);
+        }
+
+        // Prev/Next month navigation
+        prevMonthBtn.addEventListener('click', () => {
+            calendarMonth--;
+            if (calendarMonth < 0) {
+                calendarMonth = 11;
+                calendarYear--;
+            }
+            renderCalendarGrid();
+        });
+
+        nextMonthBtn.addEventListener('click', () => {
+            calendarMonth++;
+            if (calendarMonth > 11) {
+                calendarMonth = 0;
+                calendarYear++;
+            }
+            renderCalendarGrid();
+        });
+
+        // Close events overlay
+        closeOverlayBtn.addEventListener('click', closeOverlay);
+
+        function openModal() {
+            calendarModal.classList.add('open');
+            calendarModal.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeModal() {
+            calendarModal.classList.remove('open');
+            calendarModal.setAttribute('aria-hidden', 'true');
+            closeOverlay();
+        }
+
+        // Export closeModal to window scope so routing can trigger it
+        window.closeCalendarModal = closeModal;
+
+        function closeOverlay() {
+            dayEventsOverlay.classList.remove('open');
+        }
+
+        // Helper: timezone-safe local date parser
+        function parseLocalDate(dateStr) {
+            if (!dateStr) return null;
+            const parts = dateStr.split('-');
+            if (parts.length !== 3) return null;
+            return {
+                year: parseInt(parts[0], 10),
+                month: parseInt(parts[1], 10) - 1, // 0-indexed
+                day: parseInt(parts[2], 10)
+            };
+        }
+
+        function renderCalendarGrid() {
+            calendarDays.innerHTML = '';
+            closeOverlay();
+
+            // Month names
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            calendarMonthYear.textContent = `${monthNames[calendarMonth]} ${calendarYear}`;
+
+            // First day of the month (0 = Sun, 1 = Mon, ..., 6 = Sat)
+            const firstDayIndex = new Date(calendarYear, calendarMonth, 1).getDay();
+
+            // Last day of the month
+            const lastDay = new Date(calendarYear, calendarMonth + 1, 0).getDate();
+
+            // Today's date info for today highlighting
+            const today = new Date();
+            const isCurrentMonthYear = today.getFullYear() === calendarYear && today.getMonth() === calendarMonth;
+
+            // Render empty cells for padding before the 1st of the month
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day empty';
+                calendarDays.appendChild(emptyCell);
+            }
+
+            // Group raids by day for this month and year
+            const eventsByDay = {};
+            if (pastRaidsData) {
+                pastRaidsData.forEach(raid => {
+                    const parsed = parseLocalDate(raid.startDate);
+                    if (parsed && parsed.year === calendarYear && parsed.month === calendarMonth) {
+                        if (!eventsByDay[parsed.day]) {
+                            eventsByDay[parsed.day] = [];
+                        }
+                        eventsByDay[parsed.day].push(raid);
+                    }
+                });
+            }
+
+            // Render day cells
+            for (let day = 1; day <= lastDay; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                dayCell.textContent = day;
+
+                // Today highlighting
+                if (isCurrentMonthYear && today.getDate() === day) {
+                    dayCell.classList.add('today');
+                }
+
+                // Check if any events fall on this day
+                const dayEvents = eventsByDay[day];
+                if (dayEvents && dayEvents.length > 0) {
+                    dayCell.classList.add('highlighted');
+                    dayCell.setAttribute('role', 'button');
+                    dayCell.setAttribute('tabindex', '0');
+
+                    // If 2 or more events overlap, render badge count
+                    if (dayEvents.length >= 2) {
+                        const badge = document.createElement('span');
+                        badge.className = 'event-count-badge';
+                        badge.textContent = dayEvents.length;
+                        dayCell.appendChild(badge);
+                    }
+
+                    // Click handler
+                    dayCell.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showDayEvents(day, monthNames[calendarMonth], dayEvents);
+                    });
+
+                    // Keyboard access
+                    dayCell.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            showDayEvents(day, monthNames[calendarMonth], dayEvents);
+                        }
+                    });
+                }
+
+                calendarDays.appendChild(dayCell);
+            }
+
+            // Pad the rest of the grid if necessary to maintain exact row heights/alignment
+            const totalCells = firstDayIndex + lastDay;
+            const remaining = 42 - totalCells; // 6 rows * 7 columns = 42 cells total
+            for (let i = 0; i < remaining; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day empty';
+                calendarDays.appendChild(emptyCell);
+            }
+        }
+
+        function showDayEvents(day, monthName, events) {
+            overlayDateLabel.textContent = `Events on ${day} ${monthName} ${calendarYear}`;
+            overlayEventsList.innerHTML = '';
+
+            events.forEach(raid => {
+                const eventItem = document.createElement('button');
+                eventItem.className = 'overlay-event-item';
+                eventItem.setAttribute('aria-label', `Navigate to ${raid.title}`);
+                
+                eventItem.innerHTML = `
+                    <span class="overlay-event-title">${escapeHTML(raid.title)}</span>
+                    <span class="overlay-event-link-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                            <polyline points="7 7 17 7 17 17"></polyline>
+                        </svg>
+                    </span>
+                `;
+
+                eventItem.addEventListener('click', () => {
+                    closeModal();
+                    window.location.hash = `#raid-${raid.Raid_Num}`;
+                });
+
+                overlayEventsList.appendChild(eventItem);
+            });
+
+            dayEventsOverlay.classList.add('open');
+        }
+    }
+
+    /* ==========================================================================
+       6. Mobile Scroll Multiplier (Velo-Boost)
+       ========================================================================== */
+    function initMobileScrollMultiplier() {
+        const isMobile = () => window.innerWidth <= 768;
+        
+        let startY = 0;
+        let startTime = 0;
+
+        window.addEventListener('touchstart', (e) => {
+            if (!isMobile()) return;
+            const touch = e.touches[0];
+            startY = touch.clientY;
+            startTime = Date.now();
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+            if (!isMobile()) return;
+            
+            const touch = e.changedTouches[0];
+            const diffY = startY - touch.clientY; // Positive = scrolled down (page moves up)
+            const duration = Date.now() - startTime;
+
+            // Only boost fast vertical swipe flicks (duration < 300ms, swipe distance > 30px)
+            if (duration < 300 && Math.abs(diffY) > 30) {
+                const boost = diffY * 1.2;
+                window.scrollBy({
+                    top: boost,
+                    behavior: 'smooth'
+                });
+            }
+        }, { passive: true });
+    }
+
+    /* ==========================================================================
+       7. Initialize Application
        ========================================================================== */
     initializeTheme();
+    initCalendar();
+    initMobileScrollMultiplier();
     routePage();
 });

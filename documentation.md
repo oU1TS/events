@@ -52,7 +52,7 @@ events/
 ## 3. Core Feature Details
 
 ### A. SPA Hash Routing
-* **How it works:** The application listens to `window.location.hash` changes. When a hash is modified (e.g. `#past-raids`), `app.js` runs `routePage()`.
+* **How it works:** The application listens to `window.location.hash` changes. When a hash is modified (e.g. `#raids`), `app.js` runs `routePage()`.
 * **State Sync:** It adds the `.active` class to the matching section and navbar link while hiding the others. If the hash is empty or invalid, it defaults to `#home`.
 * **Benefits:** Natively supports browser history (back/forward buttons) and makes direct-linking to sections (e.g. sharing the onboarding guide via `#join`) fully bookmarkable.
 
@@ -71,16 +71,31 @@ events/
 * **Table of Contents (ToC):** Dynamically parses headers (`h1`, `h2`, `h3`, `h4`) and compiles a slide-out navigation panel with sticky header offsets.
 
 ### E. Raid Card Deep Linking & Highlight Animation
-* **Deep Linking**: SPA hash routing intercepts hashes matching `#raid-<number>` (e.g. `#raid-1`), internally redirects the user to the `#past-raids` section, and identifies the target raid card.
+* **Deep Linking**: SPA hash routing intercepts hashes matching `#raid-<number>` (e.g. `#raid-1`), internally redirects the user to the `#raids` section, and identifies the target raid card.
 * **Smooth Scrolling**: Once the dynamic raid data loads and renders, the page automatically performs a smooth scroll centering the targeted card in the viewport.
 * **Highlight Animation**: Applies a brief pulse animation (`highlightPulse`) which scales the card slightly, updates the border to the accent color, and casts a glowing box shadow using the theme's accent color (gold for dark, blue for light).
 * **Copy Link Button**: Each card features a highlighted copy button next to the status badge. Clicking it copies the absolute URL of the specific card to the clipboard and triggers a 2-second visual feedback (checkmark icon change).
+
+### F. Campaign Calendar View & Mobile Swipe Multiplier
+* **Campaign Calendar**: An interactive modal-based calendar view matching the `"startDate"` of each raid campaign. Enforces a perfectly square ratio and height of `50vh` (mobile) / `60vh` (desktop) at the body root level to bypass translation containment constraints.
+* **Overlap & Redirection**: Displays event counts at the top-right corner of highlighted day cells when multiple events overlap. Clicking a highlighted cell slides up a vertical list overlay of event titles. Clicking a title closes the modal and deep-links directly to the card using `#raid-<number>`.
+* **Scroll Multiplier (Velo-Boost)**: Detects fast flick swipe gestures on mobile screens (duration < 300ms, swipe distance > 30px) and applies a smooth scrolling boost proportional to flick speed, allowing users to scroll further per swipe.
 
 ---
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.5.0 — Deep Linking, Copy-to-Clipboard Buttons & Highlight Animations (Current)
+### 🚀 v1.6.0 — Campaign Calendar, Floating Controls & Swipe Boost (Current)
+* **Features:**
+  * **Interactive Campaign Calendar**: Built a month-by-month square calendar view that retrieves event `"startDate"` values. Highlights active days and features previous/next navigation.
+  * **Event Overlap Counter**: Renders a badge indicating event counts on days where multiple events start simultaneously (e.g. July 10).
+  * **Direct Redirection Overlay**: Implemented a slide-up vertical list overlay within the calendar. Clicking event items automatically redirects the user to the corresponding card layout with highlights.
+  * **Body-Root Modal Positioning**: Fixed scroll viewport-centering by positioning the modal at the root level of `<body>`, isolating it from layout translations.
+  * **Dedicated Floating Button**: Added an icon-only circular floating calendar button at the viewport corner that is controlled by an `IntersectionObserver` tracking the inline button's scroll state.
+  * **Mobile Spacing Optimization**: Compressed card padding (`1.15rem`), grid gaps (`1rem`), and header typography on mobile to fit more cards and reduce vertical scrolling height.
+  * **Velo-Boost Scroll Multiplier**: Added flick gesture recognition on touchscreens that adds smooth, velocity-proportional scrolling offsets to enhance mobile traversal speed.
+
+### 🚀 v1.5.0 — Deep Linking, Copy-to-Clipboard Buttons & Highlight Animations
 * **Features:**
   * **Deep Linking to Raids**: Extended SPA hash routing to support `#raid-<number>` paths. The portal auto-routes to "Raid Campaigns", smooth-scrolls to the target card, and triggers a highlight effect.
   * **Copy Link Button**: Added a dedicated copy icon button next to the status badge on each card. Clicking copies the direct deep link (e.g. `index.html#raid-1`) to the user's clipboard.

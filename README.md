@@ -10,7 +10,7 @@ The core purpose of this initiative is to share updates about academic, tech, an
 
 ## 🌟 Key Features
 
-1. **Single Page Application (SPA):** Seamless navigation using URL hash routing (`#home`, `#past-raids`, `#join`, `#learn-more`) which allows full browser back/forward history and direct bookmarking.
+1. **Single Page Application (SPA):** Seamless navigation using URL hash routing (`#home`, `#raids`, `#join`, `#learn-more`) which allows full browser back/forward history and direct bookmarking.
 2. **Data Separation & Dropdowns:** Event list details are loaded dynamically from a separate `raids.json` data file. Supports complex reusable schedule dropdown grids (`<details>`/`<summary>`) directly parsed from the JSON array variables.
 3. **Dual Theme Engine:** Stylized tactile toggle switch that flips between:
    * **Dark Mode (Default):** Tech-noir style featuring black/charcoal backgrounds and gold accents.
