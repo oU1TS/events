@@ -66,7 +66,7 @@ A mapped list of new professional connection links established or tracked during
 | Professional Name | Key Organization / Context Area | Strategic Profile Anchor |
 | --- | --- | --- |
 | **Md Ashiqul Hoque Abdullah** | Verification Specialist @ LaunchGood | [linkedin.com/in/asyrique](https%3A%2F%2Fwww.linkedin.com%2Fin%2Fasyrique%2F)<br> |
-| **Sayeed Rafan** (??) | Red Team Tactics / Core Exploitation Research | [x.com/r4f4n_r00t](https://x.com/Fore_nice) |
+| **Saad Rafan** ([The Black Room](https://www.facebook.com/theblackrooom/)) | Red Team Tactics / Core Exploitation Research | [x.com/r4f4n_r00t](https://x.com/Fore_nice) |
 
 > **Operational Note:** Maintain professional communication channels with these profiles to track open-source research releases, analyze real-world case studies, and identify incoming industry apprenticeship tracks. Use these connections to build deep technical expertise in specialized domains.
 > 
