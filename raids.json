@@ -1,5 +1,39 @@
 [
   {
+    "Raid_Num": 7,
+    "title": "i-BIOHACKATHON 2026: SOLVING BIOLOGICAL QUESTIONS WITH AI & BIOINFORMATICS",
+    "dateRange": "27 July - 24 September 2026",
+    "Status": "Future",
+    "startDate": "2026-07-27",
+    "endDate": "2026-09-24",
+    "venue": "Online / Virtual",
+    "fee": "Not Specified",
+    "subEvents": [
+      {
+        "title": "Bio-Explorer Track (Secondary School)",
+        "details": "Pitch innovative ideas focused on the future landscape of AI-Powered Agricultural Biotechnology."
+      },
+      {
+        "title": "Bio-Analyst Track (Undergraduate)",
+        "details": "Analyze critical Bagworm data to devise protective solutions for Malaysian Oil Palm cultivation."
+      },
+      {
+        "title": "Systems Biologist Track (Postgraduate)",
+        "details": "Integrate complex multi-omics data sets to crack the structural prawn growth mystery."
+      },
+      {
+        "title": "Solutions Engineer Track (Industry)",
+        "details": "Develop production-ready pipelines targeting biomarkers and structural probiotics workflows."
+      }
+    ],
+    "links": {
+      "Official Website": "https://www.ukm.my/inbiosis/en/i-biohackathon-competition/",
+      "Registration Portal": "https://tinyurl.com/iBiohack26",
+      "Google Form": "https://docs.google.com/forms/d/e/1FAIpQLSedTuRtvOChQuLfb4Q2fW8_Yj9MPILFDTVkJiizq-tgrONx_w/viewform"
+    },
+    "details": "Organized by INBIOSIS (Universiti Kebangsaan Malaysia), i-BIOHACKATHON 2026 challenges students and industry professionals to apply data, AI tools, and critical thinking to transform precision biology and sustainability. Operating entirely without wet labs, teams of 2–4 members tackle real-world biological mysteries. Features a total prize pool of RM4,000 distributed as RM1,000 per winning track category. Registration closes on July 26, 2026."
+  },
+  {
     "Raid_Num": 6,
     "title": "Techathon Nationals & Rover Summit 2026",
     "dateRange": "10 - 11 July 2026",
