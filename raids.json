@@ -189,7 +189,8 @@
       }
     ],
     "links": {
-      "Platform/Registration": "https://tinyurl.com/2p9jpuea"
+      "Platform/Registration": "https://tinyurl.com/2p9jpuea",
+      "notes": "doc/notes/amd-dev-hackathon-2026.md"
     },
     "details": "A hands-on online event focused on building AI agents and high-performance AI applications on AMD GPUs in the cloud using the AMD AI Developer Cloud, ROCm, and Fireworks AI API. Features a $15,000 total prize pool, plus perks for new AMD AI Developer Program sign-ups including $100 in AMD Cloud GPU credits and $50 in Fireworks AI API credits."
   },
