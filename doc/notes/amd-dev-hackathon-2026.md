@@ -2,7 +2,7 @@
   tags: 
   -->
 
-# Event Raiders Delegation Notes: Phoenix Summit 2026
+# Event Raiders Delegation Notes: AMD Developer Hackathon: ACT II
 
 
 
