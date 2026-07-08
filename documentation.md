@@ -83,10 +83,9 @@ events/
 * **Highlight Animation**: Applies a brief pulse animation (`highlightPulse`) which scales the card slightly, updates the border to the accent color, and casts a glowing box shadow using the theme's accent color (gold for dark, blue for light).
 * **Copy Link Button**: Each card features a highlighted copy button next to the status badge. Clicking it copies the absolute URL of the specific card to the clipboard and triggers a 2-second visual feedback (checkmark icon change).
 
-### F. Campaign Calendar View & Mobile Swipe Multiplier
+### F. Campaign Calendar View
 * **Campaign Calendar**: An interactive modal-based calendar view matching the `"startDate"` of each raid campaign. Enforces a perfectly square ratio and height of `50vh` (mobile) / `60vh` (desktop) at the body root level to bypass translation containment constraints.
 * **Overlap & Redirection**: Displays event counts at the top-right corner of highlighted day cells when multiple events overlap. Clicking a highlighted cell slides up a vertical list overlay of event titles. Clicking a title closes the modal and deep-links directly to the card using `#raid-<number>`.
-* **Scroll Multiplier (Velo-Boost)**: Detects fast flick swipe gestures on mobile screens (duration < 300ms, swipe distance > 30px) and applies a smooth scrolling boost proportional to flick speed, allowing users to scroll further per swipe.
 
 ### G. Event Type Dropdown Filtering & Row Wrapping
 * **Category Filtering:** A custom dropdown button container is placed next to the "Calendar View" button. Selecting a type filters the cards displayed in the DOM dynamically, updating based on categories: Hackathons, Programming, Conferences, Congress, Bug Bounties / CTF, Game Jams, Bizcomps.
@@ -97,7 +96,13 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.7.0 — Event Type Filtering & Registration Deadlines (Current)
+### 🚀 v1.7.1 — Mobile Scrolling & Responsive Polish (Current)
+* **Features & Bugfixes:**
+  * **Optimized Mobile Button Sizing**: Reduced padding, font size, and gap on the Calendar and Event Type filter buttons on mobile viewports to prevent layout overflow.
+  * **Hiding Mobile Descriptions**: Hidden the `#raids` section description on mobile viewports to maximize vertical scrolling area.
+  * **Restored Native Momentum Scrolling**: Removed the custom JS swipe/scroll multiplier (`initMobileScrollMultiplier`) to eliminate scrolling lag and stutter on mobile touch screens, returning scroll control fully to native browser momentum engines.
+
+### 🚀 v1.7.0 — Event Type Filtering & Registration Deadlines
 * **Features:**
   * **Event Type Metadata & Tags**: Added a `"Type"` field to the JSON schema. Renders a category pill tag (`.raid-type-tag`) at the top of each campaign card.
   * **Registration Deadline Display**: Introduced a `"RegEndDate"` field. Uses a dynamic formatter to display readable deadlines. Compares against system time to display red/gray `(Closed)` tags or green active deadlines inside details drawers.

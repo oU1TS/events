@@ -874,39 +874,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /* ==========================================================================
-       6. Mobile Scroll Multiplier (Velo-Boost)
-       ========================================================================== */
-    function initMobileScrollMultiplier() {
-        const isMobile = () => window.innerWidth <= 768;
-        
-        let startY = 0;
-        let startTime = 0;
-
-        window.addEventListener('touchstart', (e) => {
-            if (!isMobile()) return;
-            const touch = e.touches[0];
-            startY = touch.clientY;
-            startTime = Date.now();
-        }, { passive: true });
-
-        window.addEventListener('touchend', (e) => {
-            if (!isMobile()) return;
-            
-            const touch = e.changedTouches[0];
-            const diffY = startY - touch.clientY; // Positive = scrolled down (page moves up)
-            const duration = Date.now() - startTime;
-
-            // Only boost fast vertical swipe flicks (duration < 300ms, swipe distance > 30px)
-            if (duration < 300 && Math.abs(diffY) > 30) {
-                const boost = diffY * 1.2;
-                window.scrollBy({
-                    top: boost,
-                    behavior: 'smooth'
-                });
-            }
-        }, { passive: true });
-    }
 
     /* ==========================================================================
        6a. Event Type Dropdown Filter Controls
@@ -1013,6 +980,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
     initCalendar();
     initDropdownFilter();
-    initMobileScrollMultiplier();
     routePage();
 });
