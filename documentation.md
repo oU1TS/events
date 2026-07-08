@@ -6,6 +6,10 @@
 
 Welcome to the technical documentation of the **UITS Event Raiders** Single Page Application (SPA). This document outlines the initiative's context, the project's technical architecture, component design, and its version change history.
 
+> [!IMPORTANT]
+> **JavaScript Code Learning Guide:**
+> A comprehensive walkthrough of the portal's client-side JavaScript engine is available in **[learning.md](render.html?file=learning.md)**. This guide details each module's execution flow and its direct front-end user experience (UX) impact.
+
 Repository: https://github.com/oU1TS/events
 
 ---
@@ -15,7 +19,7 @@ The **UITS Event Raiders** is a community-driven initiative organized by the **o
 * **Core Purpose:** Share news about academic, tech, and cultural events (hackathons, programming contests, workshops) and gather groups of interested students to attend and compete together.
 * **Official Pages:** 
   * [Facebook Guild Page](https://tinyurl.com/bdhsf7b4)
-  * [oU1TS Community Project](https://ou1ts.netlify.app/)
+  * [oU1TS Community Project](https://ou1ts.github.io/)
   * [Events Web Portal](https://ou1ts.github.io/events)
 
 ---
@@ -28,6 +32,7 @@ events/
 ├── index.html           # Main SPA layout and templates
 ├── style.css            # Global stylesheet and responsive design system
 ├── app.js               # Main website router and JSON data renderer
+├── learning.md          # Comprehensive JS code learning guide [NEW]
 ├── raids.json           # Dynamic data file storing event lists
 ├── render.html          # Local Markdown document rendering viewer
 ├── render.js            # Markdown parser controller & theme syncing

@@ -5,19 +5,24 @@ A clean, modern, and highly responsive Single Page Application (SPA) built for t
 The core purpose of this initiative is to share updates about academic, tech, and cultural events (e.g., hackathons, coding contests, symposiums) and to coordinate groups of interested students to prepare for, travel to, and compete in these events together.
 
 👉 **Read the full [Technical Documentation & Version History](documentation.md)** for detailed structural blueprints, SPA routing mechanisms, and code designs.
+👉 **Read the [JavaScript Code Learning Guide](learning.md)** for an in-depth code architecture walkthrough of the app's dynamic scripts.
 
 ---
 
 ## 🌟 Key Features
 
-1. **Single Page Application (SPA):** Seamless navigation using URL hash routing (`#home`, `#raids`, `#join`, `#learn-more`) which allows full browser back/forward history and direct bookmarking.
+1. **Single Page Application (SPA):** Seamless navigation using URL hash routing (`#home`, `#raids`, `#notes`, `#join`, `#learn-more`) which allows full browser back/forward history and direct bookmarking.
 2. **Data Separation & Dropdowns:** Event list details are loaded dynamically from a separate `raids.json` data file. Supports complex reusable schedule dropdown grids (`<details>`/`<summary>`) directly parsed from the JSON array variables.
-3. **Dual Theme Engine:** Stylized tactile toggle switch that flips between:
+3. **Dynamic Event Notes Section:** Dedicated reports/writeups tab listing note cards with concise shortened titles. Links to local notes load in the same tab so the back button can return readers to the homepage.
+4. **Interactive Campaign Calendar:** Visual month-by-month calendar modal with overlap count badges, day events overlay list, and scroll viewport-tracking floating activation button.
+5. **Type Filtering Dropdown:** Custom filter dropdown next to the calendar button to narrow down campaigns by event category. Keeps buttons aligned on a single row down to small mobile breakpoints (`380px`).
+6. **Registration Deadlines Engine:** Computes remaining time or `(Closed)` warning states dynamically on card badges based on the user's system clock.
+7. **Dual Theme Engine:** Stylized tactile toggle switch that flips between:
    * **Dark Mode (Default):** Tech-noir style featuring black/charcoal backgrounds and gold accents.
    * **Light Mode:** Fresh vibrant style featuring white, sky-blue, and emerald-green highlights.
    * Theme choices automatically persist via `localStorage` and honor system settings.
-4. **Step-by-Step Onboarding:** Clear onboarding checklist inside `#join` to help students link up with maintainers, submit their Student ID verification, and synchronize their WhatsApp chat histories.
-5. **Markdown Notes Integration:** A built-in local Markdown reader (`render.html` + `render.js`) to view delegation guidelines, preparation lists, and checklists directly on the website with theme sync, code highlighting, and LaTeX support.
+8. **Step-by-Step Onboarding:** Clear onboarding checklist inside `#join` to help students link up with maintainers, submit their Student ID verification, and synchronize their WhatsApp chat histories.
+9. **Markdown Notes Integration:** A built-in local Markdown reader (`render.html` + `render.js`) to view delegation guidelines, preparation lists, and checklists directly on the website with theme sync, code highlighting, and LaTeX support.
 
 ---
 
@@ -28,6 +33,7 @@ events/
 ├── index.html           # Main SPA layout skeleton
 ├── style.css            # Custom CSS variables, transitions, and responsive grid layouts
 ├── app.js               # Route controller, fetch API parsing, and DOM rendering
+├── learning.md          # Comprehensive JS code architecture & learning guide [NEW]
 ├── raids.json           # Data file containing event lists (scraped from Phoenix Summit 2026)
 ├── render.html          # Local Markdown document rendering viewer
 ├── render.js            # Markdown viewer controller and theme synchronization

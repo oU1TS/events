@@ -176,8 +176,8 @@
             links.forEach(link => {
                 const href = link.getAttribute('href');
 
-                // If it's a relative link to an MD file
-                if (href && (href.endsWith('.md') || href.includes('.md#')) && !href.startsWith('http')) {
+                // If it's a relative link to an MD file and not already routed through render.html
+                if (href && (href.endsWith('.md') || href.includes('.md#')) && !href.startsWith('http') && !href.includes('render.html')) {
                     if (currentPath === 'session') {
                         // Prevent navigation for local session files
                         link.addEventListener('click', (e) => {
