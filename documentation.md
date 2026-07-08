@@ -8,7 +8,7 @@ Welcome to the technical documentation of the **UITS Event Raiders** Single Page
 
 > [!IMPORTANT]
 > **JavaScript Code Learning Guide:**
-> A comprehensive walkthrough of the portal's client-side JavaScript engine is available in **[learning.md](render.html?file=learning.md)**. This guide details each module's execution flow and its direct front-end user experience (UX) impact.
+> A comprehensive walkthrough of the portal's client-side JavaScript engine is available in **[learning.md](render.html?file=learning.md)** / **[github/learning.md](learning.md)**. This guide details each module's execution flow and its direct front-end user experience (UX) impact.
 
 Repository: https://github.com/oU1TS/events
 
