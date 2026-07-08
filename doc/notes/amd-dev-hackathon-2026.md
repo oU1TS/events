@@ -6,7 +6,7 @@
 
 - Event Details [link](https://lablab.ai/ai-hackathons/amd-developer-hackathon-act-ii)
 - Reference: [link](https://lablab.ai/apps/recent-winners)
-- Learning: [Training](https://www.amd.com/en/developer/browse-by-resource-type/training.html) | [Article](https://lablab.ai/ai-articles/from-zero-to-ai-builder-amd-developer-program) | 
+- Learning: [Training](https://www.amd.com/en/developer/browse-by-resource-type/training.html) | [Article](https://lablab.ai/ai-articles/from-zero-to-ai-builder-amd-developer-program) | [deeplearning.ai](https://www.deeplearning.ai/)
 
  ---
 
