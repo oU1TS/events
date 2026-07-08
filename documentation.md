@@ -58,8 +58,10 @@ events/
 
 ### B. Dynamic JSON Fetching & Dropdown Parsing
 * **Data Separation:** Event records are kept in `raids.json` and fetched asynchronously via the Fetch API.
+* **Metadata Schema Expansion:** Objects in `raids.json` support standard metadata such as `"Type"` (representing categories like Hackathons, Programming, etc.) and `"RegEndDate"` (the registration deadline date in YYYY-MM-DD format).
 * **Collapsible Dropdowns:** The `subEvents` property in `raids.json` is a reusable array of items. `app.js` parses this array and renders semantic HTML5 `<details>` and `<summary>` components inside the schedule card.
 * **XSS Prevention:** Elements (titles, prices, descriptions) are rendered dynamically using `textContent` and basic HTML escaping to block malicious script injections.
+* **Dynamic Registration Status:** `app.js` formats the registration deadline string and dynamically compares it against the local system time. It appends a colored status indicator to the metadata group inside the dropdown—closed deadlines are shown as gray/muted with a `(Closed)` label, and open deadlines are highlighted in green.
 
 ### C. Unified Theme Engine
 * **Theme Switching:** Managed by toggling the `.light-theme` class on the `<body>` element.
@@ -81,11 +83,25 @@ events/
 * **Overlap & Redirection**: Displays event counts at the top-right corner of highlighted day cells when multiple events overlap. Clicking a highlighted cell slides up a vertical list overlay of event titles. Clicking a title closes the modal and deep-links directly to the card using `#raid-<number>`.
 * **Scroll Multiplier (Velo-Boost)**: Detects fast flick swipe gestures on mobile screens (duration < 300ms, swipe distance > 30px) and applies a smooth scrolling boost proportional to flick speed, allowing users to scroll further per swipe.
 
+### G. Event Type Dropdown Filtering & Row Wrapping
+* **Category Filtering:** A custom dropdown button container is placed next to the "Calendar View" button. Selecting a type filters the cards displayed in the DOM dynamically, updating based on categories: Hackathons, Programming, Conferences, Congress, Bug Bounties / CTF, Game Jams, Bizcomps.
+* **Deep Link Reset Integration:** Navigating directly to a card via a hash link automatically resets the category filter to "All Types", ensuring the targeted card is present in the DOM and accessible for highlighting and scrolling.
+* **Row-Wrap Responsiveness:** Styled to stay in a single row alongside the calendar button until a narrow viewport width of `380px` or less, at which point the buttons stack vertically for optimal touch interactions.
+
 ---
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.6.0 — Campaign Calendar, Floating Controls & Swipe Boost (Current)
+### 🚀 v1.7.0 — Event Type Filtering & Registration Deadlines (Current)
+* **Features:**
+  * **Event Type Metadata & Tags**: Added a `"Type"` field to the JSON schema. Renders a category pill tag (`.raid-type-tag`) at the top of each campaign card.
+  * **Registration Deadline Display**: Introduced a `"RegEndDate"` field. Uses a dynamic formatter to display readable deadlines. Compares against system time to display red/gray `(Closed)` tags or green active deadlines inside details drawers.
+  * **Custom Dropdown Filter**: Built a custom filter dropdown menu containing preset event categories next to the calendar button. Selecting a type instantly filters visible campaigns.
+  * **Narrow Breakpoint Row Wrapping**: Standardized styling so both buttons align on a single row down to a very narrow mobile screen size of `380px`, where they stack vertically.
+  * **Routing Resets**: Programmed SPA hash routing to reset active filters to "All Types" whenever deep links (e.g. `#raid-3`) are resolved, preventing target element resolution failures.
+  * **Event Notes Section**: Added a new SPA page section (`#notes`) that dynamically queries all event notes listings from `raids.json` and renders interactive cards, linking them to local markdown pages and deep-linking back to their Campaign Roadmap cards.
+
+### 🚀 v1.6.0 — Campaign Calendar, Floating Controls & Swipe Boost
 * **Features:**
   * **Interactive Campaign Calendar**: Built a month-by-month square calendar view that retrieves event `"startDate"` values. Highlights active days and features previous/next navigation.
   * **Event Overlap Counter**: Renders a badge indicating event counts on days where multiple events start simultaneously (e.g. July 10).

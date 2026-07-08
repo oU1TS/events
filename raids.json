@@ -1,13 +1,38 @@
 [
   {
+    "Raid_Num": 8,
+    "title": "raylib 6.x gamejam",
+    "Status": "Future",
+    "Type": "Game Jams",
+    "dateRange": "06 July - 18 July 2026",
+    "startDate": "2026-07-06",
+    "endDate": "2026-07-18",
+    "RegEndDate": "2026-07-06",
+    "venue": "Online (itch.io)",
+    "fee": "Free",
+    "details": "Welcome to raylib 6.x gamejam! Hosted officially by Ray, this game jam challenges developers to showcase their most amazing game creations utilizing the newly launched milestone release of raylib 6.x. Celebrating the next evolution of the simple, easy-to-use C game programming library, the event encourages raw, spartan-programmer style coding and cross-platform creative execution within a defined timeframe.",
+    "subEvents": [
+      {
+        "title": "Core Development & Submission Window",
+        "details": "Build and submit your game within the strict jam timeline. Submissions must explicitly focus on implementation using the new raylib 6.x features, hooks, and backend optimizations."
+      }
+    ],
+    "links": {
+      "Official Jam Page": "https://itch.io/jam/raylib-6x-gamejam"
+    }
+  },
+  {
     "Raid_Num": 7,
     "title": "i-BIOHACKATHON 2026: SOLVING BIOLOGICAL QUESTIONS WITH AI & BIOINFORMATICS",
-    "dateRange": "27 July - 24 September 2026",
     "Status": "Future",
+    "Type": "Hackathons",
+    "dateRange": "27 July - 24 September 2026",
     "startDate": "2026-07-27",
     "endDate": "2026-09-24",
+    "RegEndDate": "2026-07-26",
     "venue": "Online / Virtual",
     "fee": "Not Specified",
+    "details": "Organized by INBIOSIS (Universiti Kebangsaan Malaysia), i-BIOHACKATHON 2026 challenges students and industry professionals to apply data, AI tools, and critical thinking to transform precision biology and sustainability. Operating entirely without wet labs, teams of 2–4 members tackle real-world biological mysteries. Features a total prize pool of RM4,000 distributed as RM1,000 per winning track category. Registration closes on July 26, 2026.",
     "subEvents": [
       {
         "title": "Bio-Explorer Track (Secondary School)",
@@ -30,18 +55,20 @@
       "Official Website": "https://www.ukm.my/inbiosis/en/i-biohackathon-competition/",
       "Registration Portal": "https://tinyurl.com/iBiohack26",
       "Google Form": "https://docs.google.com/forms/d/e/1FAIpQLSedTuRtvOChQuLfb4Q2fW8_Yj9MPILFDTVkJiizq-tgrONx_w/viewform"
-    },
-    "details": "Organized by INBIOSIS (Universiti Kebangsaan Malaysia), i-BIOHACKATHON 2026 challenges students and industry professionals to apply data, AI tools, and critical thinking to transform precision biology and sustainability. Operating entirely without wet labs, teams of 2–4 members tackle real-world biological mysteries. Features a total prize pool of RM4,000 distributed as RM1,000 per winning track category. Registration closes on July 26, 2026."
+    }
   },
   {
     "Raid_Num": 6,
     "title": "Techathon Nationals & Rover Summit 2026",
-    "dateRange": "10 - 11 July 2026",
     "Status": "Future",
+    "Type": "Conferences",
+    "dateRange": "10 - 11 July 2026",
     "startDate": "2026-07-10",
     "endDate": "2026-07-11",
+    "RegEndDate": "2026-07-09",
     "venue": "IUT Campus",
     "fee": "Not Specified",
+    "details": "Organized by the IUT Robotics Society (IUTRS) at the Islamic University of Technology, Techathon Nationals & Rover Summit 2026 serves as a massive milestone platform bringing together robotics enthusiasts, student innovators, and engineering minds from all over Bangladesh. The tech fest fields diverse technical, creative, and gaming segments alongside a highly anticipated collective prize pool distribution across multiple structural tracks.",
     "subEvents": [
       {
         "title": "Rover Summit & Core Engineering Showcase",
@@ -65,18 +92,20 @@
       "Event Website": "https://techathon.iutrs.com/",
       "Organizer Site": "https://www.iutrs.com/",
       "Source Post": "https://www.facebook.com/share/1ClientKYr1m2p/"
-    },
-    "details": "Organized by the IUT Robotics Society (IUTRS) at the Islamic University of Technology, Techathon Nationals & Rover Summit 2026 serves as a massive milestone platform bringing together robotics enthusiasts, student innovators, and engineering minds from all over Bangladesh. The tech fest fields diverse technical, creative, and gaming segments alongside a highly anticipated collective prize pool distribution across multiple structural tracks."
+    }
   },
   {
     "Raid_Num": 5,
     "title": "BDSec CTF 2026",
-    "dateRange": "20-21th July",
     "Status": "Future",
+    "Type": "Bug Bounties / CTF",
+    "dateRange": "20-21th July",
     "startDate": "2026-07-20",
     "endDate": "2026-07-21",
+    "RegEndDate": "2026-07-19",
     "venue": "Online (Jeopardy-style)",
     "fee": "Free",
+    "details": "Organized annually by Knight Squad, a prominent cybersecurity team from Bangladesh, BDSec CTF is a premier international event open to global participants ranging from newcomers to seasoned professionals. The competition design seamlessly balances approachable, beginner-friendly entry barriers with advanced, high-scaling infrastructure puzzles to test problem-solving endurance under pressure.",
     "subEvents": [
       {
         "title": "Core Competition Tracks",
@@ -87,19 +116,21 @@
       "Official Site": "https://bdsec-ctf.com/",
       "Event Site": "https://2026.bdsec-ctf.com/",
       "Organizer Site": "https://knightsquad.org/",
-      "Facebook Post": "https://www.facebook.com/share/p/1asRiXpziq/"
-    },
-    "details": "Organized annually by Knight Squad, a prominent cybersecurity team from Bangladesh, BDSec CTF is a premier international event open to global participants ranging from newcomers to seasoned professionals. The competition design seamlessly balances approachable, beginner-friendly entry barriers with advanced, high-scaling infrastructure puzzles to test problem-solving endurance under pressure."
+      "Facebook Post": "https://www.facebook.com/share/p/1asRiXpziq/?"
+    }
   },
   {
     "Raid_Num": 4,
     "title": "International AI Builders Congress 2026",
-    "dateRange": "June 30 — December 26, 2026",
     "Status": "Future",
+    "Type": "Congress",
+    "dateRange": "June 30 — December 26, 2026",
     "startDate": "2026-06-30",
     "endDate": "2026-12-26",
+    "RegEndDate": "2026-06-29",
     "venue": "Daffodil International University, Ashulia Campus, Dhaka, Bangladesh",
     "fee": "Free / Variable based on journey tracks",
+    "details": "Hosted by CloudCamp Bangladesh, the International AI Builders Congress 2026 is a premier structural execution platform designed to transition developers, innovators, and students from localized prototypes into production-grade global solutions. The comprehensive initiative focuses on key application scopes including product building, economic development, and job creation by bridging the gap between local talent and Non-Resident Bangladeshi (NRB) technology practitioners.",
     "subEvents": [
       {
         "title": "Program Schedule",
@@ -124,18 +155,20 @@
       "faq": "https://cloudcampbd.com/ai-builders-congress#faq",
       "sessions": "https://cloudcampbd.com/ai-builders-congress#sessions",
       "Facebook Post": "https://www.facebook.com/events/1351253453738188"
-    },
-    "details": "Hosted by CloudCamp Bangladesh, the International AI Builders Congress 2026 is a premier structural execution platform designed to transition developers, innovators, and students from localized prototypes into production-grade global solutions. The comprehensive initiative focuses on key application scopes including product building, economic development, and job creation by bridging the gap between local talent and Non-Resident Bangladeshi (NRB) technology practitioners."
+    }
   },
   {
     "Raid_Num": 3,
     "title": "MarXcellence 2026 (International Inter-University Digital Marketing Case Competition)",
-    "dateRange": "Workshop 1 Begins: 10 July, 2026",
     "Status": "Future",
+    "Type": "Bizcomps",
+    "dateRange": "Workshop 1 Begins: 10 July, 2026",
     "startDate": "2026-07-10",
     "endDate": "2026-07-10",
+    "RegEndDate": "2026-07-08",
     "venue": "North South University (NSU Main Auditorium) | Hybrid format for international participants",
     "fee": "Free",
+    "details": "Presented by Dhaka Bank PLC, Co-Sponsored by Transcom Group, and Powered by Vatika Naturals, MarXcellence 2026 is Bangladesh's premier hybrid digital marketing case tournament hosted by NSU MIBC. Open globally to undergraduate student teams (2 to 4 members; cross-university teams fully permitted). Features a comprehensive BDT 520,000 total prize pool breakdowns: Champions receive BDT 225,000; 1st Runners-Up receive BDT 150,000; 2nd Runners-Up receive BDT 100,000; and the remaining 3 finalists receive BDT 15,000 each. Registration closes on July 8, 2026 (11:59 PM).",
     "subEvents": [
       {
         "title": "Workshop 1 (Orientation & Foundational Knowledge)",
@@ -163,18 +196,20 @@
       "Organizer Site": "https://nsumibc.org/",
       "Event Page": "https://www.facebook.com/events/2310378769794887/",
       "notes": "doc/notes/MarXcellence-2026.md"
-    },
-    "details": "Presented by Dhaka Bank PLC, Co-Sponsored by Transcom Group, and Powered by Vatika Naturals, MarXcellence 2026 is Bangladesh's premier hybrid digital marketing case tournament hosted by NSU MIBC. Open globally to undergraduate student teams (2 to 4 members; cross-university teams fully permitted). Features a comprehensive BDT 520,000 total prize pool breakdowns: Champions receive BDT 225,000; 1st Runners-Up receive BDT 150,000; 2nd Runners-Up receive BDT 100,000; and the remaining 3 finalists receive BDT 15,000 each. Registration closes on July 8, 2026 (11:59 PM)."
+    }
   },
   {
     "Raid_Num": 2,
     "title": "AMD Developer Hackathon: ACT II",
-    "dateRange": "6-11 July, 2026",
     "Status": "Future",
+    "Type": "Hackathons",
+    "dateRange": "6-11 July, 2026",
     "startDate": "2026-07-06",
     "endDate": "2026-07-11",
+    "RegEndDate": "2026-07-05",
     "venue": "Online (lablab.ai)",
     "fee": "Free (Requires registration to AMD AI Developer Program)",
+    "details": "A hands-on online event focused on building AI agents and high-performance AI applications on AMD GPUs in the cloud using the AMD AI Developer Cloud, ROCm, and Fireworks AI API. Features a $15,000 total prize pool, plus perks for new AMD AI Developer Program sign-ups including $100 in AMD Cloud GPU credits and $50 in Fireworks AI API credits.",
     "subEvents": [
       {
         "title": "Track 1: Hybrid Token-Efficient Routing Agent (Beginner AI Agent Track)",
@@ -192,18 +227,20 @@
     "links": {
       "Platform/Registration": "https://tinyurl.com/2p9jpuea",
       "notes": "doc/notes/amd-dev-hackathon-2026.md"
-    },
-    "details": "A hands-on online event focused on building AI agents and high-performance AI applications on AMD GPUs in the cloud using the AMD AI Developer Cloud, ROCm, and Fireworks AI API. Features a $15,000 total prize pool, plus perks for new AMD AI Developer Program sign-ups including $100 in AMD Cloud GPU credits and $50 in Fireworks AI API credits."
+    }
   },
   {
     "Raid_Num": 1,
     "title": "Phoenix Summit 2026",
-    "dateRange": "June 23 - June 27, 2026",
     "Status": "Past",
+    "Type": "Conferences",
+    "dateRange": "June 23 - June 27, 2026",
     "startDate": "2026-06-23",
     "endDate": "2026-06-27",
+    "RegEndDate": "2026-06-22",
     "venue": "Bangabandhu International Conference Center (BICC), Dhaka, Bangladesh",
     "fee": "Exhibition Pass: 200 BDT\nTechnical Pass (with Swag): 700 BDT\nStudent Workshops: 10,000 BDT\nProfessional Workshops: 15,000 BDT (Early Bird: 12,000 BDT)",
+    "details": "Phoenix Summit 2026 is Bangladesh's flagship cybersecurity convergence platform connecting government, industry, academia, and global experts.\n\nFrom international instructor-led training and hands-on workshops to Red Team & Blue Team case studies, industry exhibitions, networking opportunities, and much more, Phoenix Summit 2026 promises an incredible learning and professional development experience.",
     "subEvents": [
       {
         "title": "June 23-25: Pre-Summit Workshops (09:00 AM - 06:00 PM)",
@@ -224,7 +261,6 @@
       "UITS Post": "https://www.facebook.com/uitssec/posts/pfbid02MgGLHjMwWg7RKfiqdZYfgKnKZts2NPdJxi4u5mYPmKeVUHUKCuXBCA6UFZjqveuFl",
       "Schedule": "https://phoenixsummit.net/schedule",
       "notes": "doc/notes/phoenix-summit-2026.md"
-    },
-    "details": "Phoenix Summit 2026 is Bangladesh's flagship cybersecurity convergence platform connecting government, industry, academia, and global experts.\n\nFrom international instructor-led training and hands-on workshops to Red Team & Blue Team case studies, industry exhibitions, networking opportunities, and much more, Phoenix Summit 2026 promises an incredible learning and professional development experience."
+    }
   }
 ]

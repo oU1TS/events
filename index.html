@@ -30,6 +30,7 @@
             <nav class="nav" id="main-nav">
                 <a href="#home" class="nav-link active" data-section="home">Home</a>
                 <a href="#raids" class="nav-link" data-section="raids">Raid Campaigns</a>
+                <a href="#notes" class="nav-link" data-section="notes">Event Notes</a>
                 <a href="#join" class="nav-link" data-section="join">Join Us</a>
                 <a href="#learn-more" class="nav-link" data-section="learn-more">Learn More</a>
             </nav>
@@ -115,7 +116,7 @@
                     participants, conquering challenges and learning together.</p>
             </div>
 
-            <!-- Calendar View Toggle Button -->
+            <!-- Calendar View & Filter Controls Container -->
             <div class="calendar-btn-container" style="margin-top: -40px;">
                 <button id="open-calendar-btn" class="btn btn-secondary" aria-label="Open Campaign Calendar">
                     <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -127,6 +128,42 @@
                     </svg>
                     <span>Calendar View</span>
                 </button>
+
+                <!-- Event Type Filter Dropdown -->
+                <div class="dropdown-filter-container" id="event-type-filter-container">
+                    <button id="filter-type-btn" class="btn btn-secondary" aria-label="Filter Events by Type"
+                        aria-haspopup="listbox" aria-expanded="false">
+                        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                            style="margin-right: 4px;">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                        </svg>
+                        <span id="filter-btn-text">All Types</span>
+                        <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                            style="margin-left: 8px;">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu" role="listbox" aria-label="Event Types">
+                        <li><button class="dropdown-item active" data-value="all" role="option" aria-selected="true">All
+                                Types</button></li>
+                        <li><button class="dropdown-item" data-value="Hackathons" role="option"
+                                aria-selected="false">Hackathons</button></li>
+                        <li><button class="dropdown-item" data-value="Programming" role="option"
+                                aria-selected="false">Programming</button></li>
+                        <li><button class="dropdown-item" data-value="Conferences" role="option"
+                                aria-selected="false">Conferences</button></li>
+                        <li><button class="dropdown-item" data-value="Congress" role="option"
+                                aria-selected="false">Congress</button></li>
+                        <li><button class="dropdown-item" data-value="Bug Bounties / CTF" role="option"
+                                aria-selected="false">Bug Bounties / CTF</button></li>
+                        <li><button class="dropdown-item" data-value="Game Jams" role="option"
+                                aria-selected="false">Game Jams</button></li>
+                        <li><button class="dropdown-item" data-value="Bizcomps" role="option"
+                                aria-selected="false">Bizcomps</button></li>
+                    </ul>
+                </div>
             </div>
 
             <!-- Dynamic Grid for Raids -->
@@ -135,6 +172,19 @@
                 <div class="raid-card skeleton"></div>
                 <div class="raid-card skeleton"></div>
                 <div class="raid-card skeleton"></div>
+            </div>
+        </section>
+
+        <!-- Event Notes Section -->
+        <section id="notes" class="section">
+            <div class="section-header">
+                <span class="section-tag">Reports & Writeups</span>
+                <h2 class="section-title">Event Notes</h2>
+                <p class="section-desc">Browse local notes and guides prepared by our team for specific events we raided.</p>
+            </div>
+            
+            <div id="notes-container" class="resources-grid">
+                <!-- Notes list will be populated dynamically -->
             </div>
         </section>
 
@@ -250,6 +300,33 @@
 
             <div class="resources-grid">
                 <!-- Highlight Card (oU1TS Community Project) -->
+                <div class="resource-card highlight">
+                    <div class="resource-glow"></div>
+                    <div class="resource-badge">★ Primary Highlight</div>
+                    <h3 class="resource-title">oU1TS Community Project</h3>
+                    <p class="resource-desc">Discover the mastermind collective behind the Event Raiders initiative.
+                        oU1TS is a collaborative community dedicated to building open-source projects, hosting mentoring
+                        sessions, and empowering students to level up their development skills.</p>
+                    <a href="https://ou1ts.github.io/" class="resource-link-btn" target="_blank"
+                        rel="noopener noreferrer">
+                        <span>Visit Community Page</span>
+                        <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                            <polyline points="7 7 17 7 17 17"></polyline>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Highlight Card (Unofficial ECA Initiative & Future Plans) -->
+                <div class="resource-card highlight">
+                    <div class="resource-glow"></div>
+                    <div class="resource-badge">★ Initiative Vision</div>
+                    <h3 class="resource-title">Unofficial ECA & Institutional Future</h3>
+                    <p class="resource-desc">The UITS Event Raiders operates as an "unofficial" extra-curricular activity (ECA) initiative, driven entirely by the open-source oU1TS Community to fill a critical gap in student event coordination. By actively gathering passionate students to attend, track, and compete in major national and global technical events, this guild acts as a practical proof-of-concept for collaborative learning. The overarching future plan is to use this community's compiled logbooks, structural framework, and successful track record as a robust foundation to eventually establish an official institutional counterpart within the university. Through this strategic transition, the initiative aims to institutionalize student collaboration, making event raiding an organized, recognized, and permanent pillar of the student experience.</p>
+                </div>
+
+
 
                 <!-- Secondary Link 1 -->
                 <div class="resource-card">
@@ -310,23 +387,6 @@
                     <a href="https://tinyurl.com/bdhsf7b4" class="resource-link-btn" target="_blank"
                         rel="noopener noreferrer">
                         <span>Visit Facebook</span>
-                        <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </a>
-                </div>
-                <div class="resource-card highlight">
-                    <div class="resource-glow"></div>
-                    <div class="resource-badge">★ Primary Highlight</div>
-                    <h3 class="resource-title">oU1TS Community Project</h3>
-                    <p class="resource-desc">Discover the mastermind collective behind the Event Raiders initiative.
-                        oU1TS is a collaborative community dedicated to building open-source projects, hosting mentoring
-                        sessions, and empowering students to level up their development skills.</p>
-                    <a href="https://ou1ts.github.io/" class="resource-link-btn" target="_blank"
-                        rel="noopener noreferrer">
-                        <span>Visit Community Page</span>
                         <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>

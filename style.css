@@ -1458,8 +1458,131 @@ body.light-theme .details-dropdown[open] {
 .calendar-btn-container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 2rem;
     min-height: 48px; /* Prevents layout collapse when button floats */
+}
+
+/* Ensure buttons in container are inline-flex and don't fill viewport on mobile */
+.calendar-btn-container .btn {
+    width: auto !important;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+/* Custom Dropdown Filter Styling */
+.dropdown-filter-container {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-filter-container button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdown-arrow {
+    transition: transform var(--transition-speed) ease;
+}
+
+.dropdown-filter-container.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    min-width: 220px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow), 0 10px 30px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    padding: 0.5rem 0;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    visibility: hidden;
+}
+
+.dropdown-menu.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-align: left;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    color: var(--text-primary);
+    background-color: rgba(var(--accent-rgb), 0.08);
+}
+
+.dropdown-item.active {
+    color: var(--accent);
+    background-color: rgba(var(--accent-rgb), 0.04);
+}
+
+/* Raid Card Type Tag styling */
+.raid-type-tag {
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    padding: 2px 8px;
+    background-color: rgba(var(--accent-rgb), 0.08);
+    border-radius: 4px;
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
+}
+
+body.light-theme .raid-type-tag {
+    background-color: rgba(var(--accent-rgb), 0.05);
+    border: 1px solid rgba(var(--accent-rgb), 0.1);
+}
+
+/* Responsive Overrides for Buttons Row Wrap */
+@media (max-width: 380px) {
+    .calendar-btn-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        margin-top: -20px !important;
+    }
+    
+    .calendar-btn-container .btn,
+    .calendar-btn-container .dropdown-filter-container,
+    .calendar-btn-container .dropdown-filter-container button {
+        width: 100% !important;
+    }
+    
+    .dropdown-menu {
+        left: 0;
+        right: 0;
+        min-width: 100%;
+    }
 }
 
 /* Floating Calendar Button */
@@ -1844,4 +1967,16 @@ body.light-theme .day-events-overlay {
     margin-left: 0.75rem;
     display: flex;
     align-items: center;
+}
+
+/* Event Notes Card Specific Styling (Reduced Padding & Height) */
+#notes-container .resource-card {
+    padding: 1.25rem;
+    border-radius: 12px;
+    min-height: auto;
+}
+
+#notes-container .resource-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
 }

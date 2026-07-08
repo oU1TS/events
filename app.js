@@ -14,12 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const raidsContainer = document.getElementById('raids-container');
 
     // Available SPA Routes
-    const validRoutes = ['#home', '#raids', '#join', '#learn-more'];
+    const validRoutes = ['#home', '#raids', '#notes', '#join', '#learn-more'];
 
     // State Variables
     let pastRaidsData = null;
     let isDataLoading = false;
     let pendingRaidScroll = null;
+    let currentFilterType = 'all';
 
     /* ==========================================================================
        1. Theme Management (Light / Dark Mode)
@@ -65,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentHash.startsWith('#raid-')) {
             targetRaidNum = parseInt(currentHash.replace('#raid-', ''), 10);
             currentHash = '#raids';
+            resetTypeFilter();
         }
 
         // Support backward compatibility for legacy hash
@@ -99,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 3. Trigger Data Fetching when entering Past Raids
-        if (currentHash === '#raids') {
+        // 3. Trigger Data Fetching when entering Past Raids & Event Notes
+        if (currentHash === '#raids' || currentHash === '#notes') {
             if (targetRaidNum) {
                 if (pastRaidsData) {
                     scrollToRaid(targetRaidNum);
@@ -109,7 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadPastRaids();
                 }
             } else {
-                loadPastRaids();
+                if (pastRaidsData) {
+                    if (currentHash === '#notes') {
+                        renderEventNotes(pastRaidsData);
+                    } else {
+                        filterAndRenderRaids();
+                    }
+                } else {
+                    loadPastRaids();
+                }
             }
             if (window.enableFloatingCalendarBtn) {
                 window.enableFloatingCalendarBtn(true);
@@ -188,7 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             pastRaidsData = await response.json();
-            renderRaids(pastRaidsData);
+            filterAndRenderRaids();
+            renderEventNotes(pastRaidsData);
             
         } catch (error) {
             console.error('Error fetching past raids:', error);
@@ -196,6 +207,115 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             isDataLoading = false;
         }
+    }
+
+    function filterAndRenderRaids() {
+        if (!pastRaidsData) return;
+        
+        let filtered = pastRaidsData;
+        if (currentFilterType !== 'all') {
+            filtered = pastRaidsData.filter(raid => raid.Type === currentFilterType);
+        }
+        
+        renderRaids(filtered);
+    }
+
+    function getShortTitle(title) {
+        if (!title) return '';
+        let short = title;
+        if (short.includes('(')) {
+            short = short.split('(')[0];
+        }
+        if (short.includes(':')) {
+            short = short.split(':')[0];
+        }
+        return short.trim();
+    }
+
+    function renderEventNotes(raids) {
+        const notesContainer = document.getElementById('notes-container');
+        if (!notesContainer) return;
+        
+        notesContainer.innerHTML = '';
+        
+        // Filter raids that have a "notes" link
+        const notesRaids = raids.filter(raid => raid.links && raid.links.notes);
+        
+        if (notesRaids.length === 0) {
+            notesContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No notes available at the moment.</p>';
+            return;
+        }
+        
+        notesRaids.forEach(raid => {
+            const card = document.createElement('div');
+            card.className = 'resource-card';
+            
+            // Build card content
+            const titleEl = document.createElement('h3');
+            titleEl.className = 'resource-title';
+            titleEl.textContent = getShortTitle(raid.title);
+            card.appendChild(titleEl);
+            
+            const actionContainer = document.createElement('div');
+            actionContainer.style.display = 'flex';
+            actionContainer.style.gap = '1rem';
+            actionContainer.style.marginTop = 'auto';
+            actionContainer.style.flexWrap = 'wrap';
+            
+            // Link to the rendered markdown notes
+            const notesUrl = raid.links.notes;
+            const notesLink = document.createElement('a');
+            notesLink.className = 'raid-link';
+            notesLink.href = `render.html?file=${encodeURIComponent(notesUrl)}`;
+            notesLink.target = '_blank';
+            notesLink.rel = 'noopener noreferrer';
+            notesLink.innerHTML = `
+                <span>View Notes</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+            `;
+            actionContainer.appendChild(notesLink);
+            
+            // Link to the corresponding raid card in the #raids section
+            const cardLink = document.createElement('a');
+            cardLink.className = 'raid-link';
+            cardLink.href = `#raid-${raid.Raid_Num}`;
+            cardLink.innerHTML = `
+                <span>View Campaign</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+            `;
+            actionContainer.appendChild(cardLink);
+            
+            card.appendChild(actionContainer);
+            notesContainer.appendChild(card);
+        });
+    }
+
+    function formatLocalDate(dateStr) {
+        if (!dateStr) return '';
+        const parts = dateStr.split('-');
+        if (parts.length !== 3) return dateStr;
+        const year = parts[0];
+        const monthIndex = parseInt(parts[1], 10) - 1;
+        const day = parseInt(parts[2], 10);
+        
+        const monthNames = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+        
+        if (monthIndex >= 0 && monthIndex < 12) {
+            return `${day} ${monthNames[monthIndex]} ${year}`;
+        }
+        return dateStr;
     }
 
     function renderRaids(raids) {
@@ -284,6 +404,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.appendChild(metaDiv);
 
+            // Event Type Tag
+            if (raid.Type) {
+                const typeTag = document.createElement('span');
+                typeTag.className = 'raid-type-tag';
+                typeTag.textContent = raid.Type;
+                card.appendChild(typeTag);
+            }
+
             // Title
             const titleEl = document.createElement('h3');
             titleEl.className = 'raid-title';
@@ -326,6 +454,28 @@ document.addEventListener('DOMContentLoaded', () => {
             // Fee Info
             const feeItem = createInfoItem('Fees', raid.fee);
             infoGroup.appendChild(feeItem);
+
+            // Registration Deadline Info
+            if (raid.RegEndDate) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const regDate = new Date(raid.RegEndDate);
+                regDate.setHours(0, 0, 0, 0);
+                
+                const isClosed = today > regDate;
+                const formattedRegDate = formatLocalDate(raid.RegEndDate);
+                const regText = isClosed ? `${formattedRegDate} (Closed)` : formattedRegDate;
+                
+                const regEndItem = createInfoItem('Reg Deadline', regText);
+                const valSpan = regEndItem.querySelector('.raid-info-value');
+                if (isClosed) {
+                    valSpan.style.color = 'var(--text-muted)';
+                } else {
+                    valSpan.style.color = 'var(--success-color)';
+                    valSpan.style.fontWeight = '600';
+                }
+                infoGroup.appendChild(regEndItem);
+            }
 
             // Sub Events Info (Supports string or array of collapsible schedule items)
             if (raid.subEvents) {
@@ -763,10 +913,110 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
+       6a. Event Type Dropdown Filter Controls
+       ========================================================================== */
+    function initDropdownFilter() {
+        const filterContainer = document.getElementById('event-type-filter-container');
+        const filterBtn = document.getElementById('filter-type-btn');
+        const filterBtnText = document.getElementById('filter-btn-text');
+        const dropdownMenu = filterContainer.querySelector('.dropdown-menu');
+        const dropdownItems = filterContainer.querySelectorAll('.dropdown-item');
+
+        if (!filterBtn || !dropdownMenu) return;
+
+        // Toggle dropdown open/close
+        filterBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = filterContainer.classList.toggle('open');
+            dropdownMenu.classList.toggle('show');
+            filterBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!filterContainer.contains(e.target)) {
+                filterContainer.classList.remove('open');
+                dropdownMenu.classList.remove('show');
+                filterBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Dropdown options selection
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                // Update active state in UI
+                dropdownItems.forEach(i => {
+                    i.classList.remove('active');
+                    i.setAttribute('aria-selected', 'false');
+                });
+                item.classList.add('active');
+                item.setAttribute('aria-selected', 'true');
+
+                // Update trigger button label
+                const selectedVal = item.getAttribute('data-value');
+                const selectedText = item.textContent;
+                
+                if (selectedVal === 'all') {
+                    filterBtnText.textContent = 'All Types';
+                } else {
+                    filterBtnText.textContent = selectedText;
+                }
+
+                // Close dropdown
+                filterContainer.classList.remove('open');
+                dropdownMenu.classList.remove('show');
+                filterBtn.setAttribute('aria-expanded', 'false');
+
+                // Trigger filter and render
+                currentFilterType = selectedVal;
+                filterAndRenderRaids();
+            });
+        });
+    }
+
+    function resetTypeFilter() {
+        currentFilterType = 'all';
+        const filterContainer = document.getElementById('event-type-filter-container');
+        if (!filterContainer) return;
+        
+        const filterBtnText = document.getElementById('filter-btn-text');
+        if (filterBtnText) {
+            filterBtnText.textContent = 'All Types';
+        }
+        
+        const filterBtn = document.getElementById('filter-type-btn');
+        if (filterBtn) {
+            filterBtn.setAttribute('aria-expanded', 'false');
+        }
+        
+        const dropdownMenu = filterContainer.querySelector('.dropdown-menu');
+        if (dropdownMenu) {
+            dropdownMenu.classList.remove('show');
+        }
+        filterContainer.classList.remove('open');
+
+        const dropdownItems = filterContainer.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            if (item.getAttribute('data-value') === 'all') {
+                item.classList.add('active');
+                item.setAttribute('aria-selected', 'true');
+            } else {
+                item.classList.remove('active');
+                item.setAttribute('aria-selected', 'false');
+            }
+        });
+        
+        filterAndRenderRaids();
+    }
+
+    /* ==========================================================================
        7. Initialize Application
        ========================================================================== */
     initializeTheme();
     initCalendar();
+    initDropdownFilter();
     initMobileScrollMultiplier();
     routePage();
 });
