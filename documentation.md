@@ -100,6 +100,7 @@ events/
   * **Narrow Breakpoint Row Wrapping**: Standardized styling so both buttons align on a single row down to a very narrow mobile screen size of `380px`, where they stack vertically.
   * **Routing Resets**: Programmed SPA hash routing to reset active filters to "All Types" whenever deep links (e.g. `#raid-3`) are resolved, preventing target element resolution failures.
   * **Event Notes Section**: Added a new SPA page section (`#notes`) that dynamically queries all event notes listings from `raids.json` and renders interactive cards, linking them to local markdown pages and deep-linking back to their Campaign Roadmap cards.
+  * **Same-Tab Note Links**: Configured all local `"notes"` links to open in the same tab so that the back button inside the markdown renderer correctly returns the user to the portal without leaving residual tabs open.
 
 ### 🚀 v1.6.0 — Campaign Calendar, Floating Controls & Swipe Boost
 * **Features:**

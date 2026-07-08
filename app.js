@@ -267,8 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const notesLink = document.createElement('a');
             notesLink.className = 'raid-link';
             notesLink.href = `render.html?file=${encodeURIComponent(notesUrl)}`;
-            notesLink.target = '_blank';
-            notesLink.rel = 'noopener noreferrer';
             notesLink.innerHTML = `
                 <span>View Notes</span>
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -534,8 +532,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (linkName.toLowerCase() === 'notes') {
                         anchor.href = `render.html?file=${encodeURIComponent(url)}`;
-                        anchor.target = '_blank';
-                        anchor.rel = 'noopener noreferrer';
                         anchor.innerHTML = `
                             <span>View Notes</span>
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
