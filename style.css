@@ -1063,6 +1063,11 @@ body.light-theme .privacy-disclaimer {
     font-weight: 600;
     color: var(--accent);
     align-self: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.resource-link-btn:last-of-type {
+    margin-bottom: 0;
 }
 
 .link-arrow {
