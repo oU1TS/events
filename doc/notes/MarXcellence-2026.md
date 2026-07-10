@@ -23,6 +23,6 @@
 
  ## Workshop-1
 
- - Slides [ver-1](https://drive.google.com/open?id=1xdesjwK9TnDs6fqdVF-0rPzafr953aHa&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29901705/MarXcellence.Workshop-1.slides.ver-1.pdf) | ...
+ - Slides [ver-1](https://drive.google.com/open?id=10wn1JOFha8XsD5WY2QTqIpDFEEYymPfT&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29901705/MarXcellence.Workshop-1.slides.ver-1.pdf) | ...
  - Audio [YT](https://www.youtube.com/watch?v=C9JxIxrDsH0) / [mirror](https://t.me/b1tranger_stash/15?comment=1049)
- - Notes 
+ - Notes [PDF](https://drive.google.com/open?id=1xdesjwK9TnDs6fqdVF-0rPzafr953aHa&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29905271/MarXcellence.Workshop-1.handnote.pdf)
