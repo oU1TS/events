@@ -1,0 +1,70 @@
+name: Event Notification & Alerting Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'raids.json'
+      - 'events/raids.json'
+  schedule:
+    # Trigger daily at 06:00 AM UTC (12:00 PM BST) to scan for deadlines
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  dispatch-notifications:
+    name: Dispatch Alerts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Dispatch Push Notification
+        env:
+          ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
+          PLATFORM_BASE_URL: 'https://ou1ts.github.io/events/' # Customize to your production domain
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            node .github/scripts/send-push.js --deadline-check
+          else
+            node .github/scripts/send-push.js
+          fi
+
+      - name: Commit & Push synchronization updates
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Detect if tracker.json is in workspace root or events subdirectory
+          TRACKER_FILE=""
+          if [ -f "tracker.json" ]; then
+            TRACKER_FILE="tracker.json"
+          elif [ -f "events/tracker.json" ]; then
+            TRACKER_FILE="events/tracker.json"
+          fi
+          
+          if [ -n "$TRACKER_FILE" ]; then
+            git add "$TRACKER_FILE"
+            # Commit only if changes exist
+            if ! git diff --cached --quiet; then
+              git commit -m "chore: update tracking registry states [skip ci]"
+              git push
+              echo "Changes to $TRACKER_FILE successfully pushed."
+            else
+              echo "No changes in $TRACKER_FILE detected. Skipping commit."
+            fi
+          else
+            echo "Warning: tracker.json was not found, nothing to commit."
+          fi

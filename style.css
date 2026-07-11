@@ -2005,3 +2005,184 @@ body.light-theme .day-events-overlay {
     font-size: 1.25rem;
     margin-bottom: 1.25rem;
 }
+
+/* ==========================================================================
+   9. Premium Glassmorphic Notification System (Toast)
+   ========================================================================== */
+.toast-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 380px;
+    max-width: calc(100vw - 4rem);
+    pointer-events: auto;
+}
+
+.premium-toast {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
+    padding: 1.25rem;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, border-color 0.3s ease;
+    animation: toast-slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.premium-toast:hover {
+    border-color: rgba(var(--accent-rgb), 0.4);
+    box-shadow: var(--glow-shadow);
+}
+
+.toast-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-gradient);
+    z-index: 1;
+}
+
+.toast-content-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.toast-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+}
+
+.toast-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.toast-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 1rem;
+    flex-grow: 1;
+}
+
+.toast-close {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    line-height: 1;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color var(--transition-speed) ease, transform var(--transition-speed) ease;
+    padding: 0 0.25rem;
+}
+
+.toast-close:hover {
+    color: var(--text-primary);
+    transform: scale(1.15);
+}
+
+.toast-body {
+    margin-bottom: 1rem;
+}
+
+.toast-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.toast-text strong {
+    color: var(--text-primary);
+}
+
+.toast-venue {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+.toast-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.toast-btn {
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    transition: transform var(--transition-speed) ease, opacity var(--transition-speed) ease, background-color var(--transition-speed) ease;
+}
+
+.toast-btn-primary {
+    background: var(--accent-gradient);
+    color: var(--bg-primary);
+}
+
+.toast-btn-primary:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+.toast-btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.toast-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--border-hover);
+}
+
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--accent);
+    width: 100%;
+    transform-origin: left;
+    animation: toast-timeout 12s linear forwards;
+    z-index: 1;
+}
+
+.toast-dismissing {
+    transform: translateX(120%) scale(0.9);
+    opacity: 0;
+}
+
+@keyframes toast-slide-in {
+    from {
+        transform: translateX(120%) translateY(0);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toast-timeout {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}

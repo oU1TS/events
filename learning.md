@@ -15,6 +15,9 @@ The application is built entirely on raw, vanilla web standards (**HTML5, CSS3, 
    * [Interactive Campaign Calendar Controller](#interactive-campaign-calendar-controller)
    * [Custom Category Dropdown Filter](#custom-category-dropdown-filter)
    * [Mobile Velocity Scroll Multiplier](#mobile-velocity-scroll-multiplier)
+   * [Client-Side Caching & Local Storage Engine](#client-side-caching--local-storage-engine)
+   * [OneSignal Web Push Integration & Background Workers](#onesignal-web-push-integration--background-workers)
+   * [GitHub Actions Automated Pipeline](#github-actions-automated-pipeline)
 3. [User Experience (UX) Impact Matrix](#3-user-experience-ux-impact-matrix)
 
 ---
@@ -140,6 +143,54 @@ graph TD
 
 ---
 
+### Client-Side Caching & Local Storage Engine
+* **Methods:** `initCacheAndNotifications()`, `checkRegistrationDeadlines()`, `triggerDeadlineNotification()`, `showUiToastNotification()`.
+* **State Keys:** `localStorage.getItem('ev_tracker')`, `localStorage.getItem('ev_alert_sent_[raidNum]')`.
+* **Data Origin:** [tracker.json](tracker.json).
+
+#### How it works:
+1. **Aggressive Cache Bypass:** During initialization, `initCacheAndNotifications()` performs an explicit `fetch('tracker.json', { cache: 'no-cache' })` to download the synchronization registry state directly from the server.
+2. **State Validation:** Checks the local storage key `ev_tracker`. If the remote `eventsCount` is greater than the cached count, it immediately invalidates the local cache parameters.
+3. **Forced Refresh:** Triggered asynchronously, the app re-fetches `raids.json` using `{ cache: 'no-cache' }` to pull the new event data immediately, updating the local storage parameters and rendering fresh cards.
+4. **Deadline Check:** Iterates over the tracker's `activeReminders`. If the client's current date is exactly 1 day prior to a raid's `regEndDate`, it checks if a token flag has been set in `localStorage`. If not, it dispatches notifications and sets the token.
+
+#### UX/Frontend Impact:
+* **Immediate Content Availability:** Guarantees that users receive newly deployed campaigns without waiting for browser asset cache expiry (e.g. up to 24 hours).
+* **Double-layered Alerting:** Shows a premium glassmorphic toast notification on-screen alongside system notifications so the user is guaranteed to see it.
+* **Redundancy Protection:** Commits flags to local storage to block duplicate alerts.
+
+---
+
+### OneSignal Web Push Integration & Background Workers
+* **Files:** [index.html](index.html), [OneSignalSDKWorker.js](OneSignalSDKWorker.js).
+* **SDK:** `OneSignalSDK.page.js`.
+
+#### How it works:
+1. **Page Integration:** `index.html` loads the official CDN-hosted page SDK and runs `OneSignal.init()` with custom theme parameters.
+2. **Background Worker:** A service worker file `OneSignalSDKWorker.js` at the root directory level imports the worker engine script from OneSignal to support background push notifications.
+3. **Localhost Support:** Includes `allowLocalhostAsSecureOrigin: true` to support developers testing local setups.
+
+#### UX/Frontend Impact:
+* Integrates a stylish native-themed opt-in bell button at the bottom-left of the viewport.
+* Enables background message delivery even when the user does not have the website active in any browser tab.
+
+---
+
+### GitHub Actions Automated Pipeline
+* **Files:** [.github/workflows/notify.yml](.github/workflows/notify.yml), [.github/scripts/send-push.js](.github/scripts/send-push.js).
+* **Data Sources:** [raids.json](raids.json), [tracker.json](tracker.json).
+
+#### How it works:
+1. **Push Trigger:** Whenever a new raid is merged into `raids.json`, GHA starts the workflow, runs `send-push.js`, reads the newest entry at index `0`, and sends a OneSignal Push message with credentials read from repository secrets.
+2. **Cron Trigger:** Every morning at `06:00 AM UTC`, a cron schedule triggers the workflow with a `--deadline-check` flag. The script identifies campaigns closing tomorrow and sends reminders.
+3. **State Pushback:** Updates the `activeReminders` and `reminderSent` states inside `tracker.json` and automatically commits/pushes the file back to the repository.
+
+#### UX/Frontend Impact:
+* Automates notification dispatches, removing human error.
+* Synchronizes tracking registries seamlessly.
+
+---
+
 ## 3. User Experience (UX) Impact Matrix
 
 | Component | Code Implementation | Front-end Visual Effect | UX Benefit |
@@ -151,3 +202,6 @@ graph TD
 | **Interactive Calendar** | `initCalendar`, `IntersectionObserver` | Month grids, overlay lists, floating buttons | Combines roadmap timeline overview with single-click card access. |
 | **Category Filter** | `initDropdownFilter` | Dynamic grid updates | Filters out noise to show relevant competitions. |
 | **Scroll Booster** | `initMobileScrollMultiplier` | Accelerated smooth scrolling physics | Fluid list navigation on mobile viewports. |
+| **Local Cache Sync** | `initCacheAndNotifications` | Compares counts/dates with remote | Flushes stale cache data on new raid releases instantly. |
+| **Deadline Alerts** | `checkRegistrationDeadlines` | Premium glassmorphic toasts & system push warnings | Alerts user exactly 1 day before registration closes; prevents duplicate alerts. |
+| **GHA Pipeline** | `send-push.js` & `notify.yml` | Automatic OneSignal API trigger | Sends automated, credentials-secured notifications on new raids or upcoming deadlines. |

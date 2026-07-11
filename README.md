@@ -23,6 +23,10 @@ The core purpose of this initiative is to share updates about academic, tech, an
    * Theme choices automatically persist via `localStorage` and honor system settings.
 8. **Step-by-Step Onboarding:** Clear onboarding checklist inside `#join` to help students link up with maintainers, submit their Student ID verification, and synchronize their WhatsApp chat histories.
 9. **Markdown Notes Integration:** A built-in local Markdown reader (`render.html` + `render.js`) to view delegation guidelines, preparation lists, and checklists directly on the website with theme sync, code highlighting, and LaTeX support.
+10. **Local Cache-First Sync:** Aggressively fetches `tracker.json` using cache-bypassing fetch controls on page load to check remote state parameters against `localStorage` (key: `ev_tracker`), flushing local caches and downloading fresh event roadmap sheets when required.
+11. **On-Screen Glassmorphic Alerts:** Warns users exactly 1 day prior to any registration end date using system web push messages and custom on-screen UI slides, saving token keys locally to avoid duplication.
+12. **Background Push Notification Support:** Integrated OneSignal Web Push SDK page interfaces and globally hosted background service worker execution modules.
+13. **Automated CI/CD Workflows:** Automated GitHub Actions pipeline (`.github/workflows/notify.yml`) triggered on database updates (for new raid announcements) or daily cron schedule (for upcoming registration deadlines) using Node.js REST API scripts.
 
 ---
 
@@ -30,20 +34,27 @@ The core purpose of this initiative is to share updates about academic, tech, an
 
 ```
 events/
-├── index.html           # Main SPA layout skeleton
-├── style.css            # Custom CSS variables, transitions, and responsive grid layouts
-├── app.js               # Route controller, fetch API parsing, and DOM rendering
-├── learning.md          # Comprehensive JS code architecture & learning guide [NEW]
-├── raids.json           # Data file containing event lists (scraped from Phoenix Summit 2026)
-├── render.html          # Local Markdown document rendering viewer
-├── render.js            # Markdown viewer controller and theme synchronization
-├── documentation.md     # Detailed project documentation and architecture specs
+├── .github/
+│   ├── scripts/
+│   │   └── send-push.js     # OneSignal REST API automated Node.js dispatch script
+│   └── workflows/
+│       └── notify.yml       # GHA event notification and alerting pipeline
+├── index.html               # Main SPA layout skeleton (with OneSignal SDK integration)
+├── style.css                # Custom CSS variables, transitions, responsive grids, and toast styles
+├── app.js                   # Route controller, fetch API parsing, caching verification, and local alerts
+├── OneSignalSDKWorker.js     # OneSignal background push message registration service worker
+├── tracker.json             # Metadata synchronization tracking registry
+├── learning.md              # Comprehensive JS code architecture & learning guide
+├── raids.json               # Data file containing event lists (scraped from Phoenix Summit 2026)
+├── render.html              # Local Markdown document rendering viewer
+├── render.js                # Markdown viewer controller and theme synchronization
+├── documentation.md         # Detailed project documentation and architecture specs
 ├── css/
-│   └── render.css       # Markdown renderer theme styling
+│   └── render.css           # Markdown renderer theme styling
 └── doc/
-    ├── idea/            # Initiative brainstorming and mock requirements
-    ├── notes/           # Custom markdown notes linked from event cards
-    └── prompts/         # Historical prompts, logs, and development walkthroughs
+    ├── idea/                # Initiative brainstorming and mock requirements
+    ├── notes/               # Custom markdown notes linked from event cards
+    └── prompts/             # Historical prompts, logs, and development walkthroughs
 ```
 
 ---

@@ -29,17 +29,24 @@ The project is built entirely on raw, lightweight, and modern web standards: **H
 
 ```
 events/
-├── index.html           # Main SPA layout and templates
-├── style.css            # Global stylesheet and responsive design system
-├── app.js               # Main website router and JSON data renderer
-├── learning.md          # Comprehensive JS code learning guide [NEW]
-├── raids.json           # Dynamic data file storing event lists
-├── render.html          # Local Markdown document rendering viewer
-├── render.js            # Markdown parser controller & theme syncing
-├── LICENSE              # Repository license
-├── README.md            # Quick-start project readme
+├── .github/
+│   ├── scripts/
+│   │   └── send-push.js         # OneSignal REST API automated Node.js dispatch script
+│   └── workflows/
+│       └── notify.yml           # GHA event notification and alerting pipeline
+├── index.html                   # Main SPA layout and templates (with OneSignal SDK injection)
+├── style.css                    # Global stylesheet, design system, and custom toast notification CSS
+├── app.js                       # Main router, dynamic JSON loader, caching validation, and local deadline engine
+├── OneSignalSDKWorker.js         # OneSignal background push message registration service worker
+├── tracker.json                 # Metadata synchronization tracking registry
+├── learning.md                  # Comprehensive JS code learning guide
+├── raids.json                   # Dynamic data file storing event lists
+├── render.html                  # Local Markdown document rendering viewer
+├── render.js                    # Markdown parser controller & theme syncing
+├── LICENSE                      # Repository license
+├── README.md                    # Quick-start project readme
 ├── css/
-│   └── render.css       # Markdown viewer stylesheet (KaTeX/Highlight/TOC)
+│   └── render.css               # Markdown viewer stylesheet (KaTeX/Highlight/TOC)
 └── doc/
     ├── idea/
     │   └── Website-Prompt-for-Event-Raiders.md   # Initial specs
@@ -92,11 +99,24 @@ events/
 * **Deep Link Reset Integration:** Navigating directly to a card via a hash link automatically resets the category filter to "All Types", ensuring the targeted card is present in the DOM and accessible for highlighting and scrolling.
 * **Row-Wrap Responsiveness:** Styled to stay in a single row alongside the calendar button until a narrow viewport width of `380px` or less, at which point the buttons stack vertically for optimal touch interactions.
 
+### H. Caching, Web Push & Deadline Alerting Subsystem
+* **Synchronization & Caching:** The static site loads `tracker.json` with `{ cache: 'no-cache' }` upon DOM load, comparing it against `localStorage` (key: `ev_tracker`). If new events exist (e.g. `eventsCount` is greater), it forces a cache-bypassing reload of `raids.json` using `{ cache: 'no-cache' }`.
+* **On-Screen Toast alerts:** A premium glassmorphic toast notification slide-in warning is rendered dynamically if the client clock is exactly 1 day prior to any `RegEndDate` parsed from `tracker.json`'s `activeReminders` list. Commits a unique token to `localStorage` (e.g. `ev_alert_sent_[raidNum]`) to block duplicate triggers.
+* **OneSignal Web Push Integration:** A pre-built `OneSignalSDKWorker.js` service worker and CDN SDK are loaded to facilitate native background push subscriptions across mobile and desktop devices.
+* **Automated CI/CD Workflows:** When merges occur on `raids.json`, GitHub Actions launches a Node.js process `send-push.js` using repository credentials (`ONESIGNAL_APP_ID`, `ONESIGNAL_REST_API_KEY`) to push alerts. The same pipeline scans deadlines daily at `06:00 AM UTC`, sends alerts for tomorrow's deadlines, and pushes updated `tracker.json` states back to git.
+
 ---
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.7.1 — Mobile Scrolling & Responsive Polish (Current)
+### 🚀 v1.8.0 — Client-Side Caching, Web Push & Automated CI/CD Dispatch (Current)
+* **Features:**
+  - **Local Caching Registry**: Added `tracker.json` to monitor total event count and tracking deadlines. `app.js` runs a cache-first validation engine checking remote state using `{ cache: 'no-cache' }` and flushing stale `raids.json` cache parameters asynchronously when new events are pushed.
+  - **Registration Deadline Alerts**: Added check logic exactly 1 day prior to upcoming registration end dates, displaying system push notifications and custom on-screen glassmorphic UI toast alerts. Prevents redundant notifications via `localStorage` token flags.
+  - **OneSignal Web Push Integration**: Configured OneSignal page SDK block in `index.html` and service worker `OneSignalSDKWorker.js` at root.
+  - **Automated GHA Workflows**: Added a Node.js dispatch script (`.github/scripts/send-push.js`) executing on pushes (new raid dispatches) or cron schedule (`0 6 * * *` daily deadline checks), making POST requests to OneSignal REST API and committing tracker sync updates back to git.
+
+### 🚀 v1.7.1 — Mobile Scrolling & Responsive Polish
 * **Features & Bugfixes:**
   * **Optimized Mobile Button Sizing**: Reduced padding, font size, and gap on the Calendar and Event Type filter buttons on mobile viewports to prevent layout overflow.
   * **Hiding Mobile Descriptions**: Hidden the `#raids` section description on mobile viewports to maximize vertical scrolling area.

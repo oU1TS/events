@@ -17,6 +17,32 @@
 
     <!-- Custom CSS Stylesheets -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- OneSignal Web Push Integration -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignal = window.OneSignal || [];
+        OneSignal.push(function () {
+            OneSignal.init({
+                appId: "cff59aa0-39c1-4d35-9560-b23409f6d014", // Replace with your actual OneSignal App ID
+                notifyButton: {
+                    enable: true,
+                    size: 'medium',
+                    position: 'bottom-left',
+                    colors: {
+                        'circle.background': '#d4af37',
+                        'circle.foreground': '#07080b',
+                        'badge.background': '#d4af37',
+                        'badge.foreground': '#07080b',
+                        'badge.bordercolor': '#d4af37',
+                        'button.background': '#d4af37',
+                        'button.foreground': '#07080b'
+                    }
+                },
+                allowLocalhostAsSecureOrigin: true
+            });
+        });
+    </script>
 </head>
 
 <body>

@@ -1,0 +1,21 @@
+{
+  "lastUpdated": "2026-07-12T00:31:59.000Z",
+  "eventsCount": 9,
+  "activeReminders": [
+    {
+      "raidNum": 9,
+      "regEndDate": "2026-07-18",
+      "reminderSent": false
+    },
+    {
+      "raidNum": 5,
+      "regEndDate": "2026-07-19",
+      "reminderSent": false
+    },
+    {
+      "raidNum": 7,
+      "regEndDate": "2026-07-26",
+      "reminderSent": false
+    }
+  ]
+}

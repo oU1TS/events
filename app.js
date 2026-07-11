@@ -183,15 +183,17 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        4. Asynchronous Data Load & Card Render
        ========================================================================== */
-    async function loadPastRaids() {
-        // Prevent double loading or redundant fetches
-        if (pastRaidsData || isDataLoading) return;
+    async function loadPastRaids(options = {}) {
+        // Prevent double loading or redundant fetches unless forced
+        if (pastRaidsData && !options.forceFresh) return;
+        if (isDataLoading) return;
 
         isDataLoading = true;
         
         try {
-            // Asynchronously fetch from separate JSON file
-            const response = await fetch('raids.json');
+            // Fetch from separate JSON file, force bypass browser cache if requested
+            const fetchOptions = options.forceFresh ? { cache: 'no-cache' } : {};
+            const response = await fetch('raids.json', fetchOptions);
             
             if (!response.ok) {
                 throw new Error(`Failed to load data (HTTP ${response.status})`);
@@ -975,10 +977,233 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
-       7. Initialize Application
+       7. Caching Registry & Client-Side Notifications Engine
+       ========================================================================== */
+    async function initCacheAndNotifications() {
+        try {
+            // Aggressive cache fetch: bypass browser asset cache for tracker.json
+            const trackerResponse = await fetch('tracker.json', { cache: 'no-cache' });
+            if (!trackerResponse.ok) {
+                throw new Error(`Failed to fetch tracker.json: ${trackerResponse.status}`);
+            }
+            const remoteTracker = await trackerResponse.json();
+            
+            // State validation in localStorage
+            const localTrackerStr = localStorage.getItem('ev_tracker');
+            let localTracker = { eventsCount: 0, lastUpdated: '' };
+            if (localTrackerStr) {
+                try {
+                    localTracker = JSON.parse(localTrackerStr);
+                } catch (e) {
+                    console.error('Error parsing local tracker, resetting cache', e);
+                }
+            }
+
+            const hasNewerCount = remoteTracker.eventsCount > localTracker.eventsCount;
+            const hasNewerUpdate = remoteTracker.lastUpdated !== localTracker.lastUpdated;
+
+            if (hasNewerCount || hasNewerUpdate) {
+                console.log('Stale cache detected. Flushing local cache parameters and fetching new raids...');
+                // Update local storage configuration parameters
+                localStorage.setItem('ev_tracker', JSON.stringify({
+                    eventsCount: remoteTracker.eventsCount,
+                    lastUpdated: remoteTracker.lastUpdated
+                }));
+                // Force fresh load of raids.json
+                await loadPastRaids({ forceFresh: true });
+            } else {
+                // Load using standard cache profile
+                await loadPastRaids();
+            }
+
+            // Registration Deadline Evaluation
+            if (remoteTracker.activeReminders && Array.isArray(remoteTracker.activeReminders)) {
+                checkRegistrationDeadlines(remoteTracker.activeReminders);
+            }
+
+        } catch (error) {
+            console.error('Error during cache synchronization and deadline check:', error);
+            // Fallback: load raids.json normally if tracker fails
+            await loadPastRaids();
+        }
+    }
+
+    function checkRegistrationDeadlines(activeReminders) {
+        if (!activeReminders || activeReminders.length === 0) return;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        activeReminders.forEach(reminder => {
+            if (!reminder.regEndDate) return;
+
+            // Parse YYYY-MM-DD to local midnight
+            const parts = reminder.regEndDate.split('-');
+            if (parts.length !== 3) return;
+
+            const regDate = new Date(
+                parseInt(parts[0], 10),
+                parseInt(parts[1], 10) - 1,
+                parseInt(parts[2], 10)
+            );
+            regDate.setHours(0, 0, 0, 0);
+
+            // Compute difference in days
+            const diffTime = regDate.getTime() - today.getTime();
+            const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+            // exactly 1 day prior
+            if (diffDays === 1) {
+                const storageKey = `ev_alert_sent_${reminder.raidNum}`;
+                if (!localStorage.getItem(storageKey)) {
+                    // Trigger warning
+                    triggerDeadlineNotification(reminder.raidNum, reminder.regEndDate);
+                    // Commit token flag to localStorage to prevent redundant notifications
+                    localStorage.setItem(storageKey, 'true');
+                }
+            }
+        });
+    }
+
+    function triggerDeadlineNotification(raidNum, regEndDate) {
+        let raidTitle = "Upcoming Raid";
+        let raidVenue = "See details";
+
+        if (pastRaidsData) {
+            const raid = pastRaidsData.find(r => r.Raid_Num === raidNum);
+            if (raid) {
+                raidTitle = raid.title;
+                raidVenue = raid.venue;
+            }
+        }
+
+        const notificationTitle = "Raid Registration Deadline!";
+        const notificationBody = `Registration for "${raidTitle}" closes tomorrow! Venue: ${raidVenue}.`;
+
+        // 1. System Push notification (HTML5 API)
+        if ("Notification" in window) {
+            if (Notification.permission === "granted") {
+                showSystemNotification(notificationTitle, notificationBody, raidNum);
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        showSystemNotification(notificationTitle, notificationBody, raidNum);
+                    }
+                });
+            }
+        }
+
+        // 2. Fallback Premium UI Toast notification
+        showUiToastNotification(raidTitle, raidVenue, raidNum);
+    }
+
+    function showSystemNotification(title, body, raidNum) {
+        try {
+            const notification = new Notification(title, {
+                body: body,
+                icon: 'favicon.ico',
+                tag: `raid-deadline-${raidNum}`
+            });
+
+            notification.onclick = function() {
+                window.focus();
+                window.location.hash = `#raid-${raidNum}`;
+                scrollToRaid(raidNum);
+                notification.close();
+            };
+        } catch (e) {
+            console.error('System notification execution failed:', e);
+        }
+    }
+
+    function showUiToastNotification(raidTitle, raidVenue, raidNum) {
+        let toastContainer = document.getElementById('toast-notification-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-notification-container';
+            toastContainer.className = 'toast-container';
+            document.body.appendChild(toastContainer);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = 'premium-toast';
+        toast.id = `deadline-toast-${raidNum}`;
+        toast.setAttribute('role', 'alert');
+
+        toast.innerHTML = `
+            <div class="toast-glow"></div>
+            <div class="toast-content-wrapper">
+                <div class="toast-header">
+                    <span class="toast-icon">⏳</span>
+                    <span class="toast-title">Deadline Alert</span>
+                    <button class="toast-close" aria-label="Close Alert">&times;</button>
+                </div>
+                <div class="toast-body">
+                    <p class="toast-text">Registration for <strong>${escapeHtml(raidTitle)}</strong> closes tomorrow!</p>
+                    <p class="toast-venue">📍 ${escapeHtml(raidVenue)}</p>
+                </div>
+                <div class="toast-actions">
+                    <button class="toast-btn toast-btn-primary" data-raid-num="${raidNum}">View Raid</button>
+                    <button class="toast-btn toast-btn-secondary toast-close-btn">Dismiss</button>
+                </div>
+            </div>
+            <div class="toast-progress"></div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        const closeBtn = toast.querySelector('.toast-close');
+        const dismissBtn = toast.querySelector('.toast-close-btn');
+        const viewBtn = toast.querySelector('.toast-btn-primary');
+
+        const dismissToast = () => {
+            toast.classList.add('toast-dismissing');
+            toast.addEventListener('transitionend', () => {
+                toast.remove();
+                if (toastContainer.children.length === 0) {
+                    toastContainer.remove();
+                }
+            });
+        };
+
+        closeBtn.addEventListener('click', dismissToast);
+        dismissBtn.addEventListener('click', dismissToast);
+        viewBtn.addEventListener('click', () => {
+            window.location.hash = `#raid-${raidNum}`;
+            scrollToRaid(raidNum);
+            dismissToast();
+        });
+
+        // Auto dismiss after 12 seconds
+        const autoDismissTimer = setTimeout(dismissToast, 12000);
+
+        toast.addEventListener('mouseenter', () => {
+            toast.querySelector('.toast-progress').style.animationPlayState = 'paused';
+            clearTimeout(autoDismissTimer);
+        });
+
+        toast.addEventListener('mouseleave', () => {
+            toast.querySelector('.toast-progress').style.animationPlayState = 'running';
+            setTimeout(dismissToast, 6000);
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    /* ==========================================================================
+       8. Initialize Application
        ========================================================================== */
     initializeTheme();
     initCalendar();
     initDropdownFilter();
+    initCacheAndNotifications();
     routePage();
 });
