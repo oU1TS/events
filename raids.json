@@ -1,5 +1,33 @@
 [
   {
+    "Raid_Num": 9,
+    "title": "Idea Competition 2026",
+    "Status": "Future",
+    "Type": "Idea & Bizcomps",
+    "dateRange": "Application Deadline: 18 July 2026",
+    "startDate": "2026-07-09",
+    "endDate": "2026-07-18",
+    "RegEndDate": "2026-07-18",
+    "venue": "Online / Partner Universities",
+    "fee": "Free",
+    "details": "Organized by the Innovation, Creativity & Entrepreneurship (ICE) Center at the University of Dhaka under the 'Capacity Building of Universities in Bangladesh to Promote Youth Entrepreneurship' project, in partnership with the UGC and MoE, and supported by KOICA Bangladesh and a South Korean PMC team. The competition aims to identify innovative, impactful, and commercially viable ideas/solutions from university students and alumni across Bangladesh and guide them into impact enterprises. Shortlisted applicants enter an Entrepreneurship Education and Development program.",
+    "subEvents": [
+      {
+        "title": "Training, Mentorship & Incubation Phase",
+        "details": "The 50 shortlisted applicants (batch 01) receive a complimentary 318 hours of training, mentorship, and industry experience program leading to Certificates and Credentials."
+      },
+      {
+        "title": "Seed Funding & Prize Valuation",
+        "details": "Upon successful completion of the training, the Top 14 ideas stand to access a BDT 55 Lac seed funding pool: 1st Prize (BDT 10 lac), 2nd Prize (BDT 6 lac), 3rd Prize (BDT 5 lac), and 4th to 14th Prizes (BDT 3 lac each). Additional prizes will be awarded to the top 3 selected applicants, alongside need-based allowances and strategic stakeholder networking support."
+      }
+    ],
+    "links": {
+      "Application Form": "https://docs.google.com/forms/d/e/1FAIpQLSfhX7Awu_6PJ2pSMi-a5WGXxBi6tJqmB4wtYpdc-r1rkC_xLQ/viewform",
+      "Facebook Post": "https://www.facebook.com/share/1BbXtiksEQ/",
+      "Facebook Event": "https://www.facebook.com/share/1KqFmejHhz/"
+    }
+  },
+  {
     "Raid_Num": 8,
     "title": "raylib 6.x gamejam",
     "Status": "Future",
@@ -61,7 +89,7 @@
     "Raid_Num": 6,
     "title": "Techathon Nationals & Rover Summit 2026",
     "Status": "Future",
-    "Type": "Conferences",
+    "Type": "Hackathons",
     "dateRange": "10 - 11 July 2026",
     "startDate": "2026-07-10",
     "endDate": "2026-07-11",
@@ -161,7 +189,7 @@
     "Raid_Num": 3,
     "title": "MarXcellence 2026 (International Inter-University Digital Marketing Case Competition)",
     "Status": "Future",
-    "Type": "Bizcomps",
+    "Type": "Idea & Bizcomps",
     "dateRange": "Workshop 1 Begins: 10 July, 2026",
     "startDate": "2026-07-10",
     "endDate": "2026-07-10",
