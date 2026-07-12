@@ -19,7 +19,7 @@
  
  ## Case-Related stuff
  - eRin Device App on Playstore: [link](https://play.google.com/store/apps/details?id=com.erindevice.app&hl=en) | [Screenshots](https://drive.google.com/open?id=1Kj0YeDFJquBrrT9wo1lzJ9nJ_LIPAMo8&usp=drive_fs) | [Details](https://drive.google.com/open?id=1voO4wbxpvCnedYMo_xvydUtfj21qsF3h&usp=drive_fs)
- - Dhaka Bank ??
+ - Dhaka Bank: [website](https://dhakabank.com.bd/) | [eRin Device App](https://dhakabank.com.bd/e-rin-device-app/) / [mirror](https://drive.google.com/open?id=1s_Chjscve3XqWJ9LwX3xuu5P9w6ZLgrh&usp=drive_fs) | [eRin FAQ](https://dhakabank.com.bd/e-rin-faq-bn/) / [mirror](https://drive.google.com/open?id=123cCyoBPXMOsxlrpMUIpEc88JtfevO-9&usp=drive_fs) | [eRin Privacy Policy](https://dhakabank.com.bd/privacy-policy-e-rin-bn/) [mirror](https://drive.google.com/open?id=1as0M7uNVzFIasxcX-c76JPJA3CtAIKZe&usp=drive_fs) | [eRin Terms and Conditions](https://dhakabank.com.bd/terms-and-conditions-of-e-rin-bn/) [mirror](https://drive.google.com/open?id=1F54erkX5k1qodDbUvReSqx1X9zXkv-rO&usp=drive_fs) | [eRin Specific Terms](https://dhakabank.com.bd/e-rin-specific-terms-conditions-bn/) / [mirror](https://drive.google.com/open?id=1QnAcgvM_37HTfXxytmP2hDLqq3jX6fxw&usp=drive_fs)
  
  
 
