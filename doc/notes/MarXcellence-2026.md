@@ -19,7 +19,7 @@
  
  ## Case
  
- Email: [PDF](https://drive.google.com/open?id=1FzrmdjksEsXoCYx52zqL9sPMe1fBv8O6&usp=drive_fs) / [mirror]()
+ Email: [PDF](https://drive.google.com/open?id=1FzrmdjksEsXoCYx52zqL9sPMe1fBv8O6&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29952264/Case_MarXcellence.2026_Round.1.Case.pdf)
  
  
  Case-Related stuff
