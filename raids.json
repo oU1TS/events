@@ -1,5 +1,70 @@
 [
   {
+    "Raid_Num": 11,
+    "title": "National STEAM Carnival",
+    "Status": "Future",
+    "Type": "Olympiad / Carnival",
+    "dateRange": "13 August - 15 August 2026",
+    "startDate": "2026-08-13",
+    "endDate": "2026-08-15",
+    "RegEndDate": "Not Specified",
+    "venue": "Bangladesh University of Engineering and Technology (BUET), Dhaka",
+    "fee": "Olympiads: 200 BDT; Creativity Exhibition: 200 BDT (Each); Photography: 300 BDT",
+    "details": "Organized by Nexorah, the National STEAM Carnival at BUET is a multi-day event designed for curious learners, students, and skill-builders. It spans multiple disciplines across STEAM fields and caters to various age groups from Elementary (Play - Class 1) through Senior (Class 11 - Undergrad). Prizes include medals, crests, certificates, and gifts for the top performers.",
+    "subEvents": [
+      {
+        "title": "Olympiads",
+        "details": "Subject-based competitive exams spanning Physics, Chemistry, Biology, General Science, ICT, Earth Science, and Math."
+      },
+      {
+        "title": "Creativity Exhibition",
+        "details": "Includes Project Displays, Wall Magazines, Scrapbook Displays, Web Design & Development showcases, and Craftwork (for Elementary to Junior categories)."
+      },
+      {
+        "title": "Art & Photography",
+        "details": "Features an Art Exhibition and Art Competition (Elementary to Junior), alongside Mobile and DSLR Photography contests, and Instant Story Writing."
+      },
+      {
+        "title": "Curiosity Zone",
+        "details": "Interactive workshops, theme-based food stalls, and merchandise stalls for attendees to explore."
+      }
+    ],
+    "links": {
+      "Facebook Event": "https://www.facebook.com/events/bangladesh-university-of-engineering-and-technology-buet/national-steam-carnival/1724986262240379/",
+      "AllEvents Page": "https://allevents.in/dhaka/national-steam-carnival/200030057778229"
+    }
+  },
+  {
+    "Raid_Num": 10,
+    "title": "Cloud Technical Series: Agentic AI Edition",
+    "Status": "Future",
+    "Type": "Conferences / Webinars",
+    "dateRange": "July 23, 2026",
+    "startDate": "2026-07-23",
+    "endDate": "2026-07-23",
+    "RegEndDate": "2026-07-23",
+    "venue": "Online",
+    "fee": "Free",
+    "details": "The Cloud Technical Series: Agentic AI Edition is a definitive virtual event focusing on the blueprint for building AI agents capable of handling millions of interactions. The sessions provide a battle-tested guide diving deep into top agent design patterns, complex build-versus-buy trade-offs, and orchestrating diverse models (including Gemini, Claude, and open source) to deliver peak performance at scale. Attendees will learn how to seamlessly transition from early prototypes to reliable, trustworthy global production systems.",
+    "subEvents": [
+      {
+        "title": "Orchestrating Enterprise-Grade AI Agents",
+        "details": "Learn how to orchestrate diverse models while managing costs and performance. The session covers building a unified architecture utilizing a single endpoint to switch models via simple configurations, backed by proven evaluation frameworks."
+      },
+      {
+        "title": "Agentic Data Cloud & Gemini Enterprise",
+        "details": "Explore advancements in the Agentic Data Cloud to streamline workflows, including Universal Context and Multimodal AI Ready Data. A high-level demo will also showcase the transformative power of pairing Gemini Enterprise with Google Workspace to eliminate operational friction and boost cross-functional collaboration."
+      },
+      {
+        "title": "Bridging the \"Last Mile\" Security Gap",
+        "details": "Address the stakes of security and compliance for autonomous agents. Learn from a retrospective of recurring failure patterns identified across over 70 real-world engagements, and explore core principles of identity, authentication, and authorization for agents."
+      }
+    ],
+    "links": {
+      "Official Event Portal": "https://cloudonair.withgoogle.com/events/cts-agentic-ai-jul-26"
+    }
+  },
+  {
     "Raid_Num": 9,
     "title": "Idea Competition 2026",
     "Status": "Future",
@@ -31,7 +96,7 @@
     "Raid_Num": 8,
     "title": "raylib 6.x gamejam",
     "Status": "Future",
-    "Type": "Game Jams",
+    "Type": "Contests",
     "dateRange": "06 July - 18 July 2026",
     "startDate": "2026-07-06",
     "endDate": "2026-07-18",
@@ -261,7 +326,7 @@
     "Raid_Num": 1,
     "title": "Phoenix Summit 2026",
     "Status": "Past",
-    "Type": "Conferences",
+    "Type": "Conferences / Webinars",
     "dateRange": "June 23 - June 27, 2026",
     "startDate": "2026-06-23",
     "endDate": "2026-06-27",

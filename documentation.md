@@ -95,7 +95,7 @@ events/
 * **Overlap & Redirection**: Displays event counts at the top-right corner of highlighted day cells when multiple events overlap. Clicking a highlighted cell slides up a vertical list overlay of event titles. Clicking a title closes the modal and deep-links directly to the card using `#raid-<number>`.
 
 ### G. Event Type Dropdown Filtering & Row Wrapping
-* **Category Filtering:** A custom dropdown button container is placed next to the "Calendar View" button. Selecting a type filters the cards displayed in the DOM dynamically, updating based on categories: Hackathons, Programming, Conferences, Congress, Bug Bounties / CTF, Game Jams, Idea & Bizcomps.
+* **Category Filtering:** A custom dropdown button container is placed next to the "Calendar View" button. Selecting a type filters the cards displayed in the DOM dynamically, updating based on categories: Hackathons, Programming, Conferences / Webinars, Congress, Bug Bounties / CTF, Game Jams, Idea & Bizcomps, Olympiad / Carnival.
 * **Deep Link Reset Integration:** Navigating directly to a card via a hash link automatically resets the category filter to "All Types", ensuring the targeted card is present in the DOM and accessible for highlighting and scrolling.
 * **Row-Wrap Responsiveness:** Styled to stay in a single row alongside the calendar button until a narrow viewport width of `380px` or less, at which point the buttons stack vertically for optimal touch interactions.
 
