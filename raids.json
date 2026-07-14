@@ -9,8 +9,8 @@
     "endDate": "2026-08-15",
     "RegEndDate": "Not Specified",
     "venue": "Bangladesh University of Engineering and Technology (BUET), Dhaka",
-    "fee": "Olympiads: 200 BDT; Creativity Exhibition: 200 BDT (Each); Photography: 300 BDT",
-    "details": "Organized by Nexorah, the National STEAM Carnival at BUET is a multi-day event designed for curious learners, students, and skill-builders. It spans multiple disciplines across STEAM fields and caters to various age groups from Elementary (Play - Class 1) through Senior (Class 11 - Undergrad). Prizes include medals, crests, certificates, and gifts for the top performers.",
+    "fee": "Olympiads: 200 BDT; Creativity Exhibition: 200 BDT (Each); Photography: 300 BDT. Stall Packages: General (BDT 10,000) / Food (BDT 15,000) / Booth (BDT 35,000)Contests.",
+    "details": "Organized by Nexorah, the National STEAM Carnival at BUET is a multi-day event designed for curious learners, students, and skill-builders. It spans multiple disciplines across STEAM fields and caters to various age groups from Elementary (Play - Class 1) through Senior (Class 11 - Undergrad). Prizes include medals, crests, certificates, and gifts for the top performers. The 3-day national carnival is projected to host 3,000+ audience members and 50+ institutions, engaging youth aged 6 to 25Contests.",
     "subEvents": [
       {
         "title": "Olympiads",
@@ -26,7 +26,11 @@
       },
       {
         "title": "Curiosity Zone",
-        "details": "Interactive workshops, theme-based food stalls, and merchandise stalls for attendees to explore."
+        "details": "Features interactive workshops alongside a theme-based food stall and a merchandise stall."
+      },
+      {
+        "title": "Stall & Booth PartnershipsContests",
+        "details": "Brands and institutions can book stall spaces until August 9, 2026, for brand visibility among students and parentsContests. Options include 6x6 ft General Stalls for BDT 10,000, 8x8 ft Food Stalls for BDT 15,000, and 10x10 ft Booths for BDT 35,000[cite: 2]. Packages include on-site banner placements, social media static posts, and mentions in the post-event highlight video across the 3-day durationContests."
       }
     ],
     "links": {
