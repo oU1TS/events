@@ -6,6 +6,11 @@
 
  ---
 
+## Event Realization
+
+- All teammates need ample sleep. Fix sleep schedule for permanent solution.
+- A 6 Hour+ headroom should be ensured before any submission deadline.
+- Proper planning for presentation and visual decisions.
 
  ---
 
