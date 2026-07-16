@@ -13,6 +13,13 @@
 
 ---
 
+## Event Realizations
+- AI Hackathons usually take place in their own ecosystem. That is, you will need to use their tools and platforms, and the provided AI credits.
+- Take note of multiple tracks like this one. And the referral system for more credits.
+- Almost no hackathons ask you to make passion projects. They require industry solutions. (But of course you can make use of their credits to do your own thing.)
+
+---
+
 ## Concepts
 - ROCm: the open-source GPU compute stack ROCm is AMD's answer to CUDA, fully open-source, covering the full stack from compiler to runtime. [doc](https://rocm.docs.amd.com/en/latest/what-is-rocm.html)
 
