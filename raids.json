@@ -1,5 +1,33 @@
 [
   {
+    "Raid_Num": 12,
+    "title": "Biggest IELTS & UK Higher Education Expo 2026",
+    "Status": "Future",
+    "Type": "Expos / Fairs",
+    "dateRange": "1 August 2026",
+    "startDate": "2026-08-01",
+    "endDate": "2026-08-01",
+    "RegEndDate": "2026-08-01",
+    "venue": "British Council Bangladesh, Dhaka",
+    "fee": "Free",
+    "details": "Hosted by Smart BeeE, the Biggest IELTS & UK Higher Education Expo 2026 brings together official representatives from leading UK universities, expert counsellors, and aspiring students under one roof. The event is designed to help students discover suitable courses, understand English requirements, and evaluate institutional eligibility criteria (academic background, intake deadlines, and profile strength). Visitors can access direct profile assessments, submit applications on the spot, and explore realistic scholarship opportunities.",
+    "subEvents": [
+      {
+        "title": "University Delegate Consultations & On-the-Spot Assessment",
+        "details": "Connect directly with UK university representatives for real-time file evaluations, quick offer letters, and immediate application processing."
+      },
+      {
+        "title": "Exclusive Expo Offers & Giveaways",
+        "details": "Includes opportunities for scholarships up to £10,000, 100% cashback on IELTS fees, a free air ticket, and free accommodation (terms and conditions apply). General perks include a complimentary visitor gift pack, hourly Fantasy Kingdom ticket vouchers, and a free laptop for the first 10 eligible students."
+      }
+    ],
+    "links": {
+      "Facebook Share Link": "https://www.facebook.com/share/18HP8cErha/",
+      "Registration Portal": "https://smartbeee.co.uk/event/ielts-uk-higher-education-expo/",
+      "WhatsApp Contact": "https://wa.me/+8801317700050"
+    }
+  },
+  {
     "Raid_Num": 11,
     "title": "National STEAM Carnival",
     "Status": "Future",
