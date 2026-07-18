@@ -14,7 +14,7 @@ The core purpose of this initiative is to share updates about academic, tech, an
 
 ## Wish to Contribute? Make a PR!
 
-Make sure of these Types of events currently added to the filter. If you wish to add more, reach out to me.
+Make sure of these Types of events currently added to the filter. <mark>If you wish to add more, reach out to me.</mark>
 
 <img width="228" height="457" alt="Screenshot 2026-07-18 144934" src="https://github.com/user-attachments/assets/c222dca6-b012-4b60-8327-d92173caadbe" />
 
