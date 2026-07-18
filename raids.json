@@ -1,5 +1,42 @@
 [
   {
+    "Raid_Num": 13,
+    "title": "INTERNATIONAL YOUTH IMPACT & INNOVATION SUMMIT 2026",
+    "Status": "Future",
+    "Type": "Summit / Competitions",
+    "dateRange": "24th September, 2026",
+    "startDate": "2026-09-24",
+    "endDate": "2026-09-24",
+    "RegEndDate": "2026-09-10",
+    "venue": "Dhaka College, Bangladesh",
+    "fee": "Completely Free",
+    "details": "A flagship initiative by YouthVerse Union designed to create a high-impact platform for youth across Bangladesh and beyond. The one-day mega campus event integrates career development sessions, innovation challenges, mentorship opportunities, panel discussions, and a large-scale online quiz competition. The objective is to empower young leaders, innovators, and change-driven students to think beyond academics, develop solutions, and prepare themselves for future opportunities.",
+    "subEvents": [
+      {
+        "title": "INNOVATION PITCH CHALLENGE",
+        "details": "A platform to present and validate solutions for real-world problems. Open to Solo and Team categories (max 5 members). National participants submit a 3-minute video pitch by September 10, 2026, with the top 5 solo and top 5 teams advancing to the Final Pitch Round at Dhaka College. International participants submit a 3-minute video pitch, followed by a detailed 7–10 minute presentation for shortlisted candidates."
+      },
+      {
+        "title": "ONLINE QUIZ COMPETITION",
+        "details": "A fully online 25-minute, 40-question MCQ competition hosted on Google Forms in Bangla & English. Segments include PCM Challenge, General Knowledge, Business & Entrepreneurship, English, and Biology. Features a Selection Round on September 12, 2026, advancing the Top 50 per segment to the Final Round on September 18, 2026, where the top 5 winners are determined."
+      },
+      {
+        "title": "Ambassador & Club Programs",
+        "details": "Includes the International Ambassador Program for global promotion, the Campus Ambassador Program for nationwide reach across school, college, and university campuses in Bangladesh, and the Club Partners program for institutional collaborations."
+      }
+    ],
+    "links": {
+      "Facebook Source Post": "https://www.facebook.com/share/1ES3J7EGj2/",
+      "National Participant Registration": "https://forms.gle/ELJ7R58oRkFCSbWKA",
+      "International Participant Registration": "https://forms.gle/d1YJkKGrgRghYyna8",
+      "YouthVerse Union Official Community": "https://www.facebook.com/share/g/1DzMr9fLbV/?mibextid=wwXIfr",
+      "International Ambassador Application": "https://forms.gle/aYstYzYCtP64pMMB9",
+      "Campus Ambassador Application": "https://forms.gle/GC8ZX9bLhsem6bCA6",
+      "Club Partners Application": "https://forms.gle/4VuroyjB5t9PRS1b7"
+    }
+  }
+,
+  {
     "Raid_Num": 12,
     "title": "Biggest IELTS & UK Higher Education Expo 2026",
     "Status": "Future",
