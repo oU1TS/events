@@ -1,3 +1,6 @@
+
+<img width="1093" height="511" alt="Screenshot 2026-07-18 154053" src="https://github.com/user-attachments/assets/831860df-9bd4-49c9-ba89-1cb7a9e3f378" />
+
 # UITS Event Raiders
 
 A clean, modern, and highly responsive Single Page Application (SPA) built for the **UITS Event Raiders** initiative. 
@@ -6,6 +9,20 @@ The core purpose of this initiative is to share updates about academic, tech, an
 
 👉 **Read the full [Technical Documentation & Version History](documentation.md)** for detailed structural blueprints, SPA routing mechanisms, and code designs.
 👉 **Read the [JavaScript Code Learning Guide](learning.md)** for an in-depth code architecture walkthrough of the app's dynamic scripts.
+
+---
+
+## Wish to Contribute? Make a PR!
+
+Make sure of these Types of events currently added to the filter. If you wish to add more, reach out to me.
+
+<img width="228" height="457" alt="Screenshot 2026-07-18 144934" src="https://github.com/user-attachments/assets/c222dca6-b012-4b60-8327-d92173caadbe" />
+
+Then follow these steps:
+
+[<img width="1488" height="837" alt="OmniPotato23 - UITS Event Raiders contribution guide  chNWVMZQI2w - 1488x837 - 0m03s" src="https://github.com/user-attachments/assets/6d61ad45-1e4b-48e8-b977-2d86f4772bce" />
+](https://youtu.be/chNWVMZQI2w)
+
 
 ---
 
