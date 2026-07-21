@@ -1,5 +1,45 @@
 [
   {
+    "Raid_Num": 13,
+    "title": "Blueprint 2026",
+    "Status": "Future",
+    "Type": "Idea & Bizcomps",
+    "dateRange": "August 4 - August 27, 2026",
+    "startDate": "2026-08-04",
+    "endDate": "2026-08-27",
+    "RegEndDate": "2026-08-03",
+    "venue": "Hybrid (Online & Offline)",
+    "fee": "BDT 499",
+    "details": "Blueprint is the flagship international financial modeling competition of the NSU Finance Club and proudly stands as Bangladesh's first and only international financial case competition. Designed for ambitious undergraduate students from around the world, Blueprint bridges academic knowledge with practical application by challenging participants to solve contemporary financial and business problems through critical thinking, strategic analysis, and collaborative decision-making. Teams must consist of 3–5 currently enrolled undergraduate students, and cross-university teams are allowed. The Total Prize Pool is BDT 650,000, with BDT 300,000 for the Champion.",
+    "subEvents": [
+      {
+        "title": "Round One — Due Diligence",
+        "details": "Participants will complete an online assessment evaluating their understanding of financial concepts, analytical reasoning, and fundamental business principles on August 4, 2026."
+      },
+      {
+        "title": "Workshop 01 (Offline)",
+        "details": "Teams advancing from Round One will attend an interactive in-person workshop on August 7, 2026, focused on financial case analysis, valuation methodologies, forecasting techniques, and structured problem-solving."
+      },
+      {
+        "title": "Round Two — Investment Thesis",
+        "details": "Teams will analyze a financial case and submit their proposed solutions online between August 7-10, 2026. Shortlisted teams will be invited to present their solutions before a distinguished panel of judges in an offline evaluation on August 14, 2026."
+      },
+      {
+        "title": "Workshop 02 (Online)",
+        "details": "Finalist teams will participate in an exclusive online workshop led by industry professionals on August 18, 2026, exploring advanced financial analysis, strategic decision-making, and effective case presentation."
+      },
+      {
+        "title": "Grand Finale — The Boardroom",
+        "details": "The finale case will be released online on August 19, 2026, and finalist teams will submit their proposed solutions online by August 25, 2026. The final offline evaluation and presentation before a panel of academics and industry experts will take place on August 27, 2026."
+      }
+    ],
+    "links": {
+      "Facebook Event": "https://www.facebook.com/events/2285146828897965/",
+      "Registration Link": "https://blueprints.nsufinanceclub.org",
+      "Email": "nsufinanceclub@gmail.com"
+    }
+  },
+  {
     "Raid_Num": 12,
     "title": "Biggest IELTS & UK Higher Education Expo 2026",
     "Status": "Future",
