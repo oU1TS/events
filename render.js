@@ -2,6 +2,19 @@
          * Markdown Renderer Configuration
          */
 
+        // Configure Marked for code blocks & Mermaid
+        marked.use({
+            renderer: {
+                code(token) {
+                    const lang = (token.lang || '').trim().toLowerCase();
+                    if (lang === 'mermaid') {
+                        return `<pre class="mermaid">${token.text}</pre>`;
+                    }
+                    return false;
+                }
+            }
+        });
+
         // Configure Marked to use Highlight.js
         marked.setOptions({
             highlight: function (code, lang) {
@@ -12,6 +25,20 @@
             gfm: true,
             breaks: true
         });
+
+        // Initialize Mermaid if available
+        function initMermaid() {
+            if (typeof mermaid !== 'undefined') {
+                const currentTheme = localStorage.getItem('theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                mermaid.initialize({
+                    startOnLoad: false,
+                    theme: currentTheme === 'light' ? 'default' : 'dark',
+                    securityLevel: 'loose'
+                });
+            }
+        }
+        initMermaid();
+
 
         const contentEl = document.getElementById('content');
         const loaderEl = document.getElementById('loader');
@@ -125,6 +152,19 @@
 
                 // Render Math
                 renderMath(contentEl);
+
+                // Render Mermaid Diagrams
+                if (typeof mermaid !== 'undefined') {
+                    const mermaidNodes = contentEl.querySelectorAll('.mermaid');
+                    if (mermaidNodes.length > 0) {
+                        try {
+                            await mermaid.run({ nodes: mermaidNodes });
+                        } catch (err) {
+                            console.error("Mermaid rendering error:", err);
+                        }
+                    }
+                }
+
 
                 // Save current markdown content & filename for download
                 currentMarkdownContent = rawMarkdown;
