@@ -93,13 +93,24 @@ events/
 ### F. Campaign Calendar View
 * **Campaign Calendar**: An interactive modal-based calendar view matching the `"startDate"` of each raid campaign. Enforces a perfectly square ratio and height of `50vh` (mobile) / `60vh` (desktop) at the body root level to bypass translation containment constraints.
 * **Overlap & Redirection**: Displays event counts at the top-right corner of highlighted day cells when multiple events overlap. Clicking a highlighted cell slides up a vertical list overlay of event titles. Clicking a title closes the modal and deep-links directly to the card using `#raid-<number>`.
+* **Past Date Cell Graying**: Date cells where all campaigns have `"Status": "Past"` are rendered with grayed-out muted styling (`.calendar-day.highlighted.past-only`). If a date cell has multiple overlapping events, it is only grayed out if every event on that date is past; dates with at least one active/future event retain full accent highlight colors. Grayed-out cells remain fully clickable.
 
 ### G. Event Type Dropdown Filtering & Row Wrapping
 * **Category Filtering:** A custom dropdown button container is placed next to the "Calendar View" button. Selecting a type filters the cards displayed in the DOM dynamically, updating based on categories: Hackathons, Programming, Conferences / Webinars, Congress, Bug Bounties / CTF, Game Jams, Idea & Bizcomps, Olympiad / Carnival.
 * **Deep Link Reset Integration:** Navigating directly to a card via a hash link automatically resets the category filter to "All Types", ensuring the targeted card is present in the DOM and accessible for highlighting and scrolling.
-* **Row-Wrap Responsiveness:** Styled to stay in a single row alongside the calendar button until a narrow viewport width of `380px` or less, at which point the buttons stack vertically for optimal touch interactions.
 
-### H. Caching, Web Push & Deadline Alerting Subsystem
+### H. Past Raids Toggle & Auto-Unhide Subsystem
+* **Default Visibility State**: Past raids (events with `"Status": "Past"` or whose `"endDate"` precedes the current system date) are hidden by default (`showPastRaids = false`), presenting users with current and upcoming campaigns first.
+* **Toggle Controls & Dual Sync**: An inline toggle button (`#toggle-past-raids-btn`) and stacked floating eye action button (`#floating-past-raids-btn`) allow users to unhide/hide past raids dynamically. Clicking either button synchronizes active styles, eye/eye-off icons, aria attributes, and triggers re-rendering.
+* **Deep-Link Auto-Unhide**: Opening a past raid via deep-link URL (e.g. `#raid-1`) automatically sets `showPastRaids = true`, updates toggle UI states to "unhide", renders the target card, and scrolls to it.
+
+### I. Parent Collapsible Raid Card View
+* **Nested `<details>` Card Schema**: Each raid item in `#raids-container` is rendered as a parent collapsible `<details class="raid-card parent-raid-card">` element.
+* **Summary View**: The card's `<summary>` presents a clean overview containing `"dateRange"`, `"Type"` tag, `"Status"` badge, `"title"`, copy link button, and rotating chevron indicator.
+* **Expanded View**: Opening the parent card reveals `.parent-raid-body` with full event descriptions, mobile "See More" toggle, venue/fee/schedule details dropdown, and resource links.
+* **Auto-Expansion on Deep-Link**: `scrollToRaid()` sets `card.open = true` automatically when deep-linking to a campaign.
+
+### J. Caching, Web Push & Deadline Alerting Subsystem
 * **Synchronization & Caching:** The static site loads `tracker.json` with `{ cache: 'no-cache' }` upon DOM load, comparing it against `localStorage` (key: `ev_tracker`). If new events exist (e.g. `eventsCount` is greater), it forces a cache-bypassing reload of `raids.json` using `{ cache: 'no-cache' }`.
 * **On-Screen Toast alerts:** A premium glassmorphic toast notification slide-in warning is rendered dynamically if the client clock is exactly 1 day prior to any `RegEndDate` parsed from `tracker.json`'s `activeReminders` list. Commits a unique token to `localStorage` (e.g. `ev_alert_sent_[raidNum]`) to block duplicate triggers.
 * **OneSignal Web Push Integration:** A pre-built `OneSignalSDKWorker.js` service worker and CDN SDK are loaded to facilitate native background push subscriptions across mobile and desktop devices.
@@ -109,7 +120,16 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.8.0 — Client-Side Caching, Web Push & Automated CI/CD Dispatch (Current)
+### 🚀 v1.9.0 — Past Raids Toggle, Parent Collapsible Cards & Floating Controls (Current)
+* **Features:**
+  - **Past Raids Visibility Toggle**: Past campaigns are hidden by default (`showPastRaids = false`). Added `#toggle-past-raids-btn` and viewport-tracking `#floating-past-raids-btn` to toggle past campaigns visibility on demand.
+  - **Deep-Link Auto-Unhide**: Direct navigation to past raid URLs (e.g. `#raid-1`) automatically unhides past raids and updates toggle button states.
+  - **Parent Collapsible Raid Cards**: Refactored raid cards into native `<details class="raid-card parent-raid-card">` structures. Summary view displays `"dateRange"`, `"Type"`, `"Status"`, `"title"`, copy button, and chevron; expanding reveals full event specifications, schedule drawers, and resources. Auto-expands (`open = true`) upon deep-link navigation.
+  - **Past Calendar Date Cell Graying**: Date cells in the calendar view containing past-only campaigns are rendered in grayed-out muted tones (`.past-only`), while multi-event dates with active events preserve vibrant highlight styles. All click interactions remain active.
+  - **Floating Action Stack**: Stacked `#floating-past-raids-btn` above `#floating-calendar-btn` at the bottom-right corner with `IntersectionObserver` scroll visibility and dual-button state synchronization.
+  - **Mobile Icon-Only Past Raids Button**: Configured `#toggle-past-raids-btn` to display as a compact centered icon button on mobile viewports while preserving text labels for Calendar and Event Type controls.
+
+### 🚀 v1.8.0 — Client-Side Caching, Web Push & Automated CI/CD Dispatch
 * **Features:**
   - **Local Caching Registry**: Added `tracker.json` to monitor total event count and tracking deadlines. `app.js` runs a cache-first validation engine checking remote state using `{ cache: 'no-cache' }` and flushing stale `raids.json` cache parameters asynchronously when new events are pushed.
   - **Registration Deadline Alerts**: Added check logic exactly 1 day prior to upcoming registration end dates, displaying system push notifications and custom on-screen glassmorphic UI toast alerts. Prevents redundant notifications via `localStorage` token flags.

@@ -167,6 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             const card = document.getElementById(`raid-card-${raidNum}`);
             if (card) {
+                if (card.tagName.toLowerCase() === 'details') {
+                    card.open = true;
+                }
                 card.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 card.classList.add('highlighted');
                 card.addEventListener('animationend', () => {
@@ -367,10 +370,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         raids.forEach(raid => {
-            // Create Card Element
-            const card = document.createElement('div');
-            card.className = 'raid-card';
+            // Create Parent Collapsible Card Element (<details>)
+            const card = document.createElement('details');
+            card.className = 'raid-card parent-raid-card';
             card.id = `raid-card-${raid.Raid_Num}`;
+
+            // Create Summary Header Element (<summary>)
+            const summaryEl = document.createElement('summary');
+            summaryEl.className = 'parent-raid-summary';
 
             // Meta Section
             const metaDiv = document.createElement('div');
@@ -414,6 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const copyBtn = metaDiv.querySelector('.copy-raid-link-btn');
             if (copyBtn) {
                 copyBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
                     e.stopPropagation();
                     const raidUrl = window.location.href.split('#')[0] + '#raid-' + raid.Raid_Num;
                     navigator.clipboard.writeText(raidUrl).then(() => {
@@ -438,41 +446,69 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
 
-            card.appendChild(metaDiv);
+            summaryEl.appendChild(metaDiv);
 
-            // Event Type Tag
+            // Title Row with Chevron Arrow
+            const titleRow = document.createElement('div');
+            titleRow.className = 'parent-raid-title-row';
+
+            const titleEl = document.createElement('h3');
+            titleEl.className = 'raid-title';
+            titleEl.textContent = raid.title;
+            titleRow.appendChild(titleEl);
+
+            const arrowSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            arrowSvg.setAttribute('class', 'parent-raid-arrow');
+            arrowSvg.setAttribute('width', '20');
+            arrowSvg.setAttribute('height', '20');
+            arrowSvg.setAttribute('viewBox', '0 0 24 24');
+            arrowSvg.setAttribute('fill', 'none');
+            arrowSvg.setAttribute('stroke', 'currentColor');
+            arrowSvg.setAttribute('stroke-width', '2.5');
+            arrowSvg.setAttribute('stroke-linecap', 'round');
+            arrowSvg.setAttribute('stroke-linejoin', 'round');
+            arrowSvg.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
+            titleRow.appendChild(arrowSvg);
+
+            summaryEl.appendChild(titleRow);
+
+            // Event Type Tag (Displayed below title)
             if (raid.Type) {
                 const typeTag = document.createElement('span');
                 typeTag.className = 'raid-type-tag';
                 typeTag.textContent = raid.Type;
-                card.appendChild(typeTag);
+                summaryEl.appendChild(typeTag);
             }
 
-            // Title
-            const titleEl = document.createElement('h3');
-            titleEl.className = 'raid-title';
-            titleEl.textContent = raid.title;
-            card.appendChild(titleEl);
+            card.appendChild(summaryEl);
+
+            // Parent Body Container (Revealed when expanded)
+            const bodyDiv = document.createElement('div');
+            bodyDiv.className = 'parent-raid-body';
 
             // Detailed Description (Supports multi-line display via pre-line)
             const detailsEl = document.createElement('p');
             detailsEl.className = 'raid-details';
             detailsEl.textContent = raid.details;
-            card.appendChild(detailsEl);
+            bodyDiv.appendChild(detailsEl);
 
             // Highlighted "See More" / "See Less" Button for Mobile
             const seeMoreBtn = document.createElement('button');
             seeMoreBtn.className = 'see-more-btn';
             seeMoreBtn.textContent = 'See More';
-            seeMoreBtn.addEventListener('click', () => {
+            seeMoreBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const isExpanded = detailsEl.classList.toggle('expanded');
                 seeMoreBtn.textContent = isExpanded ? 'See Less' : 'See More';
             });
-            card.appendChild(seeMoreBtn);
+            bodyDiv.appendChild(seeMoreBtn);
 
             // Details Dropdown (Venue, Fees, Sub Events)
             const detailsDropdown = document.createElement('details');
             detailsDropdown.className = 'details-dropdown';
+            detailsDropdown.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
 
             const detailsSummary = document.createElement('summary');
             detailsSummary.className = 'details-summary';
@@ -528,20 +564,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (Array.isArray(raid.subEvents)) {
                     raid.subEvents.forEach(sub => {
-                        const detailsEl = document.createElement('details');
-                        detailsEl.className = 'schedule-dropdown';
+                        const subDetailsEl = document.createElement('details');
+                        subDetailsEl.className = 'schedule-dropdown';
+                        subDetailsEl.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                        });
 
-                        const summaryEl = document.createElement('summary');
-                        summaryEl.className = 'schedule-summary';
-                        summaryEl.textContent = sub.title;
+                        const subSummaryEl = document.createElement('summary');
+                        subSummaryEl.className = 'schedule-summary';
+                        subSummaryEl.textContent = sub.title;
 
                         const contentDiv = document.createElement('div');
                         contentDiv.className = 'schedule-dropdown-content raid-sub-events';
                         contentDiv.textContent = sub.details;
 
-                        detailsEl.appendChild(summaryEl);
-                        detailsEl.appendChild(contentDiv);
-                        valueSpan.appendChild(detailsEl);
+                        subDetailsEl.appendChild(subSummaryEl);
+                        subDetailsEl.appendChild(contentDiv);
+                        valueSpan.appendChild(subDetailsEl);
                     });
                 } else {
                     const textSpan = document.createElement('span');
@@ -555,9 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             detailsDropdown.appendChild(infoGroup);
-            card.appendChild(detailsDropdown);
-
-
+            bodyDiv.appendChild(detailsDropdown);
 
             // Important Links Section
             if (raid.links && Object.keys(raid.links).length > 0) {
@@ -595,8 +632,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     linksWrapper.appendChild(anchor);
                 });
 
-                card.appendChild(linksWrapper);
+                bodyDiv.appendChild(linksWrapper);
             }
+
+            card.appendChild(bodyDiv);
 
             // Append Card to container
             raidsContainer.appendChild(card);
@@ -845,6 +884,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     dayCell.classList.add('highlighted');
                     dayCell.setAttribute('role', 'button');
                     dayCell.setAttribute('tabindex', '0');
+
+                    // Gray out date cell if ALL events on this date are past raids
+                    const allPastEvents = dayEvents.every(raid => isPastRaid(raid));
+                    if (allPastEvents) {
+                        dayCell.classList.add('past-only');
+                    }
 
                     // If 2 or more events overlap, render badge count
                     if (dayEvents.length >= 2) {

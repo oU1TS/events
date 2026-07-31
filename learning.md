@@ -77,7 +77,10 @@ This approach delivers:
 3. **Shortening Utility:** `getShortTitle()` programmatically extracts clean event titles (e.g. splitting at colons or brackets) to keep text blocks concise.
 4. **Dates Engine:** `formatLocalDate()` translates raw ISO date values (e.g. `2026-07-08`) into formatted local dates (e.g. `8 July 2026`).
 5. **Deadlines Checker:** Renders deadlines dynamically. It compares system time against `"RegEndDate"`. If the current time is past the deadline, it appends a red/gray `(Closed)` pill; otherwise, it computes remaining days and styles it in green.
-6. **Card Builders:** `renderRaids()` and `renderEventNotes()` loop through the database collections, creating HTML structures dynamically via standard DOM APIs (`document.createElement`) and appending them into layout grids.
+6. **Parent Collapsible Card Builder:** `renderRaids()` structures each event as a parent collapsible `<details class="raid-card parent-raid-card">` element.
+   - The `<summary class="parent-raid-summary">` header displays `"dateRange"`, `"Type"` tag, `"Status"` badge, `"title"`, copy button, and rotating chevron.
+   - The `.parent-raid-body` contains full descriptions, mobile "See More" toggle, venue/fee/schedule details dropdown, and external links.
+   - Deep-linking (`scrollToRaid()`) automatically sets `card.open = true` when navigating to a card.
 
 ```mermaid
 graph TD
@@ -86,13 +89,31 @@ graph TD
     B -- No --> D[Fetch raids.json asynchronously]
     D --> E[Parse JSON contents]
     E --> F[Cache data globally in memory]
-    F --> G[Render Card Grid layout structures]
+    F --> G[Render Parent Collapsible Card Grid]
 ```
 
 #### UX/Frontend Impact:
 * Loading skeleton placeholders (`.raid-card.skeleton`) are displayed during retrieval to reduce perceived load time.
-* Cards dynamically adapt based on content presence (e.g. omitting deadline fields or links wrapper containers entirely if missing in JSON).
-* Truncates descriptions on mobile screens using a CSS clamp combined with a dynamic "See More" button toggle.
+* Cards collapse by default to provide a clean roadmap dashboard, expanding on demand or upon deep-link navigation.
+* Prevents unwanted card toggling when copying links via `e.stopPropagation()` and `e.preventDefault()`.
+
+---
+
+### Past Raids Toggle & Floating Controls
+* **Methods:** `initPastRaidsToggle()`, `updatePastRaidsToggleUI()`, `isPastRaid()`.
+* **State Variables:** `showPastRaids` (default: `false`), `currentFilterType`.
+
+#### How it works:
+1. `isPastRaid(raid)` evaluates if a campaign is in the past based on `"Status": "Past"` or by comparing system time against `"endDate"`.
+2. When `showPastRaids` is `false`, `filterAndRenderRaids()` filters out past campaigns.
+3. Clicking the inline toggle (`#toggle-past-raids-btn`) or floating eye button (`#floating-past-raids-btn`) toggles `showPastRaids` between `false` and `true`, updating icons (eye vs eye-off), active glow states, and re-rendering visible cards.
+4. Viewport `IntersectionObserver` fades in both `#floating-calendar-btn` and `#floating-past-raids-btn` stacked in the bottom-right corner when scrolled past the top controls container while on `#raids`.
+5. Mobile CSS `@media (max-width: 640px)` displays `#toggle-past-raids-btn` as a centered icon button while keeping text labels for Calendar and Event Type controls.
+
+#### UX/Frontend Impact:
+* Hides past events by default to prioritize active upcoming campaigns.
+* Allows instant unhiding/hiding of past campaigns from anywhere on the page via the floating action stack.
+* Deep-linking to past raid URLs (e.g. `#raid-1`) automatically unhides past campaigns and expands the target card.
 
 ---
 
@@ -104,11 +125,12 @@ graph TD
 2. Calendar days are mapped into a grid based on month start offsets and total day counts.
 3. The engine parses `"startDate"` keys in the cached events database. If campaigns fall on a given day, it overlays visual indicators.
 4. **Overlap Algorithm:** Calculates if multiple events overlap on a single date, rendering a counter badge (`+2`) when necessary.
-5. **IntersectionObserver Hook:** Attaches an observer to the static calendar button. Once scrolled past the hero view, it slides in a floating calendar button (`.floating-calendar-btn.show`) at the bottom corner for quick access.
+5. **Past Date Cell Evaluation:** Executes `dayEvents.every(raid => isPastRaid(raid))` for each day cell. If true, appends `.past-only` to style the cell in grayed-out muted tones while retaining full clickability.
+6. **IntersectionObserver Hook:** Attaches an observer to the static calendar button. Once scrolled past the hero view, it slides in floating action buttons (`.floating-calendar-btn.show`) at the bottom corner for quick access.
 
 #### UX/Frontend Impact:
-* Provides a visual timeline of overlapping events.
-* Allows users to click on highlighted calendar dates to display a sliding list overlay of that day's events, which deep-links directly to their detail cards.
+* Provides a visual timeline of active vs past events directly on calendar cells.
+* Allows users to click on highlighted or grayed-out calendar dates to display a sliding list overlay of that day's events, which deep-links directly to their detail cards.
 
 ---
 
@@ -123,7 +145,6 @@ graph TD
 4. `resetTypeFilter()` restores the selector to "All Types" whenever deep links are resolved.
 
 #### UX/Frontend Impact:
-* Responsive CSS button structure stays aligned on a single row down to a very narrow mobile screen width of `380px` before stacking.
 * Allows students to narrow down the roadmap based on their specific technical disciplines (e.g., filtering out Business Competitions to focus entirely on CTFs).
 
 ---
@@ -198,10 +219,10 @@ graph TD
 | **Theme Switcher** | `initializeTheme`, `toggleTheme` | Syncs variables (`--bg-primary`, etc.) | Prevents late-night eye strain; honors OS presets. |
 | **SPA Router** | `routePage`, `scrollToRaid` | Active menu states, cards pulse highlight | No reload delays; bookmarkable event states. |
 | **Notes View** | `renderEventNotes`, `getShortTitle` | Compact card items, same-tab loading | Clean visual dashboard; back button returns safely. |
-| **Dynamic Cards** | `renderRaids`, `formatLocalDate` | Clamped texts, deadline status badges | Instantly informs user if registration is active or closed. |
+| **Parent Collapsible Cards** | `renderRaids`, `scrollToRaid` | `<details>` summary cards, rotating chevrons | Keeps roadmap clean; auto-expands details on click or deep link. |
+| **Past Raids Toggle** | `initPastRaidsToggle`, `isPastRaid` | Inline button & stacked floating eye button | Hides past campaigns by default; auto-unhides past raids on URL deep links. |
 | **Interactive Calendar** | `initCalendar`, `IntersectionObserver` | Month grids, overlay lists, floating buttons | Combines roadmap timeline overview with single-click card access. |
 | **Category Filter** | `initDropdownFilter` | Dynamic grid updates | Filters out noise to show relevant competitions. |
-| **Scroll Booster** | `initMobileScrollMultiplier` | Accelerated smooth scrolling physics | Fluid list navigation on mobile viewports. |
 | **Local Cache Sync** | `initCacheAndNotifications` | Compares counts/dates with remote | Flushes stale cache data on new raid releases instantly. |
 | **Deadline Alerts** | `checkRegistrationDeadlines` | Premium glassmorphic toasts & system push warnings | Alerts user exactly 1 day before registration closes; prevents duplicate alerts. |
 | **GHA Pipeline** | `send-push.js` & `notify.yml` | Automatic OneSignal API trigger | Sends automated, credentials-secured notifications on new raids or upcoming deadlines. |

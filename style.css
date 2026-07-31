@@ -525,6 +525,71 @@ body.light-theme .btn-primary {
     transform: scaleY(1);
 }
 
+/* Parent Collapsible Raid Card Styling */
+details.parent-raid-card {
+    cursor: default;
+}
+
+details.parent-raid-card summary.parent-raid-summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+}
+
+details.parent-raid-card summary.parent-raid-summary::-webkit-details-marker,
+details.parent-raid-card summary.parent-raid-summary::marker {
+    display: none;
+    content: "";
+}
+
+.parent-raid-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.parent-raid-title-row .raid-title {
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.parent-raid-arrow {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+    transition: transform var(--transition-speed) ease;
+    flex-shrink: 0;
+}
+
+details.parent-raid-card[open] .parent-raid-arrow {
+    transform: rotate(180deg);
+}
+
+.parent-raid-body {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    animation: parentFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes parentFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .raid-meta {
     display: flex;
     align-items: center;
@@ -1589,7 +1654,8 @@ body.light-theme .calendar-btn-container #toggle-past-raids-btn.active {
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--accent);
-    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
     display: inline-block;
     padding: 2px 8px;
     background-color: rgba(var(--accent-rgb), 0.08);
@@ -1602,33 +1668,38 @@ body.light-theme .raid-type-tag {
     border: 1px solid rgba(var(--accent-rgb), 0.1);
 }
 
-/* Responsive Mobile Controls: Show Only Icons on Mobile Viewports */
+/* Responsive Mobile Controls */
 @media (max-width: 640px) {
     .calendar-btn-container {
         flex-direction: row;
         justify-content: center;
         align-items: center;
         gap: 0.5rem;
+        flex-wrap: wrap;
         margin-top: -20px !important;
     }
 
     .calendar-btn-container .btn {
+        padding: 0.65rem 1rem !important;
+        font-size: 0.85rem;
+        height: auto;
+        border-radius: 10px;
+        justify-content: center;
+        white-space: nowrap;
+    }
+
+    /* Show only icon for Past Raids Toggle Button on mobile viewports */
+    #toggle-past-raids-btn {
         padding: 0.65rem 0.85rem !important;
         min-width: 44px;
         height: 44px;
-        border-radius: 10px;
-        justify-content: center;
     }
 
-    /* Hide text labels on mobile screens */
-    .calendar-btn-container .btn > span,
-    #toggle-past-raids-text,
-    #filter-btn-text {
+    #toggle-past-raids-text {
         display: none !important;
     }
 
-    /* Reset SVG icon margins for centered icon display */
-    .calendar-btn-container .btn .btn-icon {
+    #toggle-past-raids-btn .btn-icon {
         margin-right: 0 !important;
     }
 
@@ -1637,7 +1708,7 @@ body.light-theme .raid-type-tag {
     }
 
     .dropdown-arrow {
-        margin-left: 4px !important;
+        margin-left: 6px !important;
     }
 
     .dropdown-menu {
@@ -1930,6 +2001,45 @@ body.light-theme .raid-type-tag {
     transform: scale(1.06);
     box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.45);
     filter: brightness(1.1);
+}
+
+/* Grayed out styling for date cells with past-only events */
+.calendar-day.highlighted.past-only {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+    font-weight: 600;
+}
+
+:root:not(.light-theme) .calendar-day.highlighted.past-only {
+    color: var(--text-muted);
+}
+
+body.light-theme .calendar-day.highlighted.past-only {
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+}
+
+.calendar-day.highlighted.past-only:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+    transform: scale(1.05);
+}
+
+body.light-theme .calendar-day.highlighted.past-only:hover {
+    background: rgba(15, 23, 42, 0.14);
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+}
+
+.calendar-day.highlighted.past-only .event-count-badge {
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    border-color: var(--border-color);
 }
 
 /* Event count badge top-right */

@@ -29,21 +29,22 @@ Then follow these steps:
 ## 🌟 Key Features
 
 1. **Single Page Application (SPA):** Seamless navigation using URL hash routing (`#home`, `#raids`, `#notes`, `#join`, `#learn-more`) which allows full browser back/forward history and direct bookmarking.
-2. **Data Separation & Dropdowns:** Event list details are loaded dynamically from a separate `raids.json` data file. Supports complex reusable schedule dropdown grids (`<details>`/`<summary>`) directly parsed from the JSON array variables.
-3. **Dynamic Event Notes Section:** Dedicated reports/writeups tab listing note cards with concise shortened titles. Links to local notes load in the same tab so the back button can return readers to the homepage.
-4. **Interactive Campaign Calendar:** Visual month-by-month calendar modal with overlap count badges, day events overlay list, and scroll viewport-tracking floating activation button.
-5. **Type Filtering Dropdown:** Custom filter dropdown next to the calendar button to narrow down campaigns by event category. Keeps buttons aligned on a single row down to small mobile breakpoints (`380px`).
-6. **Registration Deadlines Engine:** Computes remaining time or `(Closed)` warning states dynamically on card badges based on the user's system clock.
-7. **Dual Theme Engine:** Stylized tactile toggle switch that flips between:
+2. **Parent Collapsible Raid Cards:** Event cards are rendered as native parent `<details class="raid-card parent-raid-card">` components. The summary header displays `"dateRange"`, `"Type"`, `"Status"`, `"title"`, copy button, and chevron; expanding reveals full event specifications, schedule drawers, and resources. Auto-expands upon deep-link navigation (`#raid-<number>`).
+3. **Past Raids Toggle & Auto-Unhide:** Past campaigns are hidden by default (`showPastRaids = false`) to emphasize active events. Features inline and stacked floating eye toggle buttons to reveal/hide past campaigns on demand. Direct navigation to past raid URLs automatically unhides past campaigns and updates toggle states.
+4. **Dynamic Event Notes Section:** Dedicated reports/writeups tab listing note cards with concise shortened titles. Links to local notes load in the same tab so the back button can return readers to the homepage.
+5. **Interactive Campaign Calendar:** Visual month-by-month calendar modal with overlap count badges, day events overlay list, past-only date cell graying, and scroll viewport-tracking floating activation button.
+6. **Type Filtering Dropdown:** Custom filter dropdown next to the calendar button to narrow down campaigns by event category. Keeps buttons aligned on a single row down to small mobile breakpoints (`380px`).
+7. **Registration Deadlines Engine:** Computes remaining time or `(Closed)` warning states dynamically on card badges based on the user's system clock.
+8. **Dual Theme Engine:** Stylized tactile toggle switch that flips between:
    * **Dark Mode (Default):** Tech-noir style featuring black/charcoal backgrounds and gold accents.
    * **Light Mode:** Fresh vibrant style featuring white, sky-blue, and emerald-green highlights.
    * Theme choices automatically persist via `localStorage` and honor system settings.
-8. **Step-by-Step Onboarding:** Clear onboarding checklist inside `#join` to help students link up with maintainers, submit their Student ID verification, and synchronize their WhatsApp chat histories.
-9. **Markdown Notes Integration:** A built-in local Markdown reader (`render.html` + `render.js`) to view delegation guidelines, preparation lists, and checklists directly on the website with theme sync, code highlighting, and LaTeX support.
-10. **Local Cache-First Sync:** Aggressively fetches `tracker.json` using cache-bypassing fetch controls on page load to check remote state parameters against `localStorage` (key: `ev_tracker`), flushing local caches and downloading fresh event roadmap sheets when required.
-11. **On-Screen Glassmorphic Alerts:** Warns users exactly 1 day prior to any registration end date using system web push messages and custom on-screen UI slides, saving token keys locally to avoid duplication.
-12. **Background Push Notification Support:** Integrated OneSignal Web Push SDK page interfaces and globally hosted background service worker execution modules.
-13. **Automated CI/CD Workflows:** Automated GitHub Actions pipeline (`.github/workflows/notify.yml`) triggered on database updates (for new raid announcements) or daily cron schedule (for upcoming registration deadlines) using Node.js REST API scripts.
+9. **Step-by-Step Onboarding:** Clear onboarding checklist inside `#join` to help students link up with maintainers, submit their Student ID verification, and synchronize their WhatsApp chat histories.
+10. **Markdown Notes Integration:** A built-in local Markdown reader (`render.html` + `render.js`) to view delegation guidelines, preparation lists, and checklists directly on the website with theme sync, code highlighting, and LaTeX support.
+11. **Local Cache-First Sync:** Aggressively fetches `tracker.json` using cache-bypassing fetch controls on page load to check remote state parameters against `localStorage` (key: `ev_tracker`), flushing local caches and downloading fresh event roadmap sheets when required.
+12. **On-Screen Glassmorphic Alerts:** Warns users exactly 1 day prior to any registration end date using system web push messages and custom on-screen UI slides, saving token keys locally to avoid duplication.
+13. **Background Push Notification Support:** Integrated OneSignal Web Push SDK page interfaces and globally hosted background service worker execution modules.
+14. **Automated CI/CD Workflows:** Automated GitHub Actions pipeline (`.github/workflows/notify.yml`) triggered on database updates (for new raid announcements) or daily cron schedule (for upcoming registration deadlines) using Node.js REST API scripts.
 
 ---
 
