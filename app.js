@@ -21,6 +21,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDataLoading = false;
     let pendingRaidScroll = null;
     let currentFilterType = 'all';
+    let showPastRaids = false;
+
+    function isPastRaid(raid) {
+        if (!raid) return false;
+        if (raid.Status === 'Past') return true;
+        if (raid.endDate) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const checkDate = new Date(raid.endDate);
+            checkDate.setHours(0, 0, 0, 0);
+            if (today > checkDate) {
+                raid.Status = 'Past';
+                return true;
+            }
+        }
+        return false;
+    }
 
     /* ==========================================================================
        1. Theme Management (Light / Dark Mode)
@@ -105,6 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentHash === '#raids' || currentHash === '#notes') {
             if (targetRaidNum) {
                 if (pastRaidsData) {
+                    const targetRaid = pastRaidsData.find(r => r.Raid_Num === targetRaidNum);
+                    if (targetRaid && isPastRaid(targetRaid)) {
+                        showPastRaids = true;
+                        updatePastRaidsToggleUI();
+                    }
+                    filterAndRenderRaids();
                     scrollToRaid(targetRaidNum);
                 } else {
                     pendingRaidScroll = targetRaidNum;
@@ -200,6 +223,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             pastRaidsData = await response.json();
+            if (pendingRaidScroll) {
+                const targetRaid = pastRaidsData.find(r => r.Raid_Num === pendingRaidScroll);
+                if (targetRaid && isPastRaid(targetRaid)) {
+                    showPastRaids = true;
+                    updatePastRaidsToggleUI();
+                }
+            }
             filterAndRenderRaids();
             renderEventNotes(pastRaidsData);
             
@@ -215,8 +245,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!pastRaidsData) return;
         
         let filtered = pastRaidsData;
+
+        // Filter out past raids if showPastRaids is false
+        if (!showPastRaids) {
+            filtered = filtered.filter(raid => !isPastRaid(raid));
+        }
+
         if (currentFilterType !== 'all') {
-            filtered = pastRaidsData.filter(raid => raid.Type === currentFilterType);
+            filtered = filtered.filter(raid => raid.Type === currentFilterType);
         }
         
         renderRaids(filtered);
@@ -622,6 +658,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initCalendar() {
         const openCalendarBtn = document.getElementById('open-calendar-btn');
         const floatingCalendarBtn = document.getElementById('floating-calendar-btn');
+        const floatingPastRaidsBtn = document.getElementById('floating-past-raids-btn');
         const closeCalendarBtn = document.getElementById('close-calendar-btn');
         const calendarModal = document.getElementById('calendar-modal');
         const calendarBackdrop = document.getElementById('calendar-modal-backdrop');
@@ -646,12 +683,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let isStaticBtnScrolledAway = false;
 
         const updateFloatingBtnVisibility = () => {
-            if (floatingCalendarBtn) {
-                if (isRaidsActive && isStaticBtnScrolledAway) {
-                    floatingCalendarBtn.classList.add('show');
-                } else {
-                    floatingCalendarBtn.classList.remove('show');
-                }
+            if (isRaidsActive && isStaticBtnScrolledAway) {
+                if (floatingCalendarBtn) floatingCalendarBtn.classList.add('show');
+                if (floatingPastRaidsBtn) floatingPastRaidsBtn.classList.add('show');
+            } else {
+                if (floatingCalendarBtn) floatingCalendarBtn.classList.remove('show');
+                if (floatingPastRaidsBtn) floatingPastRaidsBtn.classList.remove('show');
             }
         };
 
@@ -977,6 +1014,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
+       6b. Past Raids Toggle Controls
+       ========================================================================== */
+    function updatePastRaidsToggleUI() {
+        const toggleBtns = document.querySelectorAll('#toggle-past-raids-btn, #floating-past-raids-btn');
+        const toggleText = document.getElementById('toggle-past-raids-text');
+
+        toggleBtns.forEach(btn => {
+            if (showPastRaids) {
+                btn.classList.add('active');
+                btn.setAttribute('aria-pressed', 'true');
+                const svg = btn.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = `
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                    `;
+                }
+            } else {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+                const svg = btn.querySelector('svg');
+                if (svg) {
+                    svg.innerHTML = `
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    `;
+                }
+            }
+        });
+
+        if (toggleText) {
+            toggleText.textContent = showPastRaids ? 'Hide Past Raids' : 'Unhide Past Raids';
+        }
+    }
+
+    function initPastRaidsToggle() {
+        const toggleBtns = document.querySelectorAll('#toggle-past-raids-btn, #floating-past-raids-btn');
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                showPastRaids = !showPastRaids;
+                updatePastRaidsToggleUI();
+                filterAndRenderRaids();
+            });
+        });
+    }
+
+    /* ==========================================================================
        7. Caching Registry & Client-Side Notifications Engine
        ========================================================================== */
     async function initCacheAndNotifications() {
@@ -1204,6 +1288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
     initCalendar();
     initDropdownFilter();
+    initPastRaidsToggle();
     initCacheAndNotifications();
     routePage();
 });

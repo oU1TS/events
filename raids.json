@@ -1,5 +1,28 @@
 [
   {
+    "Raid_Num": 14,
+    "title": "Fresh presents CreADive 2026",
+    "Status": "Future",
+    "Type": "Idea & Bizcomps",
+    "dateRange": "September 11, 2026",
+    "startDate": "2026-09-11",
+    "endDate": "2026-09-11",
+    "RegEndDate": "TBA",
+    "venue": "Bangladesh University of Professionals (BUP), Mirpur Cantonment, Dhaka, Bangladesh",
+    "fee": "TBA",
+    "details": "Organized by the BUP Business & Communication Club, Fresh Presents CreADive 2026 is the 8th edition of the flagship 360° Marketing & Ad-Making Competition. The event features interactive case rounds testing marketing instincts alongside immersive creative workshops. Participation is open strictly to teams of 3 undergraduate students in Bangladesh.",
+    "subEvents": [
+      {
+        "title": "Ideation Rounds & Creative Workshops",
+        "details": "Immersive competition stages and interactive skill workshops structured around 360° marketing strategy, ad creation, and creative problem-solving."
+      }
+    ],
+    "links": {
+      "Facebook Event": "https://www.facebook.com/events/1566674181608973",
+      "Registration Link": "#"
+    }
+  },
+  {
     "Raid_Num": 13,
     "title": "Blueprint 2026",
     "Status": "Future",

@@ -170,6 +170,16 @@
                     <span>Calendar View</span>
                 </button>
 
+                <!-- Toggle Past Raids Button -->
+                <button id="toggle-past-raids-btn" class="btn btn-secondary" aria-label="Toggle Past Raids Visibility" aria-pressed="false">
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    <span id="toggle-past-raids-text">Unhide Past Raids</span>
+                </button>
+
                 <!-- Event Type Filter Dropdown -->
                 <div class="dropdown-filter-container" id="event-type-filter-container">
                     <button id="filter-type-btn" class="btn btn-secondary" aria-label="Filter Events by Type"
@@ -544,6 +554,15 @@
             </div>
         </div>
     </div>
+
+    <!-- Floating Past Raids Toggle Button -->
+    <button id="floating-past-raids-btn" class="floating-calendar-btn floating-past-raids-btn" aria-label="Toggle Past Raids Visibility" aria-pressed="false">
+        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+    </button>
 
     <!-- Floating Campaign Calendar Button -->
     <button id="floating-calendar-btn" class="floating-calendar-btn" aria-label="Open Campaign Calendar">

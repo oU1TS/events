@@ -1471,6 +1471,7 @@ body.light-theme .details-dropdown[open] {
     justify-content: center;
     align-items: center;
     gap: 1rem;
+    flex-wrap: wrap;
     margin-bottom: 2rem;
     min-height: 48px;
     /* Prevents layout collapse when button floats */
@@ -1481,6 +1482,20 @@ body.light-theme .details-dropdown[open] {
     width: auto !important;
     justify-content: center;
     white-space: nowrap;
+}
+
+/* Active state for past raids toggle button */
+.calendar-btn-container #toggle-past-raids-btn.active {
+    border-color: var(--accent);
+    background-color: rgba(var(--accent-rgb), 0.15);
+    color: var(--accent);
+    box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2);
+}
+
+body.light-theme .calendar-btn-container #toggle-past-raids-btn.active {
+    background-color: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent);
+    border-color: var(--accent);
 }
 
 @media (max-width: 768px) {
@@ -1587,29 +1602,57 @@ body.light-theme .raid-type-tag {
     border: 1px solid rgba(var(--accent-rgb), 0.1);
 }
 
-/* Responsive Overrides for Buttons Row Wrap */
-@media (max-width: 400px) {
+/* Responsive Mobile Controls: Show Only Icons on Mobile Viewports */
+@media (max-width: 640px) {
     .calendar-btn-container {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
         margin-top: -20px !important;
     }
 
-    .calendar-btn-container .btn,
-    .calendar-btn-container .dropdown-filter-container,
-    .calendar-btn-container .dropdown-filter-container button {
-        width: 100% !important;
+    .calendar-btn-container .btn {
+        padding: 0.65rem 0.85rem !important;
+        min-width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        justify-content: center;
+    }
+
+    /* Hide text labels on mobile screens */
+    .calendar-btn-container .btn > span,
+    #toggle-past-raids-text,
+    #filter-btn-text {
+        display: none !important;
+    }
+
+    /* Reset SVG icon margins for centered icon display */
+    .calendar-btn-container .btn .btn-icon {
+        margin-right: 0 !important;
+    }
+
+    .dropdown-filter-container {
+        display: inline-block;
+    }
+
+    .dropdown-arrow {
+        margin-left: 4px !important;
     }
 
     .dropdown-menu {
-        left: 0;
-        right: 0;
-        min-width: 100%;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%) translateY(10px);
+        min-width: 200px;
+    }
+
+    .dropdown-menu.show {
+        transform: translateX(-50%) translateY(0);
     }
 }
 
-/* Floating Calendar Button */
+/* Floating Calendar & Toggle Buttons */
 @keyframes floatIn {
     0% {
         opacity: 0;
@@ -1653,6 +1696,24 @@ body.light-theme .raid-type-tag {
     color: var(--bg-primary);
     transform: translateY(-3px) scale(1.03);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(var(--accent-rgb), 0.3);
+}
+
+/* Floating Past Raids Toggle Button */
+.floating-past-raids-btn {
+    bottom: 5.5rem;
+    right: 2rem;
+}
+
+.floating-past-raids-btn.active {
+    border-color: var(--accent);
+    background-color: rgba(var(--accent-rgb), 0.2);
+    color: var(--accent);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(var(--accent-rgb), 0.3);
+}
+
+.floating-past-raids-btn.active:hover {
+    background-color: var(--accent);
+    color: var(--bg-primary);
 }
 
 /* Modal Layout */
