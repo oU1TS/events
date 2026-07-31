@@ -408,43 +408,46 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span>${escapeHTML(raid.dateRange)}</span>
                 </div>
                 <div class="raid-meta-right">
-                    <button class="copy-raid-link-btn" title="Copy link to this raid" aria-label="Copy link to this raid">
-                        <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                    </button>
                     <span class="status-badge ${statusClass}">${escapeHTML(statusText)}</span>
                 </div>
             `;
 
-            const copyBtn = metaDiv.querySelector('.copy-raid-link-btn');
-            if (copyBtn) {
-                copyBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const raidUrl = window.location.href.split('#')[0] + '#raid-' + raid.Raid_Num;
-                    navigator.clipboard.writeText(raidUrl).then(() => {
-                        copyBtn.classList.add('copied');
+            // Protruding Copy Link Button at top-right corner of card
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-raid-link-btn';
+            copyBtn.title = 'Copy link to this raid';
+            copyBtn.setAttribute('aria-label', 'Copy link to this raid');
+            copyBtn.innerHTML = `
+                <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            `;
+            copyBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const raidUrl = window.location.href.split('#')[0] + '#raid-' + raid.Raid_Num;
+                navigator.clipboard.writeText(raidUrl).then(() => {
+                    copyBtn.classList.add('copied');
+                    copyBtn.innerHTML = `
+                        <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    `;
+                    setTimeout(() => {
+                        copyBtn.classList.remove('copied');
                         copyBtn.innerHTML = `
-                            <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
+                            <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
                         `;
-                        setTimeout(() => {
-                            copyBtn.classList.remove('copied');
-                            copyBtn.innerHTML = `
-                                <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                            `;
-                        }, 2000);
-                    }).catch(err => {
-                        console.error('Failed to copy link: ', err);
-                    });
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy link: ', err);
                 });
-            }
+            });
+            summaryEl.appendChild(copyBtn);
 
             summaryEl.appendChild(metaDiv);
 
@@ -481,16 +484,59 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Venue Location Badge (Bottom-Right Corner of card summary)
-            if (raid.IsOnline || raid.OutsideDhaka) {
+            if (raid.OutsideDhaka) {
+                // Outside Dhaka: Dynamic 2-second toggle between <s>Dhaka</s> and location icon only
+                const cornerBadge = document.createElement('a');
+                cornerBadge.className = 'raid-venue-corner-badge outside-dhaka-tag map-link';
+                cornerBadge.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(raid.venue)}`;
+                cornerBadge.target = '_blank';
+                cornerBadge.rel = 'noopener noreferrer';
+                cornerBadge.title = 'View venue location on Google Maps';
+                cornerBadge.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+
+                const pinSvg = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
+
+                const htmlStateDhaka = `<s>Dhaka</s>`;
+                const htmlStateIcon = pinSvg;
+
+                cornerBadge.innerHTML = htmlStateDhaka;
+
+                let showIconOnly = false;
+                const cycleInterval = setInterval(() => {
+                    if (!document.body.contains(cornerBadge)) {
+                        clearInterval(cycleInterval);
+                        return;
+                    }
+                    showIconOnly = !showIconOnly;
+                    cornerBadge.classList.add('fade-transition');
+                    setTimeout(() => {
+                        cornerBadge.innerHTML = showIconOnly ? htmlStateIcon : htmlStateDhaka;
+                        cornerBadge.classList.toggle('icon-only', showIconOnly);
+                        cornerBadge.classList.remove('fade-transition');
+                    }, 180);
+                }, 2000);
+
+                summaryEl.appendChild(cornerBadge);
+            } else if (raid.IsOnline) {
+                // Online Event: Online pill badge
                 const cornerBadge = document.createElement('span');
-                cornerBadge.className = 'raid-venue-corner-badge';
-                if (raid.IsOnline) {
-                    cornerBadge.classList.add('is-online-tag');
-                    cornerBadge.textContent = 'Online';
-                } else if (raid.OutsideDhaka) {
-                    cornerBadge.classList.add('outside-dhaka-tag');
-                    cornerBadge.textContent = 'Dhaka';
-                }
+                cornerBadge.className = 'raid-venue-corner-badge is-online-tag';
+                cornerBadge.textContent = 'Online';
+                summaryEl.appendChild(cornerBadge);
+            } else {
+                // OutsideDhaka = False & Physical Venue: Static borderless/backgroundless location icon linked to Google Maps
+                const cornerBadge = document.createElement('a');
+                cornerBadge.className = 'raid-venue-corner-badge static-location-tag map-link icon-only';
+                cornerBadge.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(raid.venue)}`;
+                cornerBadge.target = '_blank';
+                cornerBadge.rel = 'noopener noreferrer';
+                cornerBadge.title = `View venue location on Google Maps`;
+                cornerBadge.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+                cornerBadge.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
                 summaryEl.appendChild(cornerBadge);
             }
 

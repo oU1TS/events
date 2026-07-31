@@ -499,7 +499,7 @@ body.light-theme .btn-primary {
     position: relative;
     box-shadow: var(--card-shadow);
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .raid-card::before {
@@ -513,6 +513,8 @@ body.light-theme .btn-primary {
     transform: scaleY(0.4);
     transform-origin: top;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
 }
 
 .raid-card:hover {
@@ -607,26 +609,38 @@ details.parent-raid-card[open] .parent-raid-arrow {
 }
 
 .copy-raid-link-btn {
-    display: inline-flex;
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--accent);
-    padding: 6px;
-    border-radius: 8px;
-    background: transparent;
-    border: 1px solid var(--border-color);
     cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 10;
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-        color 0.2s ease,
         background-color 0.2s ease,
-        border-color 0.2s ease;
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+body.light-theme .copy-raid-link-btn {
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .copy-raid-link-btn:hover {
-    color: var(--accent-hover);
-    background-color: rgba(var(--accent-rgb), 0.15);
-    border-color: rgba(var(--accent-rgb), 0.3);
-    transform: scale(1.1);
+    transform: scale(1.15);
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 6px 16px rgba(var(--accent-rgb), 0.35);
 }
 
 .copy-raid-link-btn:active {
@@ -634,9 +648,13 @@ details.parent-raid-card[open] .parent-raid-arrow {
 }
 
 .copy-raid-link-btn.copied {
-    color: var(--success-color);
-    background-color: var(--success-bg);
-    border-color: rgba(16, 185, 129, 0.3);
+    background-color: var(--accent);
+    color: var(--bg-primary);
+    border-color: var(--accent);
+}
+
+body.light-theme .copy-raid-link-btn.copied {
+    color: #ffffff;
 }
 
 .copy-icon,
@@ -1681,13 +1699,15 @@ body.light-theme .raid-type-tag {
     letter-spacing: 0.08em;
     padding: 2px 8px;
     border-radius: 4px;
-    pointer-events: none;
+    pointer-events: auto;
+    transition: opacity 0.18s ease, transform 0.18s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .raid-venue-corner-badge.is-online-tag {
     color: #ffffff;
     background-color: rgba(58, 126, 228, 0.12);
     border: 1px solid rgba(211, 219, 217, 0.3);
+    pointer-events: none;
 }
 
 body.light-theme .raid-venue-corner-badge.is-online-tag {
@@ -1700,14 +1720,70 @@ body.light-theme .raid-venue-corner-badge.is-online-tag {
     color: #ef4444;
     background-color: rgba(239, 68, 68, 0.12);
     border: 1px solid rgba(239, 68, 68, 0.3);
-    text-decoration: line-through;
-    text-decoration-thickness: 2px;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.raid-venue-corner-badge.outside-dhaka-tag.fade-transition {
+    opacity: 0;
+    transform: scale(0.92);
+}
+
+.raid-venue-corner-badge.outside-dhaka-tag:hover {
+    background-color: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #f87171;
 }
 
 body.light-theme .raid-venue-corner-badge.outside-dhaka-tag {
     color: #dc2626;
     background-color: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+body.light-theme .raid-venue-corner-badge.outside-dhaka-tag:hover {
+    background-color: rgba(239, 68, 68, 0.18);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #b91c1c;
+}
+
+/* Location Pin Icon Badge (No border, no background) */
+.raid-venue-corner-badge.static-location-tag,
+.raid-venue-corner-badge.outside-dhaka-tag.icon-only {
+    color: var(--accent);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 2px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.raid-venue-corner-badge.static-location-tag:hover,
+.raid-venue-corner-badge.outside-dhaka-tag.icon-only:hover {
+    color: var(--accent-hover);
+    transform: scale(1.25);
+    background: transparent !important;
+    border: none !important;
+}
+
+body.light-theme .raid-venue-corner-badge.static-location-tag,
+body.light-theme .raid-venue-corner-badge.outside-dhaka-tag.icon-only {
+    color: var(--accent);
+    background: transparent !important;
+    border: none !important;
+}
+
+body.light-theme .raid-venue-corner-badge.static-location-tag:hover,
+body.light-theme .raid-venue-corner-badge.outside-dhaka-tag.icon-only:hover {
+    color: var(--accent-hover);
+    background: transparent !important;
+    border: none !important;
 }
 
 /* Responsive Mobile Controls */

@@ -45,7 +45,8 @@
       "Facebook Post": "https://www.facebook.com/share/p/19ESEMqwwP/"
     },
     "OutsideDhaka": true,
-    "IsOnline": false
+    "IsOnline": false,
+    "city": "Patuakhali"
   },
   {
     "Raid_Num": 15,
@@ -377,7 +378,8 @@
       "Source Post": "https://www.facebook.com/share/1ClientKYr1m2p/"
     },
     "OutsideDhaka": true,
-    "IsOnline": false
+    "IsOnline": false,
+    "city": "Gazipur"
   },
   {
     "Raid_Num": 5,

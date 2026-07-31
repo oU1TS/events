@@ -81,7 +81,8 @@ This approach delivers:
    - The `<summary class="parent-raid-summary">` header displays `"dateRange"`, `"Type"` tag, `"Status"` badge, `"title"`, copy button, bottom-right venue location badge (`IsOnline` / `OutsideDhaka`), and rotating chevron.
    - The `.parent-raid-body` contains full descriptions, mobile "See More" toggle, venue/fee/schedule details dropdown, and external links.
    - Deep-linking (`scrollToRaid()`) automatically sets `card.open = true` when navigating to a card.
-7. **Venue Location Corner Badges:** Evaluates `"IsOnline"` and `"OutsideDhaka"` boolean attributes in `raids.json`. Appends `.raid-venue-corner-badge` positioned absolutely at the bottom-right corner of the summary header (`bottom: 0.25rem; right: 0;`), rendering **`Online`** (blue/cyan pill) for virtual events or ~~Dhaka~~ (strikethrough red/rose pill) for physical events outside Dhaka.
+7. **Venue Location Corner Badges & Map Link Engine:** Evaluates `"IsOnline"` and `"OutsideDhaka"` attributes in `raids.json`. Appends `.raid-venue-corner-badge` positioned absolutely at the bottom-right corner of the summary header (`bottom: 0.25rem; right: 0;`). When `"OutsideDhaka": true`, renders an interactive Google Maps anchor link that cycles every 2 seconds (`setInterval`) between ~~Dhaka~~ (strikethrough text) and `📍` (location pin SVG icon only, no text) with smooth `.fade-transition` keyframes. For physical Dhaka events (`"OutsideDhaka": false` & `"IsOnline": false`), renders a static location pin `📍` linked to Google Maps.
+8. **Protruding Top-Right Copy Button:** Appended `.copy-raid-link-btn` directly to `summaryEl` (`<summary>`) with absolute coordinates `top: -10px; right: -10px` on `.parent-raid-summary` (`overflow: visible`), creating an elevated circular button that protrudes past the card boundary and remains permanently visible even when the parent card and all nested dropdowns are collapsed.
 
 ```mermaid
 graph TD

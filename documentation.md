@@ -110,10 +110,12 @@ events/
 * **Expanded View**: Opening the parent card reveals `.parent-raid-body` with full event descriptions, mobile "See More" toggle, venue/fee/schedule details dropdown, and resource links.
 * **Auto-Expansion on Deep-Link**: `scrollToRaid()` sets `card.open = true` automatically when deep-linking to a campaign.
 
-### J. Venue Location Corner Badges (Online & Strikethrough ~~Dhaka~~ Badges)
+### J. Venue Location Corner Badges & Map Link Integration
 * **Corner Badge Placement**: Positioned at the bottom-right corner of each raid card summary header (`.parent-raid-summary`) using absolute positioning (`.raid-venue-corner-badge`).
 * **Online Badge**: Renders a blue/cyan pill tag with text `"Online"` when `"IsOnline": true` in `raids.json`.
-* **Strikethrough Dhaka Badge**: Renders a rose/red warning pill tag with text `"Dhaka"` and strikethrough styling (`text-decoration: line-through`) when `"OutsideDhaka": true` in `raids.json`.
+* **Dynamic OutsideDhaka Badge**: Renders an interactive `<a>` element linking directly to Google Maps (`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(raid.venue)}`). Uses an automated 2-second interval (`setInterval`) with smooth fade transitions toggling between ~~Dhaka~~ (strikethrough text) and `📍` (borderless, backgroundless location pin SVG icon only). Prevents card collapse on click via `e.stopPropagation()`.
+* **Static Dhaka Physical Venue Badge**: Renders a clean borderless & backgroundless location pin icon `📍` linked to Google Maps for in-person events in Dhaka (`"OutsideDhaka": false` & `"IsOnline": false`).
+* **Protruding Copy Link Button**: Relocated `.copy-raid-link-btn` to hang protruded outside the top-right corner (`top: -10px; right: -10px`) attached to `.parent-raid-summary` (`<summary>`), ensuring the button remains permanently visible even when the parent card and all nested dropdowns are collapsed. Styled with a 32px circular shape, theme elevation shadows, and hover scale interactions.
 
 ### K. Caching, Web Push & Deadline Alerting Subsystem
 * **Synchronization & Caching:** The static site loads `tracker.json` with `{ cache: 'no-cache' }` upon DOM load, comparing it against `localStorage` (key: `ev_tracker`). If new events exist (e.g. `eventsCount` is greater), it forces a cache-bypassing reload of `raids.json` using `{ cache: 'no-cache' }`.
@@ -127,8 +129,10 @@ events/
 
 ### 🚀 v1.10.0 — Venue Location Metadata & Bottom-Right Badges (Current)
 * **Features:**
-  - **Venue Location Metadata Schema**: Introduced `"OutsideDhaka"` and `"IsOnline"` boolean fields in `raids.json` to classify physical venue locations and online events.
-  - **Bottom-Right Venue Corner Badges**: Rendered absolute-positioned location badges (`.raid-venue-corner-badge`) at the bottom-right corner of raid cards, displaying **`Online`** for virtual events and strikethrough **~~Dhaka~~** for non-Dhaka physical venues.
+  - **Venue Location Metadata Schema**: Introduced `"OutsideDhaka"`, `"IsOnline"`, and `"city"` fields in `raids.json` to classify physical venue locations and online events.
+  - **Dynamic OutsideDhaka Map Badge**: Created an interactive location badge for outside-Dhaka events cycling every 2 seconds between ~~Dhaka~~ and borderless/backgroundless `📍` (icon only), opening the venue on Google Maps in a new tab when clicked.
+  - **Static Borderless Location Badge for Dhaka Venues**: Rendered a static borderless/backgroundless `📍` location pin icon linked to Google Maps for physical Dhaka events (`"OutsideDhaka": false`).
+  - **Protruding Copy Button**: Relocated copy raid link button to `<summary>` protruding outside top-right corner (`top: -10px; right: -10px`) for permanent visibility regardless of card collapse state.
 
 ### 🚀 v1.9.0 — Past Raids Toggle, Parent Collapsible Cards & Floating Controls
 * **Features:**
