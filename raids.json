@@ -1,5 +1,78 @@
 [
   {
+    "Raid_Num": 16,
+    "title": "PSTU IT Carnival 2026",
+    "Status": "Future",
+    "Type": "Olympiad / Carnival",
+    "dateRange": "13 - 15 August 2026",
+    "startDate": "2026-08-13",
+    "endDate": "2026-08-15",
+    "RegEndDate": "2026-08-14",
+    "venue": "CSE-FBA Building, Patuakhali Science and Technology University (PSTU)",
+    "fee": "Varies by segment (Free to pre-register for IUPC & Hackathon; BDT 100–300 for individual/team segments; BDT 3,000 for IUPC final registration; BDT 2,000 for Hackathon final registration)",
+    "details": "Billed as the South Zone's Largest Tech Competition, PSTU IT Carnival 2026 is a premier 3-day multi-segment tech festival organized at Patuakhali Science and Technology University. Spanning 12 distinct events across technical contests and gaming arenas, the carnival features competitive programming, hackathons, data science analytics, IT quizzes, hardware/software project showcases, and esports tournaments bringing together tech enthusiasts and developers nationwide.",
+    "subEvents": [
+      {
+        "title": "Inter-University Programming Contest (IUPC)",
+        "details": "Flagship 5-hour ICPC-style programming contest for 3-member university teams (45 slots). Free pre-registration closes July 31, 2026, followed by final registration (BDT 3,000 per team) in early August."
+      },
+      {
+        "title": "National Hackathon",
+        "details": "A national innovation contest challenging student teams (1–2 members, 50 slots) to build working prototypes. Features free pre-registration (deadline Aug 2, 2026) and a BDT 2,000 final registration fee."
+      },
+      {
+        "title": "Datathon & Analytics Showdown",
+        "details": "An online data analytics sprint for university students running August 8–12, 2026 (BDT 300 per team/participant; registration closes Aug 12, 2026)."
+      },
+      {
+        "title": "Project Showcasing (Hardware & Software)",
+        "details": "Exhibition platform for intelligent systems, microcontrollers (Arduino/Raspberry Pi), and software applications. Open to Single (BDT 100), Duo (BDT 200), or Trio (BDT 300) teams until August 12, 2026."
+      },
+      {
+        "title": "IT Quiz & Academic Segments",
+        "details": "Fast-paced tech knowledge contest covering computing and IT concepts (100 participants max, BDT 100 per entry; deadline Aug 13, 2026)."
+      },
+      {
+        "title": "Gaming Arenas & Esports",
+        "details": "Competitive gaming segments featuring PUBG Mobile (25 squads, Free entry), Free Fire (24 squads, BDT 100/squad), eFootball (64 players, BDT 100/player), Chess (32 players, BDT 100/player), Ludo (32 players, BDT 100/player), and Rubik's Cube (32 participants, BDT 100/player)."
+      }
+    ],
+    "links": {
+      "Official Carnival Portal": "https://itcarnival26.pstu.ac.bd/",
+      "Events Breakdown": "https://itcarnival26.pstu.ac.bd/#events",
+      "Event Timeline": "https://itcarnival26.pstu.ac.bd/#timeline",
+      "Hackathon Hub": "https://itcarnival26.pstu.ac.bd/events/hackathon",
+      "Facebook Post": "https://www.facebook.com/share/p/19ESEMqwwP/"
+    }
+  },
+  {
+    "Raid_Num": 15,
+    "title": "Blockchain & AI Olympiad Bangladesh 2026",
+    "Status": "Future",
+    "Type": "Olympiad / Carnival",
+    "dateRange": "03 August - 09 September 2026",
+    "startDate": "2026-08-03",
+    "endDate": "2026-09-09",
+    "RegEndDate": "2026-08-15",
+    "venue": "Online / Hybrid",
+    "fee": "TBA",
+    "details": "Organized by Blockchain Olympiad Bangladesh (BCOLBD), the Blockchain & AI Olympiad Bangladesh 2026 invites ambitious students and recent graduates to solve real-world problems and showcase groundbreaking solutions in Blockchain and Artificial Intelligence. Participants present whitepapers and project prototypes for a chance to represent Bangladesh on an international stage.",
+    "subEvents": [
+      {
+        "title": "Registration & Whitepaper Submission Phase",
+        "details": "Registration runs from August 3 to August 15, 2026. Registered teams must submit their whitepapers between August 14 and August 16, 2026."
+      },
+      {
+        "title": "Evaluation & Winner Announcement",
+        "details": "Primary results are declared by the end of August 2026. Finalists submit updated deliverables on September 2, 2026, leading to final evaluations (September 4–9, 2026) and winner announcements in mid-September 2026."
+      }
+    ],
+    "links": {
+      "Facebook Post": "https://www.facebook.com/BCOLBD/posts/-blockchain-ai-olympiad-bangladesh-2026-is-here-this-august-take-the-first-step-/1699063515560044/",
+      "Official Website": "https://bcolbd.org/"
+    }
+  },
+  {
     "Raid_Num": 14,
     "title": "Fresh presents CreADive 2026",
     "Status": "Future",
