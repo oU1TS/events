@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
        ========================================================================== */
     function initializeTheme() {
         const storedTheme = localStorage.getItem('theme');
-        
+
         // System preference default check
         const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
 
@@ -215,16 +215,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isDataLoading) return;
 
         isDataLoading = true;
-        
+
         try {
             // Fetch from separate JSON file, force bypass browser cache if requested
             const fetchOptions = options.forceFresh ? { cache: 'no-cache' } : {};
             const response = await fetch('raids.json', fetchOptions);
-            
+
             if (!response.ok) {
                 throw new Error(`Failed to load data (HTTP ${response.status})`);
             }
-            
+
             pastRaidsData = await response.json();
             if (pendingRaidScroll) {
                 const targetRaid = pastRaidsData.find(r => r.Raid_Num === pendingRaidScroll);
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             filterAndRenderRaids();
             renderEventNotes(pastRaidsData);
-            
+
         } catch (error) {
             console.error('Error fetching past raids:', error);
             renderErrorBanner(error.message);
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function filterAndRenderRaids() {
         if (!pastRaidsData) return;
-        
+
         let filtered = pastRaidsData;
 
         // Filter out past raids if showPastRaids is false
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentFilterType !== 'all') {
             filtered = filtered.filter(raid => raid.Type === currentFilterType);
         }
-        
+
         renderRaids(filtered);
     }
 
@@ -276,33 +276,33 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderEventNotes(raids) {
         const notesContainer = document.getElementById('notes-container');
         if (!notesContainer) return;
-        
+
         notesContainer.innerHTML = '';
-        
+
         // Filter raids that have a "notes" link
         const notesRaids = raids.filter(raid => raid.links && raid.links.notes);
-        
+
         if (notesRaids.length === 0) {
             notesContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No notes available at the moment.</p>';
             return;
         }
-        
+
         notesRaids.forEach(raid => {
             const card = document.createElement('div');
             card.className = 'resource-card';
-            
+
             // Build card content
             const titleEl = document.createElement('h3');
             titleEl.className = 'resource-title';
             titleEl.textContent = getShortTitle(raid.title);
             card.appendChild(titleEl);
-            
+
             const actionContainer = document.createElement('div');
             actionContainer.style.display = 'flex';
             actionContainer.style.gap = '1rem';
             actionContainer.style.marginTop = 'auto';
             actionContainer.style.flexWrap = 'wrap';
-            
+
             // Link to the rendered markdown notes
             const notesUrl = raid.links.notes;
             const notesLink = document.createElement('a');
@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </svg>
             `;
             actionContainer.appendChild(notesLink);
-            
+
             // Link to the corresponding raid card in the #raids section
             const cardLink = document.createElement('a');
             cardLink.className = 'raid-link';
@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </svg>
             `;
             actionContainer.appendChild(cardLink);
-            
+
             card.appendChild(actionContainer);
             notesContainer.appendChild(card);
         });
@@ -345,12 +345,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const year = parts[0];
         const monthIndex = parseInt(parts[1], 10) - 1;
         const day = parseInt(parts[2], 10);
-        
+
         const monthNames = [
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
         ];
-        
+
         if (monthIndex >= 0 && monthIndex < 12) {
             return `${day} ${monthNames[monthIndex]} ${year}`;
         }
@@ -480,6 +480,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 summaryEl.appendChild(typeTag);
             }
 
+            // Venue Location Badge (Bottom-Right Corner of card summary)
+            if (raid.IsOnline || raid.OutsideDhaka) {
+                const cornerBadge = document.createElement('span');
+                cornerBadge.className = 'raid-venue-corner-badge';
+                if (raid.IsOnline) {
+                    cornerBadge.classList.add('is-online-tag');
+                    cornerBadge.textContent = 'Online';
+                } else if (raid.OutsideDhaka) {
+                    cornerBadge.classList.add('outside-dhaka-tag');
+                    cornerBadge.textContent = 'Dhaka';
+                }
+                summaryEl.appendChild(cornerBadge);
+            }
+
             card.appendChild(summaryEl);
 
             // Parent Body Container (Revealed when expanded)
@@ -533,11 +547,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 today.setHours(0, 0, 0, 0);
                 const regDate = new Date(raid.RegEndDate);
                 regDate.setHours(0, 0, 0, 0);
-                
+
                 const isClosed = today > regDate;
                 const formattedRegDate = formatLocalDate(raid.RegEndDate);
                 const regText = isClosed ? `${formattedRegDate} (Closed)` : formattedRegDate;
-                
+
                 const regEndItem = createInfoItem('Reg Deadline', regText);
                 const valSpan = regEndItem.querySelector('.raid-info-value');
                 if (isClosed) {
@@ -604,7 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Object.entries(raid.links).forEach(([linkName, url]) => {
                     const anchor = document.createElement('a');
                     anchor.className = 'raid-link';
-                    
+
                     if (linkName.toLowerCase() === 'notes') {
                         anchor.href = `render.html?file=${encodeURIComponent(url)}`;
                         anchor.innerHTML = `
@@ -705,7 +719,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const calendarDays = document.getElementById('calendar-days');
         const prevMonthBtn = document.getElementById('prev-month-btn');
         const nextMonthBtn = document.getElementById('next-month-btn');
-        
+
         const dayEventsOverlay = document.getElementById('day-events-overlay');
         const overlayDateLabel = document.getElementById('overlay-date-label');
         const overlayEventsList = document.getElementById('overlay-events-list');
@@ -935,7 +949,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const eventItem = document.createElement('button');
                 eventItem.className = 'overlay-event-item';
                 eventItem.setAttribute('aria-label', `Navigate to ${raid.title}`);
-                
+
                 eventItem.innerHTML = `
                     <span class="overlay-event-title">${escapeHTML(raid.title)}</span>
                     <span class="overlay-event-link-icon">
@@ -992,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdownItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.stopPropagation();
-                
+
                 // Update active state in UI
                 dropdownItems.forEach(i => {
                     i.classList.remove('active');
@@ -1004,7 +1018,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Update trigger button label
                 const selectedVal = item.getAttribute('data-value');
                 const selectedText = item.textContent;
-                
+
                 if (selectedVal === 'all') {
                     filterBtnText.textContent = 'All Types';
                 } else {
@@ -1027,17 +1041,17 @@ document.addEventListener('DOMContentLoaded', () => {
         currentFilterType = 'all';
         const filterContainer = document.getElementById('event-type-filter-container');
         if (!filterContainer) return;
-        
+
         const filterBtnText = document.getElementById('filter-btn-text');
         if (filterBtnText) {
             filterBtnText.textContent = 'All Types';
         }
-        
+
         const filterBtn = document.getElementById('filter-type-btn');
         if (filterBtn) {
             filterBtn.setAttribute('aria-expanded', 'false');
         }
-        
+
         const dropdownMenu = filterContainer.querySelector('.dropdown-menu');
         if (dropdownMenu) {
             dropdownMenu.classList.remove('show');
@@ -1054,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.setAttribute('aria-selected', 'false');
             }
         });
-        
+
         filterAndRenderRaids();
     }
 
@@ -1116,7 +1130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`Failed to fetch tracker.json: ${trackerResponse.status}`);
             }
             const remoteTracker = await trackerResponse.json();
-            
+
             // State validation in localStorage
             const localTrackerStr = localStorage.getItem('ev_tracker');
             let localTracker = { eventsCount: 0, lastUpdated: '' };
@@ -1234,7 +1248,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tag: `raid-deadline-${raidNum}`
             });
 
-            notification.onclick = function() {
+            notification.onclick = function () {
                 window.focus();
                 window.location.hash = `#raid-${raidNum}`;
                 scrollToRaid(raidNum);

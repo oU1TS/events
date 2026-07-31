@@ -70,7 +70,7 @@ events/
 
 ### B. Dynamic JSON Fetching & Dropdown Parsing
 * **Data Separation:** Event records are kept in `raids.json` and fetched asynchronously via the Fetch API.
-* **Metadata Schema Expansion:** Objects in `raids.json` support standard metadata such as `"Type"` (representing categories like Hackathons, Programming, etc.) and `"RegEndDate"` (the registration deadline date in YYYY-MM-DD format).
+* **Metadata Schema Expansion:** Objects in `raids.json` support standard metadata such as `"Type"` (representing categories like Hackathons, Programming, etc.), `"RegEndDate"` (the registration deadline date in YYYY-MM-DD format), `"OutsideDhaka"` (boolean flag for events hosted outside Dhaka), and `"IsOnline"` (boolean flag for virtual/online events).
 * **Collapsible Dropdowns:** The `subEvents` property in `raids.json` is a reusable array of items. `app.js` parses this array and renders semantic HTML5 `<details>` and `<summary>` components inside the schedule card.
 * **XSS Prevention:** Elements (titles, prices, descriptions) are rendered dynamically using `textContent` and basic HTML escaping to block malicious script injections.
 * **Dynamic Registration Status:** `app.js` formats the registration deadline string and dynamically compares it against the local system time. It appends a colored status indicator to the metadata group inside the dropdown—closed deadlines are shown as gray/muted with a `(Closed)` label, and open deadlines are highlighted in green.
@@ -106,11 +106,16 @@ events/
 
 ### I. Parent Collapsible Raid Card View
 * **Nested `<details>` Card Schema**: Each raid item in `#raids-container` is rendered as a parent collapsible `<details class="raid-card parent-raid-card">` element.
-* **Summary View**: The card's `<summary>` presents a clean overview containing `"dateRange"`, `"Type"` tag, `"Status"` badge, `"title"`, copy link button, and rotating chevron indicator.
+* **Summary View**: The card's `<summary>` presents a clean overview containing `"dateRange"`, `"Type"` tag, `"Status"` badge, `"title"`, copy link button, bottom-right venue location badge, and rotating chevron indicator.
 * **Expanded View**: Opening the parent card reveals `.parent-raid-body` with full event descriptions, mobile "See More" toggle, venue/fee/schedule details dropdown, and resource links.
 * **Auto-Expansion on Deep-Link**: `scrollToRaid()` sets `card.open = true` automatically when deep-linking to a campaign.
 
-### J. Caching, Web Push & Deadline Alerting Subsystem
+### J. Venue Location Corner Badges (Online & Strikethrough ~~Dhaka~~ Badges)
+* **Corner Badge Placement**: Positioned at the bottom-right corner of each raid card summary header (`.parent-raid-summary`) using absolute positioning (`.raid-venue-corner-badge`).
+* **Online Badge**: Renders a blue/cyan pill tag with text `"Online"` when `"IsOnline": true` in `raids.json`.
+* **Strikethrough Dhaka Badge**: Renders a rose/red warning pill tag with text `"Dhaka"` and strikethrough styling (`text-decoration: line-through`) when `"OutsideDhaka": true` in `raids.json`.
+
+### K. Caching, Web Push & Deadline Alerting Subsystem
 * **Synchronization & Caching:** The static site loads `tracker.json` with `{ cache: 'no-cache' }` upon DOM load, comparing it against `localStorage` (key: `ev_tracker`). If new events exist (e.g. `eventsCount` is greater), it forces a cache-bypassing reload of `raids.json` using `{ cache: 'no-cache' }`.
 * **On-Screen Toast alerts:** A premium glassmorphic toast notification slide-in warning is rendered dynamically if the client clock is exactly 1 day prior to any `RegEndDate` parsed from `tracker.json`'s `activeReminders` list. Commits a unique token to `localStorage` (e.g. `ev_alert_sent_[raidNum]`) to block duplicate triggers.
 * **OneSignal Web Push Integration:** A pre-built `OneSignalSDKWorker.js` service worker and CDN SDK are loaded to facilitate native background push subscriptions across mobile and desktop devices.
@@ -120,7 +125,12 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.9.0 — Past Raids Toggle, Parent Collapsible Cards & Floating Controls (Current)
+### 🚀 v1.10.0 — Venue Location Metadata & Bottom-Right Badges (Current)
+* **Features:**
+  - **Venue Location Metadata Schema**: Introduced `"OutsideDhaka"` and `"IsOnline"` boolean fields in `raids.json` to classify physical venue locations and online events.
+  - **Bottom-Right Venue Corner Badges**: Rendered absolute-positioned location badges (`.raid-venue-corner-badge`) at the bottom-right corner of raid cards, displaying **`Online`** for virtual events and strikethrough **~~Dhaka~~** for non-Dhaka physical venues.
+
+### 🚀 v1.9.0 — Past Raids Toggle, Parent Collapsible Cards & Floating Controls
 * **Features:**
   - **Past Raids Visibility Toggle**: Past campaigns are hidden by default (`showPastRaids = false`). Added `#toggle-past-raids-btn` and viewport-tracking `#floating-past-raids-btn` to toggle past campaigns visibility on demand.
   - **Deep-Link Auto-Unhide**: Direct navigation to past raid URLs (e.g. `#raid-1`) automatically unhides past raids and updates toggle button states.

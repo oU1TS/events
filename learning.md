@@ -78,9 +78,10 @@ This approach delivers:
 4. **Dates Engine:** `formatLocalDate()` translates raw ISO date values (e.g. `2026-07-08`) into formatted local dates (e.g. `8 July 2026`).
 5. **Deadlines Checker:** Renders deadlines dynamically. It compares system time against `"RegEndDate"`. If the current time is past the deadline, it appends a red/gray `(Closed)` pill; otherwise, it computes remaining days and styles it in green.
 6. **Parent Collapsible Card Builder:** `renderRaids()` structures each event as a parent collapsible `<details class="raid-card parent-raid-card">` element.
-   - The `<summary class="parent-raid-summary">` header displays `"dateRange"`, `"Type"` tag, `"Status"` badge, `"title"`, copy button, and rotating chevron.
+   - The `<summary class="parent-raid-summary">` header displays `"dateRange"`, `"Type"` tag, `"Status"` badge, `"title"`, copy button, bottom-right venue location badge (`IsOnline` / `OutsideDhaka`), and rotating chevron.
    - The `.parent-raid-body` contains full descriptions, mobile "See More" toggle, venue/fee/schedule details dropdown, and external links.
    - Deep-linking (`scrollToRaid()`) automatically sets `card.open = true` when navigating to a card.
+7. **Venue Location Corner Badges:** Evaluates `"IsOnline"` and `"OutsideDhaka"` boolean attributes in `raids.json`. Appends `.raid-venue-corner-badge` positioned absolutely at the bottom-right corner of the summary header (`bottom: 0.25rem; right: 0;`), rendering **`Online`** (blue/cyan pill) for virtual events or ~~Dhaka~~ (strikethrough red/rose pill) for physical events outside Dhaka.
 
 ```mermaid
 graph TD

@@ -536,6 +536,7 @@ details.parent-raid-card summary.parent-raid-summary {
     user-select: none;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 details.parent-raid-card summary.parent-raid-summary::-webkit-details-marker,
@@ -584,6 +585,7 @@ details.parent-raid-card[open] .parent-raid-arrow {
         opacity: 0;
         transform: translateY(-6px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1668,6 +1670,46 @@ body.light-theme .raid-type-tag {
     border: 1px solid rgba(var(--accent-rgb), 0.1);
 }
 
+/* Raid Card Venue Corner Badge styling (Bottom-Right Corner) */
+.raid-venue-corner-badge {
+    position: absolute;
+    bottom: 0.25rem;
+    right: 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.raid-venue-corner-badge.is-online-tag {
+    color: #ffffff;
+    background-color: rgba(58, 126, 228, 0.12);
+    border: 1px solid rgba(211, 219, 217, 0.3);
+}
+
+body.light-theme .raid-venue-corner-badge.is-online-tag {
+    color: #000000;
+    background-color: rgba(58, 126, 228, 0.12);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.raid-venue-corner-badge.outside-dhaka-tag {
+    color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+}
+
+body.light-theme .raid-venue-corner-badge.outside-dhaka-tag {
+    color: #dc2626;
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
 /* Responsive Mobile Controls */
 @media (max-width: 640px) {
     .calendar-btn-container {
@@ -2367,6 +2409,7 @@ body.light-theme .day-events-overlay {
         transform: translateX(120%) translateY(0);
         opacity: 0;
     }
+
     to {
         transform: translateX(0) translateY(0);
         opacity: 1;
@@ -2377,6 +2420,7 @@ body.light-theme .day-events-overlay {
     from {
         transform: scaleX(1);
     }
+
     to {
         transform: scaleX(0);
     }
