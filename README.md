@@ -45,6 +45,7 @@ Then follow these steps:
 12. **On-Screen Glassmorphic Alerts:** Warns users exactly 1 day prior to any registration end date using system web push messages and custom on-screen UI slides, saving token keys locally to avoid duplication.
 13. **Background Push Notification Support:** Integrated OneSignal Web Push SDK page interfaces and globally hosted background service worker execution modules.
 14. **Automated CI/CD Workflows:** Automated GitHub Actions pipeline (`.github/workflows/notify.yml`) triggered on database updates (for new raid announcements) or daily cron schedule (for upcoming registration deadlines) using Node.js REST API scripts.
+15. **RSS 2.0 Syndication Feed:** Live automated RSS 2.0 XML feed (`feed.xml`) generated via `.github/scripts/generate-rss.js` on every update, allowing external platforms (Discord, Telegram, RSS readers, or `b1t-Sched`) to syndicate active campaigns.
 
 ---
 
@@ -54,10 +55,12 @@ Then follow these steps:
 events/
 ├── .github/
 │   ├── scripts/
+│   │   ├── generate-rss.js  # Automated RSS 2.0 feed generator script
 │   │   └── send-push.js     # OneSignal REST API automated Node.js dispatch script
 │   └── workflows/
 │       └── notify.yml       # GHA event notification and alerting pipeline
-├── index.html               # Main SPA layout skeleton (with OneSignal SDK integration)
+├── feed.xml                 # Live RSS 2.0 XML syndication feed
+├── index.html               # Main SPA layout skeleton (with OneSignal SDK integration & RSS discovery)
 ├── style.css                # Custom CSS variables, transitions, responsive grids, and toast styles
 ├── app.js                   # Route controller, fetch API parsing, caching verification, and local alerts
 ├── OneSignalSDKWorker.js     # OneSignal background push message registration service worker
@@ -108,5 +111,6 @@ Then navigate to `http://localhost:8080` in your browser.
 * **Official Facebook Guild:** [UITS Event Raiders Page](https://tinyurl.com/bdhsf7b4)
 * **Main Open-Source Collective:** [oU1TS Community Project](https://ou1ts.netlify.app/)
 * **Project Web Portal:** [oU1TS Events App](https://ou1ts.github.io/events)
+* **Live RSS 2.0 Feed:** [feed.xml](https://ou1ts.github.io/events/feed.xml)
 
 <br>

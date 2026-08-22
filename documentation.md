@@ -31,10 +31,12 @@ The project is built entirely on raw, lightweight, and modern web standards: **H
 events/
 ├── .github/
 │   ├── scripts/
+│   │   ├── generate-rss.js      # Automated RSS 2.0 feed generator script
 │   │   └── send-push.js         # OneSignal REST API automated Node.js dispatch script
 │   └── workflows/
 │       └── notify.yml           # GHA event notification and alerting pipeline
-├── index.html                   # Main SPA layout and templates (with OneSignal SDK injection)
+├── feed.xml                     # Live RSS 2.0 XML syndication feed
+├── index.html                   # Main SPA layout and templates (with OneSignal SDK injection & RSS discovery)
 ├── style.css                    # Global stylesheet, design system, and custom toast notification CSS
 ├── app.js                       # Main router, dynamic JSON loader, caching validation, and local deadline engine
 ├── OneSignalSDKWorker.js         # OneSignal background push message registration service worker
@@ -123,11 +125,26 @@ events/
 * **OneSignal Web Push Integration:** A pre-built `OneSignalSDKWorker.js` service worker and CDN SDK are loaded to facilitate native background push subscriptions across mobile and desktop devices.
 * **Automated CI/CD Workflows:** When merges occur on `raids.json`, GitHub Actions launches a Node.js process `send-push.js` using repository credentials (`ONESIGNAL_APP_ID`, `ONESIGNAL_REST_API_KEY`) to push alerts. The same pipeline scans deadlines daily at `06:00 AM UTC`, sends alerts for tomorrow's deadlines, and pushes updated `tracker.json` states back to git.
 
+### L. RSS 2.0 Syndication Feed Subsystem
+* **RSS 2.0 Specification Compliance**: Generates a standard XML feed (`feed.xml`) from `raids.json` featuring active/upcoming campaigns with full metadata, sub-event breakdowns, dates, registration deadlines, and deep links.
+* **Automated Feed Generation Script**: `.github/scripts/generate-rss.js` parses `raids.json`, evaluates event statuses dynamically against the system clock, escapes XML entities, formats RFC 822 timestamps, and compiles valid RSS 2.0 channels with `<atom:link rel="self" ...>` discovery.
+* **Browser Auto-Discovery**: Added `<link rel="alternate" type="application/rss+xml" title="UITS Event Raiders RSS Feed" href="feed.xml">` in `index.html` `<head>` for native browser and RSS reader detection.
+* **CI/CD Integration**: The GitHub Actions workflow (`.github/workflows/notify.yml`) runs `node .github/scripts/generate-rss.js` on every push to `raids.json` or daily cron run, automatically committing and pushing the updated `feed.xml` to GitHub Pages.
+* **Cross-Platform Syndication**: Allows third-party platforms (e.g., Discord webhooks via Zapier/MonitoRSS, Telegram broadcast bots, RSS aggregators, or the sister project `b1t-Sched`) to consume active campaigns in real-time.
+
 ---
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.10.0 — Venue Location Metadata & Bottom-Right Badges (Current)
+### 🚀 v1.11.0 — Automated RSS 2.0 Syndication Feed & Cross-Platform Integration (Current)
+* **Features:**
+  - **Live RSS 2.0 Syndication Feed**: Generated `feed.xml` adhering to RSS 2.0 and Atom standards to broadcast active campaigns across external platforms.
+  - **Automated Generator Script**: Built `.github/scripts/generate-rss.js` to dynamically filter active events, build CDATA-encapsulated HTML descriptions (sub-events, fees, venues, deadlines), and compile RFC 822 publication dates.
+  - **HTML Auto-Discovery Tag**: Integrated `<link rel="alternate" type="application/rss+xml" ...>` into `index.html` header for seamless reader client detection.
+  - **Automated Workflow Synchronization**: Extended `.github/workflows/notify.yml` to automatically execute `generate-rss.js` and commit `feed.xml` on data changes and daily cron cycles.
+  - **b1t-Sched Integration Architecture**: Documented step-by-step native JSON and RSS parsing guides for integrating Raider events into the `b1t-Sched` dashboard sidebar.
+
+### 🚀 v1.10.0 — Venue Location Metadata & Bottom-Right Badges
 * **Features:**
   - **Venue Location Metadata Schema**: Introduced `"OutsideDhaka"`, `"IsOnline"`, and `"city"` fields in `raids.json` to classify physical venue locations and online events.
   - **Dynamic OutsideDhaka Map Badge**: Created an interactive location badge for outside-Dhaka events cycling every 2 seconds between ~~Dhaka~~ and borderless/backgroundless `📍` (icon only), opening the venue on Google Maps in a new tab when clicked.

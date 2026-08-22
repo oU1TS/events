@@ -36,6 +36,7 @@ jobs:
           ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
           PLATFORM_BASE_URL: 'https://ou1ts.github.io/events/' # Customize to your production domain
         run: |
+          node .github/scripts/generate-rss.js
           if [ "${{ github.event_name }}" = "schedule" ]; then
             node .github/scripts/send-push.js --deadline-check
           else
@@ -47,24 +48,33 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Detect if tracker.json is in workspace root or events subdirectory
+          # Detect files in workspace root or events subdirectory
           TRACKER_FILE=""
+          FEED_FILE=""
           if [ -f "tracker.json" ]; then
             TRACKER_FILE="tracker.json"
           elif [ -f "events/tracker.json" ]; then
             TRACKER_FILE="events/tracker.json"
           fi
+
+          if [ -f "feed.xml" ]; then
+            FEED_FILE="feed.xml"
+          elif [ -f "events/feed.xml" ]; then
+            FEED_FILE="events/feed.xml"
+          fi
           
           if [ -n "$TRACKER_FILE" ]; then
             git add "$TRACKER_FILE"
-            # Commit only if changes exist
-            if ! git diff --cached --quiet; then
-              git commit -m "chore: update tracking registry states [skip ci]"
-              git push
-              echo "Changes to $TRACKER_FILE successfully pushed."
-            else
-              echo "No changes in $TRACKER_FILE detected. Skipping commit."
-            fi
+          fi
+          if [ -n "$FEED_FILE" ]; then
+            git add "$FEED_FILE"
+          fi
+
+          # Commit only if changes exist
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update tracking registry states & RSS feed [skip ci]"
+            git push
+            echo "Changes successfully pushed."
           else
-            echo "Warning: tracker.json was not found, nothing to commit."
+            echo "No changes detected. Skipping commit."
           fi

@@ -18,6 +18,7 @@ The application is built entirely on raw, vanilla web standards (**HTML5, CSS3, 
    * [Client-Side Caching & Local Storage Engine](#client-side-caching--local-storage-engine)
    * [OneSignal Web Push Integration & Background Workers](#onesignal-web-push-integration--background-workers)
    * [GitHub Actions Automated Pipeline](#github-actions-automated-pipeline)
+   * [RSS 2.0 Feed Generator & Syndication Subsystem](#rss-20-feed-generator--syndication-subsystem)
 3. [User Experience (UX) Impact Matrix](#3-user-experience-ux-impact-matrix)
 
 ---
@@ -214,6 +215,23 @@ graph TD
 
 ---
 
+### RSS 2.0 Feed Generator & Syndication Subsystem
+* **Files:** [.github/scripts/generate-rss.js](.github/scripts/generate-rss.js), [feed.xml](feed.xml), [index.html](index.html).
+* **Data Sources:** [raids.json](raids.json).
+
+#### How it works:
+1. **Dynamic Active Filtering:** Reads `raids.json` and evaluates each raid item with `isPastRaid(raid)`. Only active or future campaigns are included in the feed channel.
+2. **XML Escaping & Schema Mapping:** Escapes unsafe XML characters (`<`, `>`, `&`, `'`, `"`) and converts dates to standardized RFC 822 format (`date.toUTCString()`).
+3. **Rich HTML Payloads:** Compiles comprehensive CDATA-encapsulated descriptions including date ranges, categories, venues, fees, registration deadlines, nested sub-events, and resource links.
+4. **Auto-Discovery:** Injects `<link rel="alternate" type="application/rss+xml" ...>` into `index.html` allowing browsers and feed aggregators to automatically discover the feed.
+5. **CI/CD Integration:** Triggered inside `.github/workflows/notify.yml` to automatically recompile `feed.xml` on any push to `raids.json` or daily cron execution.
+
+#### UX/Frontend Impact:
+* **Decoupled Cross-Platform Syndication:** Allows users to receive event notifications via their preferred platforms (Discord channels, Telegram broadcast bots, Feedly/NetNewsWire RSS apps) without visiting the website.
+* **Seamless Ecosystem Integration:** Provides a lightweight standard feed for external web apps (like `b1t-Sched`) to embed active campaigns in their sidebars.
+
+---
+
 ## 3. User Experience (UX) Impact Matrix
 
 | Component | Code Implementation | Front-end Visual Effect | UX Benefit |
@@ -228,3 +246,4 @@ graph TD
 | **Local Cache Sync** | `initCacheAndNotifications` | Compares counts/dates with remote | Flushes stale cache data on new raid releases instantly. |
 | **Deadline Alerts** | `checkRegistrationDeadlines` | Premium glassmorphic toasts & system push warnings | Alerts user exactly 1 day before registration closes; prevents duplicate alerts. |
 | **GHA Pipeline** | `send-push.js` & `notify.yml` | Automatic OneSignal API trigger | Sends automated, credentials-secured notifications on new raids or upcoming deadlines. |
+| **RSS Feed Syndication** | `generate-rss.js` & `feed.xml` | Public RSS 2.0 XML endpoint & HTML discovery | Enables cross-platform alerts (Discord, Telegram, b1t-Sched) with zero manual overhead. |
