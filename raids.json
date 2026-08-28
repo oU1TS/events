@@ -1,5 +1,35 @@
 [
   {
+    "Raid_Num": 17,
+    "title": "NASA Space Apps Challenge 2026",
+    "Status": "Future",
+    "Type": "Hackathons",
+    "dateRange": "14 - 15 November 2026",
+    "startDate": "2026-11-14",
+    "endDate": "2026-11-15",
+    "RegEndDate": "2026-11-14",
+    "venue": "Global / Virtual & Local In-Person Leads",
+    "fee": "Free",
+    "details": "The NASA International Space Apps Challenge is a massive global hackathon connecting students, developers, engineers, scientists, and space enthusiasts worldwide. Participants utilize NASA's open-source data to build innovative solutions addressing complex challenges across Space & Earth Science, Climate & Environment, Satellite Data, AI & Technology, and Software Development. Open to all nationalities, with options to participate individually or in collaborative teams.",
+    "subEvents": [
+      {
+        "title": "Registration Window",
+        "details": "Participant registration opens globally starting from August 26, 2026."
+      },
+      {
+        "title": "Core Global Hackathon Sprint",
+        "details": "A continuous 48-hour collaborative development window taking place on November 14–15, 2026, where teams design, build, and submit projects against official NASA problem statements."
+      }
+    ],
+    "links": {
+      "Official Portal": "https://www.spaceappschallenge.org/",
+      "2026 Event Page": "https://www.spaceappschallenge.org/2026/",
+      "Participant FAQs": "https://www.spaceappschallenge.org/resources/participant-faqs/"
+    },
+    "OutsideDhaka": false,
+    "IsOnline": true
+  },
+  {
     "Raid_Num": 16,
     "title": "PSTU IT Carnival 2026",
     "Status": "Future",
