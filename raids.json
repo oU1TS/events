@@ -1,5 +1,36 @@
 [
   {
+  "Raid_Num": 18,
+  "title": "upay Presents AI DEV FEST 2026",
+  "Status": "Future",
+  "Type": "Hackathons",
+  "dateRange": "6 - 7 October 2026",
+  "startDate": "2026-10-06",
+  "endDate": "2026-10-07",
+  "RegEndDate": "2026-09-28",
+  "venue": "Daffodil International University (DIU), Dhaka, Bangladesh",
+  "fee": "Day 1 Individual Competitions: BDT 300 per competition; Day 2 AI Hackathon: BDT 750 per team (max 3 members)",
+  "details": "Organized by DIU CPC under the Department of Computer Science & Engineering at Daffodil International University, upay Presents AI DEV FEST 2026 (Snacks Partner All Time) is a nationwide inter-university AI festival. The fest brings together aspiring developers, innovators, and tech enthusiasts across four key competitive tracks—Prompt Battle, Vibe Coding, Datathon, and AI Hackathon—alongside technical seminars and hands-on workshops exploring the frontiers of AI. Features a total prize pool and awards valuation of BDT 3.35 Lakh. Every participant receives food, an ID card, a certificate, and an event kit (T-shirt, bag, pen, notebook).",
+  "subEvents": [
+    {
+      "title": "Day 01: Individual Competitions & Technical Seminars",
+      "details": "Individual competitive tracks including Prompt Battle, Vibe Coding, and Datathon testing creativity, coding ability, and applied AI/data reasoning (BDT 300 per contest), complemented by hands-on technical workshops."
+    },
+    {
+      "title": "Day 02: AI Hackathon",
+      "details": "Team hackathon (maximum 3 members; BDT 750 registration fee per team) challenging participants to architect and deploy innovative AI-powered solutions to real-world problems."
+    }
+  ],
+  "links": {
+    "Official Website": "https://aidevfest.top",
+    "Registration Portal": "https://aidevfest.top/events",
+    "Rules and Regulations": "https://cutt.ly/pylXiUJz",
+    "Facebook Post": "https://www.facebook.com/diucpc.official/posts/pfbid0ERxTgE48Qah7fJY8fN63yGVjnJHqYXYHpyEF5sLpoWMmSdWvbBcj9x4erBs14tVdl"
+  },
+  "OutsideDhaka": false,
+  "IsOnline": false
+},
+{
     "Raid_Num": 17,
     "title": "NASA Space Apps Challenge 2026",
     "Status": "Future",
