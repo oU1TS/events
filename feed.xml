@@ -5,8 +5,25 @@
     <link>https://ou1ts.github.io/events/</link>
     <description>Live feed of active tech contests, hackathons, olympiads, and symposiums for UITS students.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Sep 2026 10:42:14 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 22 Sep 2026 15:07:03 GMT</lastBuildDate>
     <atom:link href="https://ou1ts.github.io/events/feed.xml" rel="self" type="application/rss+xml" />
+
+    <item>
+      <title><![CDATA[[Conferences / Webinars] InfoSecCon 2026 (5th Edition)]]></title>
+      <link>https://ou1ts.github.io/events/#raid-19</link>
+      <guid isPermaLink="false">uits-raid-19</guid>
+      <pubDate>Sat, 26 Sep 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[Conferences / Webinars]]></category>
+      <description><![CDATA[<p><strong>Category:</strong> Conferences / Webinars</p>
+      <p><strong>Date:</strong> 26 September 2026</p>
+      <p><strong>Registration Deadline:</strong> 2026-09-26</p>
+      <p><strong>Venue:</strong> Renaissance Dhaka Gulshan Hotel, Dhaka, Bangladesh</p>
+      <p><strong>Fee:</strong> Not Specified</p>
+      <p><strong>Details:</strong> InfoSecCon 2026 is the 5th edition of Bangladesh&apos;s premier cybersecurity conference organized by InfoSecBulletin, bringing together researchers, academicians, journalists, cybersecurity firms, and global industry practitioners. The conference targets 300+ impactful leaders including CTOs, CISOs, CIOs, ethical hackers, red/blue team practitioners, law enforcement agencies, and policy makers to discuss cybersecurity strategies, governance, and technology roadmaps.</p>
+      <h4>Sub-Events:</h4><ul><li><strong>Panel Discussion: National AI Strategy: Building Secure and Trusted AI Ecosystems:</strong> A featured panel addressing security, trust, data privacy, and responsible AI governance. Moderated by Sumon Ahmed Sabir (CTO, Fiber @ Home Ltd.) with distinguished panelists including Dr. Zulkarnin Jahangir (MIT UNESCO Global AI Expert), Masud Rahman (Chief Technology Advisor, a2i), Md. Mahbubul Alam Rafee (Head of InfoSec Division, Prime Bank PLC), and Yousup Faruqu (CEO, Raptas).</li></ul>
+      <h4>Related Links:</h4><ul><li><a href="https://infoseccon.com/">Official Website</a></li><li><a href="https://www.facebook.com/share/p/1K4GBUsrAR/">Facebook Post</a></li></ul>
+      <p><a href="https://ou1ts.github.io/events/#raid-19">View Full Raid on UITS Event Raiders &rarr;</a></p>]]></description>
+    </item>
 
     <item>
       <title><![CDATA[[Hackathons] upay Presents AI DEV FEST 2026]]></title>
