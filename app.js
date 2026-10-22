@@ -412,6 +412,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
+            // If user is logged in, append Suggest Edit button next to status badge
+            if (currentSessionUser) {
+                const metaRight = metaDiv.querySelector('.raid-meta-right');
+                if (metaRight) {
+                    const editBtn = document.createElement('button');
+                    editBtn.type = 'button';
+                    editBtn.className = 'raid-edit-suggest-btn';
+                    editBtn.innerHTML = `
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        <span>Edit</span>
+                    `;
+                    editBtn.title = `Propose an update for Raid #${raid.Raid_Num}`;
+                    editBtn.setAttribute('aria-label', `Propose update for Raid #${raid.Raid_Num}`);
+                    editBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (window.openEventFormModal) {
+                            window.openEventFormModal('update', raid);
+                        }
+                    });
+                    metaRight.insertBefore(editBtn, metaRight.firstChild);
+                }
+            }
+
             // Protruding Copy Link Button at top-right corner of card
             const copyBtn = document.createElement('button');
             copyBtn.className = 'copy-raid-link-btn';
@@ -1388,12 +1415,1422 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================================================
-       8. Initialize Application
+       8. Central Database Authentication, Roles, Event Proposals & Review Dashboard
+       ========================================================================== */
+    let supabaseClient = null;
+    let currentSessionUser = null;
+    let currentUserRole = 'user'; // 'admin' | 'mod' | 'user'
+    let currentReviewFilter = 'pending';
+    let currentSubmissionsList = [];
+    let communityUsersList = [];
+
+    // Modal Display Helpers
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        // Restore body scroll if no other custom modal is open
+        const anyOpen = document.querySelectorAll('.custom-modal.open, .calendar-modal.open');
+        if (anyOpen.length === 0) {
+            document.body.style.overflow = '';
+        }
+    }
+
+    function showModalAlert(alertElementId, message, type = 'error') {
+        const alertBox = document.getElementById(alertElementId);
+        if (!alertBox) return;
+        alertBox.className = `modal-alert ${type}`;
+        alertBox.innerText = message;
+        alertBox.style.display = 'block';
+    }
+
+    function clearModalAlert(alertElementId) {
+        const alertBox = document.getElementById(alertElementId);
+        if (!alertBox) return;
+        alertBox.style.display = 'none';
+        alertBox.innerText = '';
+    }
+
+    // Initialize Supabase Client & Setup Event Listeners
+    function initSupabaseAuth() {
+        const env = window.__ENV || {};
+        const supabaseUrl = env.SUPABASE_URL || 'https://bennnocwssmcpiqradvc.supabase.co';
+        const supabaseKey = env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlbm5ub2N3c3NtY3BpcXJhZHZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3Mjk0MjAsImV4cCI6MjEwNTMwNTQyMH0.fOi4e7zdQDkPGA94a9__MgN_Q4u57Pj4-fBl4zz56Bc';
+
+        if (window.supabase && window.supabase.createClient) {
+            try {
+                supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey, {
+                    auth: {
+                        persistSession: true,
+                        autoRefreshToken: true
+                    }
+                });
+            } catch (err) {
+                console.error("Failed to initialize Supabase client:", err);
+            }
+        } else {
+            console.warn("Supabase library not loaded. Authentication features run with placeholder fallback.");
+        }
+
+        // Global modal close buttons & backdrop click handlers
+        document.querySelectorAll('[data-close-modal]').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetModalId = trigger.getAttribute('data-close-modal');
+                closeModal(targetModalId);
+            });
+        });
+
+        // Close on Escape key
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModals = document.querySelectorAll('.custom-modal.open');
+                openModals.forEach(m => closeModal(m.id));
+            }
+        });
+
+        // Desktop Floating Auth Button
+        const desktopAuthBtn = document.getElementById('desktop-auth-btn');
+        if (desktopAuthBtn) {
+            desktopAuthBtn.addEventListener('click', () => {
+                if (currentSessionUser) {
+                    openModal('dashboard-modal');
+                } else {
+                    openModal('auth-modal');
+                }
+            });
+        }
+
+        // Mobile Sidebar Auth Button
+        const mobileAuthBtn = document.getElementById('mobile-auth-btn');
+        if (mobileAuthBtn) {
+            mobileAuthBtn.addEventListener('click', () => {
+                closeMobileMenu();
+                if (currentSessionUser) {
+                    openModal('dashboard-modal');
+                } else {
+                    openModal('auth-modal');
+                }
+            });
+        }
+
+        // Auth Tabs Toggle (Login / Register / Forgot Password)
+        const authTabs = document.querySelectorAll('.auth-tab-btn');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const forgotForm = document.getElementById('forgot-form');
+        const authModalTitle = document.getElementById('auth-modal-title');
+        const oauthDivider = document.getElementById('oauth-divider');
+        const googleLoginBtn = document.getElementById('google-login-btn');
+
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                authTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                clearModalAlert('auth-alert');
+
+                const targetTab = tab.getAttribute('data-auth-tab');
+                if (targetTab === 'login') {
+                    if (loginForm) loginForm.style.display = 'flex';
+                    if (registerForm) registerForm.style.display = 'none';
+                    if (forgotForm) forgotForm.style.display = 'none';
+                    if (oauthDivider) oauthDivider.style.display = 'flex';
+                    if (googleLoginBtn) googleLoginBtn.style.display = 'flex';
+                    if (authModalTitle) authModalTitle.innerText = 'Sign In to Event Raiders';
+                } else if (targetTab === 'register') {
+                    if (loginForm) loginForm.style.display = 'none';
+                    if (registerForm) registerForm.style.display = 'flex';
+                    if (forgotForm) forgotForm.style.display = 'none';
+                    if (oauthDivider) oauthDivider.style.display = 'flex';
+                    if (googleLoginBtn) googleLoginBtn.style.display = 'flex';
+                    if (authModalTitle) authModalTitle.innerText = 'Create Raider Account';
+                } else if (targetTab === 'forgot') {
+                    if (loginForm) loginForm.style.display = 'none';
+                    if (registerForm) registerForm.style.display = 'none';
+                    if (forgotForm) forgotForm.style.display = 'flex';
+                    if (oauthDivider) oauthDivider.style.display = 'none';
+                    if (googleLoginBtn) googleLoginBtn.style.display = 'none';
+                    if (authModalTitle) authModalTitle.innerText = 'Reset Account Password';
+                }
+            });
+        });
+
+        // Google OAuth Sign In
+        if (googleLoginBtn) {
+            googleLoginBtn.addEventListener('click', async () => {
+                clearModalAlert('auth-alert');
+
+                if (window.location.protocol === 'file:') {
+                    showModalAlert('auth-alert', 'Google Sign-In requires http:// or https:// (e.g. running via Live Server or hosted on GitHub Pages). Google does not allow redirects to local file:// URLs.', 'error');
+                    return;
+                }
+
+                if (!supabaseClient) {
+                    showModalAlert('auth-alert', 'Database connection not available.');
+                    return;
+                }
+
+                const originalBtnHtml = googleLoginBtn.innerHTML;
+                googleLoginBtn.disabled = true;
+                googleLoginBtn.innerHTML = `<span>Connecting to Google...</span>`;
+
+                try {
+                    const redirectUrl = window.location.origin + window.location.pathname;
+                    const { error } = await supabaseClient.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: {
+                            redirectTo: redirectUrl
+                        }
+                    });
+                    if (error) throw error;
+                } catch (err) {
+                    console.error("Google login error:", err);
+                    showModalAlert('auth-alert', err.message || 'Google sign in failed. Please try again.');
+                    googleLoginBtn.disabled = false;
+                    googleLoginBtn.innerHTML = originalBtnHtml;
+                }
+            });
+        }
+
+        // 1. Sign In Form Handler
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                clearModalAlert('auth-alert');
+                const email = document.getElementById('login-email').value.trim();
+                const password = document.getElementById('login-password').value;
+                const submitBtn = document.getElementById('login-submit-btn');
+
+                if (!email || !password) {
+                    showModalAlert('auth-alert', 'Please enter both email and password.');
+                    return;
+                }
+
+                if (!supabaseClient) {
+                    showModalAlert('auth-alert', 'Database connection not available.');
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span>Signing In...</span>';
+
+                try {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (error) throw error;
+
+                    showModalAlert('auth-alert', 'Login successful!', 'success');
+                    await syncAuthState(data.session);
+
+                    setTimeout(() => {
+                        closeModal('auth-modal');
+                        openModal('dashboard-modal');
+                    }, 500);
+
+                } catch (err) {
+                    console.error("Login error:", err);
+                    showModalAlert('auth-alert', err.message || 'Login failed. Please verify credentials.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            });
+        }
+
+        // 2. Register Form Handler
+        if (registerForm) {
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                clearModalAlert('auth-alert');
+
+                const fullName = document.getElementById('reg-name').value.trim();
+                const studentId = document.getElementById('reg-student-id').value.trim();
+                const department = document.getElementById('reg-dept').value;
+                const bloodGroup = document.getElementById('reg-blood').value;
+                const email = document.getElementById('reg-email').value.trim();
+                const password = document.getElementById('reg-password').value;
+                const submitBtn = document.getElementById('register-submit-btn');
+
+                if (!/^[0-9]+$/.test(studentId)) {
+                    showModalAlert('auth-alert', 'Student ID must contain only digits.');
+                    return;
+                }
+
+                if (!supabaseClient) {
+                    showModalAlert('auth-alert', 'Database connection not available.');
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span>Creating Account...</span>';
+
+                try {
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                full_name: fullName,
+                                student_id: studentId,
+                                department: department,
+                                blood_group: bloodGroup || null
+                            }
+                        }
+                    });
+
+                    if (error) throw error;
+
+                    // Tag user profile with 'events' project
+                    try {
+                        await supabaseClient.rpc('add_project_tag', { tag: 'events' });
+                    } catch (pe) {
+                        // Optional trigger fallback
+                    }
+
+                    if (data && data.session) {
+                        showModalAlert('auth-alert', 'Registration successful! Logging you in...', 'success');
+                        await syncAuthState(data.session);
+                        setTimeout(() => {
+                            closeModal('auth-modal');
+                            openModal('dashboard-modal');
+                        }, 800);
+                    } else {
+                        showModalAlert('auth-alert', 'Registration successful! Please check your email inbox to verify your account, or sign in.', 'success');
+                    }
+
+                } catch (err) {
+                    console.error("Registration error:", err);
+                    showModalAlert('auth-alert', err.message || 'Registration failed.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            });
+        }
+
+        // 3. Forgot Password Form Handler
+        if (forgotForm) {
+            forgotForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                clearModalAlert('auth-alert');
+                const email = document.getElementById('forgot-email').value.trim();
+                const submitBtn = document.getElementById('forgot-submit-btn');
+
+                if (!email) {
+                    showModalAlert('auth-alert', 'Please enter your account email.');
+                    return;
+                }
+
+                if (!supabaseClient) {
+                    showModalAlert('auth-alert', 'Database connection not available.');
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span>Sending Link...</span>';
+
+                try {
+                    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                        redirectTo: window.location.origin + window.location.pathname
+                    });
+                    if (error) throw error;
+                    showModalAlert('auth-alert', 'Password reset email sent! Check your inbox and spam folder.', 'success');
+                } catch (err) {
+                    console.error("Forgot password error:", err);
+                    showModalAlert('auth-alert', err.message || 'Failed to send reset link.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            });
+        }
+
+        // 4. Log Out Handler
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                if (supabaseClient) {
+                    try {
+                        await supabaseClient.auth.signOut();
+                    } catch (err) {
+                        console.warn("Sign out error:", err);
+                    }
+                }
+                currentSessionUser = null;
+                currentUserRole = 'user';
+                closeModal('dashboard-modal');
+                updateAuthUI();
+                filterAndRenderRaids();
+            });
+        }
+
+        // 5. Dashboard Action Triggers
+        const dashProposeBtn = document.getElementById('dash-propose-event-btn');
+        if (dashProposeBtn) {
+            dashProposeBtn.addEventListener('click', () => {
+                closeModal('dashboard-modal');
+                openEventFormModal('new');
+            });
+        }
+
+        const dashReviewBtn = document.getElementById('dash-review-btn');
+        if (dashReviewBtn) {
+            dashReviewBtn.addEventListener('click', () => {
+                closeModal('dashboard-modal');
+                openReviewDashboardModal();
+            });
+        }
+
+        const dashModsBtn = document.getElementById('dash-mods-btn');
+        if (dashModsBtn) {
+            dashModsBtn.addEventListener('click', () => {
+                closeModal('dashboard-modal');
+                openModManagementModal();
+            });
+        }
+
+        // 6. Sub-Events Repeater (+ Add Sub-Event)
+        const addSubEventBtn = document.getElementById('add-sub-event-btn');
+        if (addSubEventBtn) {
+            addSubEventBtn.addEventListener('click', () => {
+                addSubEventRow('', '');
+            });
+        }
+
+        // 7. Event Proposal / Edit Form Handler
+        const raidSubmissionForm = document.getElementById('raid-submission-form');
+        if (raidSubmissionForm) {
+            raidSubmissionForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                clearModalAlert('event-form-alert');
+
+                if (!currentSessionUser) {
+                    showModalAlert('event-form-alert', 'You must be logged in to submit event proposals.');
+                    return;
+                }
+
+                const submissionType = document.getElementById('form-submission-type').value;
+                const raidNum = parseInt(document.getElementById('form-raid-num').value, 10);
+                const title = document.getElementById('form-title').value.trim();
+                const type = document.getElementById('form-type').value;
+                const status = document.getElementById('form-status').value;
+                const dateRange = document.getElementById('form-date-range').value.trim();
+                const startDate = document.getElementById('form-start-date').value;
+                const endDate = document.getElementById('form-end-date').value;
+                const regEndDate = document.getElementById('form-reg-end-date').value;
+                const venue = document.getElementById('form-venue').value.trim();
+                const city = document.getElementById('form-city').value.trim();
+                const isOnline = document.getElementById('form-is-online').checked;
+                const outsideDhaka = document.getElementById('form-outside-dhaka').checked;
+                const fee = document.getElementById('form-fee').value.trim() || 'Free';
+                const details = document.getElementById('form-details').value.trim();
+                const submitterNote = document.getElementById('form-submitter-note').value.trim();
+
+                // Collect sub-events
+                const subEvents = [];
+                const subRows = document.querySelectorAll('#sub-events-repeater .sub-event-row');
+                subRows.forEach(row => {
+                    const st = row.querySelector('.sub-event-title-input').value.trim();
+                    const sd = row.querySelector('.sub-event-details-input').value.trim();
+                    if (st) {
+                        subEvents.push({ title: st, details: sd });
+                    }
+                });
+
+                // Collect links
+                const links = {};
+                const webLink = document.getElementById('form-link-website').value.trim();
+                const regLink = document.getElementById('form-link-registration').value.trim();
+                const fbLink = document.getElementById('form-link-facebook').value.trim();
+                const notesLink = document.getElementById('form-link-notes').value.trim();
+
+                if (webLink) links['Event Website'] = webLink;
+                if (regLink) links['Registration'] = regLink;
+                if (fbLink) links['Facebook Event'] = fbLink;
+                if (notesLink) links['notes'] = notesLink;
+
+                const raidData = {
+                    Raid_Num: raidNum,
+                    title: title,
+                    Status: status,
+                    Type: type,
+                    dateRange: dateRange,
+                    startDate: startDate,
+                    endDate: endDate,
+                    RegEndDate: regEndDate || endDate,
+                    venue: venue,
+                    fee: fee,
+                    details: details,
+                    subEvents: subEvents,
+                    links: links,
+                    OutsideDhaka: outsideDhaka,
+                    IsOnline: isOnline
+                };
+                if (city) raidData.city = city;
+
+                const submitBtn = document.getElementById('submit-event-btn');
+                submitBtn.disabled = true;
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span>Submitting Proposal...</span>';
+
+                try {
+                    if (!supabaseClient) throw new Error("Database not connected.");
+
+                    const payload = {
+                        user_id: currentSessionUser.id,
+                        user_email: currentSessionUser.email,
+                        user_name: currentSessionUser.full_name || currentSessionUser.email,
+                        submission_type: submissionType,
+                        raid_num: raidNum,
+                        data: raidData,
+                        status: 'pending',
+                        review_notes: submitterNote,
+                        created_at: new Date().toISOString()
+                    };
+
+                    const { error } = await supabaseClient
+                        .from('event_submissions')
+                        .insert([payload]);
+
+                    if (error) {
+                        // Check if table missing
+                        if (error.code === '42P01' || (error.message && error.message.includes('does not exist'))) {
+                            throw new Error("The 'event_submissions' table does not exist in Supabase yet. Please run doc/db/event_raids_schema.sql in your Supabase SQL Editor.");
+                        }
+                        throw error;
+                    }
+
+                    showModalAlert('event-form-alert', 'Proposal submitted successfully! It is now pending approval by admins/mods.', 'success');
+                    setTimeout(() => {
+                        closeModal('event-form-modal');
+                        loadUserSubmissions();
+                    }, 1200);
+
+                } catch (err) {
+                    console.error("Submission error:", err);
+                    showModalAlert('event-form-alert', err.message || 'Failed to submit event proposal.');
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnText;
+                }
+            });
+        }
+
+        // 8. Review Dashboard Filter Tabs
+        document.querySelectorAll('.review-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.review-tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentReviewFilter = btn.getAttribute('data-status-filter');
+                renderSubmissionsList();
+            });
+        });
+
+        // 9. Download & Copy raids.json Export Buttons
+        const downloadRaidsBtn = document.getElementById('download-raids-json-btn');
+        if (downloadRaidsBtn) {
+            downloadRaidsBtn.addEventListener('click', () => {
+                const updatedJson = generateUpdatedRaidsJson();
+                const blob = new Blob([updatedJson], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'raids.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        const copyRaidsBtn = document.getElementById('copy-raids-json-btn');
+        if (copyRaidsBtn) {
+            copyRaidsBtn.addEventListener('click', () => {
+                const updatedJson = generateUpdatedRaidsJson();
+                navigator.clipboard.writeText(updatedJson).then(() => {
+                    const originalText = copyRaidsBtn.innerHTML;
+                    copyRaidsBtn.innerHTML = `<span>Copied!</span>`;
+                    setTimeout(() => { copyRaidsBtn.innerHTML = originalText; }, 2000);
+                });
+            });
+        }
+
+        // 10. Mod User Search Filter
+        const modSearchInput = document.getElementById('mod-user-search-input');
+        if (modSearchInput) {
+            modSearchInput.addEventListener('input', () => {
+                renderCommunityUsersList(modSearchInput.value.trim().toLowerCase());
+            });
+        }
+
+        // Initial Session Retrieval
+        if (supabaseClient) {
+            supabaseClient.auth.getSession().then(({ data }) => {
+                if (data && data.session) {
+                    syncAuthState(data.session);
+                } else {
+                    updateAuthUI();
+                }
+            }).catch(err => {
+                console.warn("Could not retrieve initial session:", err);
+                updateAuthUI();
+            });
+
+            supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                if (event === 'SIGNED_IN' || event === 'INITIAL_SESSION') {
+                    // Clean OAuth callback hash/search parameters from URL
+                    if (window.location.search.includes('code=') || window.location.hash.includes('access_token=')) {
+                        try {
+                            const cleanHash = (window.location.hash && !window.location.hash.includes('access_token=')) ? window.location.hash : (window.location.hash.startsWith('#') && !window.location.hash.includes('=') ? window.location.hash : '');
+                            window.history.replaceState(null, document.title, window.location.pathname + cleanHash);
+                        } catch (e) {}
+                    }
+                }
+                await syncAuthState(session);
+            });
+        } else {
+            updateAuthUI();
+        }
+    }
+
+    // Sync Authentication State & Fetch Role from Supabase
+    async function syncAuthState(session) {
+        if (!session || !session.user) {
+            currentSessionUser = null;
+            currentUserRole = 'user';
+            updateAuthUI();
+            filterAndRenderRaids();
+            return;
+        }
+
+        const user = session.user;
+        let profile = null;
+        let role = 'user';
+
+        if (supabaseClient) {
+            // 1. Fetch user profile
+            try {
+                const { data: profData } = await supabaseClient
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .maybeSingle();
+                if (profData) {
+                    profile = profData;
+                    // Tag user with 'events' project if missing
+                    if (!profile.project_tags || !profile.project_tags.includes('events')) {
+                        try {
+                            await supabaseClient.rpc('add_project_tag', { tag: 'events' });
+                        } catch (te) {}
+                    }
+                }
+            } catch (pe) {
+                console.warn("Profile query failed:", pe);
+            }
+
+            // 2. Fetch project role from event_roles table
+            try {
+                const { data: roleData, error: roleError } = await supabaseClient
+                    .from('event_roles')
+                    .select('role')
+                    .eq('user_id', user.id)
+                    .maybeSingle();
+
+                if (!roleError && roleData && roleData.role) {
+                    role = roleData.role;
+                } else {
+                    // Check fallback tag in profiles
+                    if (profile && Array.isArray(profile.project_tags)) {
+                        if (profile.project_tags.includes('events_admin') || profile.project_tags.includes('admin')) {
+                            role = 'admin';
+                        } else if (profile.project_tags.includes('events_mod') || profile.project_tags.includes('mod')) {
+                            role = 'mod';
+                        }
+                    }
+                }
+            } catch (re) {
+                console.warn("Role query failed:", re);
+            }
+        }
+
+        const metadata = user.user_metadata || {};
+        const avatarUrl = metadata.avatar_url || metadata.picture || (profile && profile.avatar_url) || null;
+        currentSessionUser = {
+            id: user.id,
+            email: user.email,
+            full_name: (profile && profile.full_name) || metadata.full_name || metadata.name || user.email.split('@')[0],
+            student_id: (profile && profile.student_id) || metadata.student_id || 'OAUTH_USER',
+            department: (profile && profile.department) || metadata.department || 'General',
+            blood_group: (profile && profile.blood_group) || metadata.blood_group || '',
+            avatar_url: avatarUrl
+        };
+        currentUserRole = role;
+
+        updateAuthUI();
+        loadUserSubmissions();
+
+        if (currentUserRole === 'admin' || currentUserRole === 'mod') {
+            updateStaffBadgeCount();
+        }
+
+        // Re-render raids to show "Suggest Edit" buttons on cards
+        filterAndRenderRaids();
+    }
+
+    // Update Floating Desktop and Mobile Navigation Auth Button States
+    function updateAuthUI() {
+        const desktopAuthBtn = document.getElementById('desktop-auth-btn');
+        const desktopAuthLabel = document.getElementById('desktop-auth-label');
+        const mobileAuthLabel = document.getElementById('mobile-auth-label');
+
+        const dashAvatar = document.getElementById('dash-avatar');
+        const dashUserName = document.getElementById('dash-user-name');
+        const dashUserEmail = document.getElementById('dash-user-email');
+        const dashStudentId = document.getElementById('dash-student-id');
+        const dashDept = document.getElementById('dash-dept');
+        const dashRoleBadge = document.getElementById('dash-role-badge');
+        const staffButtons = document.querySelectorAll('.staff-only');
+        const adminButtons = document.querySelectorAll('.admin-only');
+
+        if (currentSessionUser) {
+            // Logged in: buttons become Dashboard
+            if (desktopAuthBtn) {
+                desktopAuthBtn.classList.add('is-logged-in');
+                desktopAuthBtn.setAttribute('aria-label', `Open Dashboard (${currentSessionUser.full_name})`);
+            }
+            if (desktopAuthLabel) desktopAuthLabel.innerText = 'Dashboard';
+            if (mobileAuthLabel) mobileAuthLabel.innerText = 'Dashboard';
+
+            // Populate dashboard profile details
+            const nameParts = currentSessionUser.full_name.split(' ');
+            const initials = nameParts.map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'U';
+
+            if (dashAvatar) {
+                if (currentSessionUser.avatar_url) {
+                    dashAvatar.innerHTML = `<img src="${currentSessionUser.avatar_url}" alt="${currentSessionUser.full_name}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" onerror="this.parentElement.innerText='${initials}'">`;
+                } else {
+                    dashAvatar.innerText = initials;
+                }
+            }
+            if (dashUserName) dashUserName.innerText = currentSessionUser.full_name;
+            if (dashUserEmail) dashUserEmail.innerText = currentSessionUser.email;
+            if (dashStudentId) dashStudentId.innerText = `ID: ${currentSessionUser.student_id}`;
+            if (dashDept) dashDept.innerText = `Dept: ${currentSessionUser.department}`;
+
+            if (dashRoleBadge) {
+                dashRoleBadge.className = `role-badge role-${currentUserRole}`;
+                dashRoleBadge.innerText = currentUserRole === 'admin' ? 'Admin' : (currentUserRole === 'mod' ? 'Moderator' : 'Member');
+            }
+
+            // Role visibility toggles
+            staffButtons.forEach(b => {
+                b.style.display = (currentUserRole === 'admin' || currentUserRole === 'mod') ? 'flex' : 'none';
+            });
+            adminButtons.forEach(b => {
+                b.style.display = (currentUserRole === 'admin') ? 'flex' : 'none';
+            });
+
+        } else {
+            // Logged out: buttons become Login
+            if (desktopAuthBtn) {
+                desktopAuthBtn.classList.remove('is-logged-in');
+                desktopAuthBtn.setAttribute('aria-label', 'Account Login');
+            }
+            if (desktopAuthLabel) desktopAuthLabel.innerText = 'Login';
+            if (mobileAuthLabel) mobileAuthLabel.innerText = 'Login';
+
+            staffButtons.forEach(b => b.style.display = 'none');
+            adminButtons.forEach(b => b.style.display = 'none');
+        }
+    }
+
+    // Load logged-in user's recent submissions for dashboard list
+    async function loadUserSubmissions() {
+        const listContainer = document.getElementById('user-submissions-list');
+        if (!listContainer || !currentSessionUser || !supabaseClient) return;
+
+        try {
+            const { data, error } = await supabaseClient
+                .from('event_submissions')
+                .select('*')
+                .eq('user_id', currentSessionUser.id)
+                .order('created_at', { ascending: false })
+                .limit(5);
+
+            if (error || !data || data.length === 0) {
+                listContainer.innerHTML = '<p class="empty-list-text">No submissions yet. Propose an event to get started!</p>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            data.forEach(sub => {
+                const item = document.createElement('div');
+                item.className = 'dashboard-submission-item';
+                item.style.padding = '0.5rem 0.75rem';
+                item.style.background = 'var(--bg-secondary)';
+                item.style.borderRadius = '6px';
+                item.style.display = 'flex';
+                item.style.justifyContent = 'space-between';
+                item.style.alignItems = 'center';
+                item.style.fontSize = '0.82rem';
+
+                const statusColor = sub.status === 'approved' ? '#10b981' : (sub.status === 'rejected' ? '#ef4444' : 'var(--accent)');
+                item.innerHTML = `
+                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%;">
+                        <strong>${escapeHTML(sub.data ? sub.data.title : 'Raid')}</strong>
+                        <div style="color: var(--text-muted); font-size: 0.75rem;">${sub.submission_type === 'update' ? `Edit to Raid #${sub.raid_num}` : 'New Raid'}</div>
+                    </div>
+                    <span style="color: ${statusColor}; font-weight: 700; text-transform: capitalize;">${escapeHTML(sub.status)}</span>
+                `;
+                listContainer.appendChild(item);
+            });
+        } catch (e) {
+            listContainer.innerHTML = '<p class="empty-list-text">Unable to load submissions history.</p>';
+        }
+    }
+
+    // Update pending badge count for admin/mods
+    async function updateStaffBadgeCount() {
+        if (!supabaseClient) return;
+        try {
+            const { count, error } = await supabaseClient
+                .from('event_submissions')
+                .select('*', { count: 'exact', head: true })
+                .eq('status', 'pending');
+
+            if (!error && count !== null) {
+                const dashBadge = document.getElementById('pending-reviews-count-badge');
+                const reviewBadge = document.getElementById('review-pending-badge');
+                if (dashBadge) dashBadge.innerText = count;
+                if (reviewBadge) reviewBadge.innerText = count;
+            }
+        } catch (e) {
+            // Ignore badge count failure
+        }
+    }
+
+    // Open Event Proposal / Edit Modal
+    window.openEventFormModal = function (mode, existingRaid = null) {
+        if (!currentSessionUser) {
+            openModal('auth-modal');
+            showModalAlert('auth-alert', 'Please sign in to propose an event or update raids.', 'info');
+            return;
+        }
+
+        clearModalAlert('event-form-alert');
+        const formModeTag = document.getElementById('event-form-mode-tag');
+        const formTitle = document.getElementById('event-form-modal-title');
+        const formSubmittionType = document.getElementById('form-submission-type');
+        const formTargetRaidNum = document.getElementById('form-target-raid-num');
+
+        const raidNumInput = document.getElementById('form-raid-num');
+        const titleInput = document.getElementById('form-title');
+        const typeSelect = document.getElementById('form-type');
+        const statusSelect = document.getElementById('form-status');
+        const dateRangeInput = document.getElementById('form-date-range');
+        const startDateInput = document.getElementById('form-start-date');
+        const endDateInput = document.getElementById('form-end-date');
+        const regEndDateInput = document.getElementById('form-reg-end-date');
+        const venueInput = document.getElementById('form-venue');
+        const cityInput = document.getElementById('form-city');
+        const isOnlineCheck = document.getElementById('form-is-online');
+        const outsideDhakaCheck = document.getElementById('form-outside-dhaka');
+        const feeInput = document.getElementById('form-fee');
+        const detailsInput = document.getElementById('form-details');
+
+        const webInput = document.getElementById('form-link-website');
+        const regLinkInput = document.getElementById('form-link-registration');
+        const fbInput = document.getElementById('form-link-facebook');
+        const notesInput = document.getElementById('form-link-notes');
+        const noteInput = document.getElementById('form-submitter-note');
+
+        const subEventsRepeater = document.getElementById('sub-events-repeater');
+        if (subEventsRepeater) subEventsRepeater.innerHTML = '';
+
+        if (mode === 'update' && existingRaid) {
+            if (formModeTag) formModeTag.innerText = `Edit Proposal • Raid #${existingRaid.Raid_Num}`;
+            if (formTitle) formTitle.innerText = `Propose Updates for Raid #${existingRaid.Raid_Num}`;
+            if (formSubmittionType) formSubmittionType.value = 'update';
+            if (formTargetRaidNum) formTargetRaidNum.value = existingRaid.Raid_Num;
+
+            raidNumInput.value = existingRaid.Raid_Num;
+            titleInput.value = existingRaid.title || '';
+            typeSelect.value = existingRaid.Type || 'Hackathons';
+            statusSelect.value = existingRaid.Status || 'Future';
+            dateRangeInput.value = existingRaid.dateRange || '';
+            startDateInput.value = existingRaid.startDate || '';
+            endDateInput.value = existingRaid.endDate || '';
+            regEndDateInput.value = existingRaid.RegEndDate || existingRaid.endDate || '';
+            venueInput.value = existingRaid.venue || '';
+            cityInput.value = existingRaid.city || '';
+            isOnlineCheck.checked = Boolean(existingRaid.IsOnline);
+            outsideDhakaCheck.checked = Boolean(existingRaid.OutsideDhaka);
+            feeInput.value = existingRaid.fee || '';
+            detailsInput.value = existingRaid.details || '';
+
+            const links = existingRaid.links || {};
+            webInput.value = links['Event Website'] || '';
+            regLinkInput.value = links['Registration'] || links['CTF Registration'] || '';
+            fbInput.value = links['Facebook Event'] || links['Facebook Post'] || '';
+            notesInput.value = links['notes'] || '';
+            noteInput.value = '';
+
+            if (Array.isArray(existingRaid.subEvents) && existingRaid.subEvents.length > 0) {
+                existingRaid.subEvents.forEach(se => addSubEventRow(se.title, se.details));
+            } else {
+                addSubEventRow('', '');
+            }
+
+        } else {
+            // New raid proposal
+            let nextNum = 1;
+            if (pastRaidsData && pastRaidsData.length > 0) {
+                const nums = pastRaidsData.map(r => r.Raid_Num).filter(n => typeof n === 'number');
+                if (nums.length > 0) nextNum = Math.max(...nums) + 1;
+            }
+
+            if (formModeTag) formModeTag.innerText = 'New Campaign Proposal';
+            if (formTitle) formTitle.innerText = 'Propose New Raid Campaign';
+            if (formSubmittionType) formSubmittionType.value = 'new';
+            if (formTargetRaidNum) formTargetRaidNum.value = nextNum;
+
+            raidNumInput.value = nextNum;
+            titleInput.value = '';
+            typeSelect.value = 'Hackathons';
+            statusSelect.value = 'Future';
+            dateRangeInput.value = '';
+            startDateInput.value = '';
+            endDateInput.value = '';
+            regEndDateInput.value = '';
+            venueInput.value = '';
+            cityInput.value = '';
+            isOnlineCheck.checked = false;
+            outsideDhakaCheck.checked = false;
+            feeInput.value = 'Free';
+            detailsInput.value = '';
+
+            webInput.value = '';
+            regLinkInput.value = '';
+            fbInput.value = '';
+            notesInput.value = '';
+            noteInput.value = '';
+
+            addSubEventRow('', '');
+        }
+
+        openModal('event-form-modal');
+    };
+
+    // Helper: Add dynamic sub-event row in repeater
+    function addSubEventRow(title = '', details = '') {
+        const repeater = document.getElementById('sub-events-repeater');
+        if (!repeater) return;
+
+        const row = document.createElement('div');
+        row.className = 'sub-event-row';
+        row.innerHTML = `
+            <div class="sub-event-row-top">
+                <input type="text" class="form-input sub-event-title-input" placeholder="Sub-event / Track title (e.g. 48-Hour CTF)" value="${escapeHTML(title)}" required>
+                <button type="button" class="remove-sub-event-btn" title="Remove sub-event">&times;</button>
+            </div>
+            <textarea class="form-input form-textarea sub-event-details-input" rows="2" placeholder="Sub-event description or schedule details...">${escapeHTML(details)}</textarea>
+        `;
+
+        row.querySelector('.remove-sub-event-btn').addEventListener('click', () => {
+            row.remove();
+        });
+
+        repeater.appendChild(row);
+    }
+
+    // Open Review Dashboard Modal (Staff Only)
+    async function openReviewDashboardModal() {
+        if (currentUserRole !== 'admin' && currentUserRole !== 'mod') {
+            alert('Access restricted: Only guild admins and moderators can access the Review Dashboard.');
+            return;
+        }
+
+        openModal('review-dashboard-modal');
+        await fetchSubmissions();
+        renderSubmissionsList();
+    }
+
+    // Fetch Submissions from Supabase
+    async function fetchSubmissions() {
+        const container = document.getElementById('review-submissions-container');
+        if (!container || !supabaseClient) return;
+
+        container.innerHTML = '<div class="review-loading-state">Loading submissions from database...</div>';
+        clearModalAlert('review-dashboard-alert');
+
+        try {
+            const { data, error } = await supabaseClient
+                .from('event_submissions')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                if (error.code === '42P01' || (error.message && error.message.includes('does not exist'))) {
+                    container.innerHTML = `
+                        <div style="padding: 1.5rem; text-align: center; color: var(--text-muted); background: var(--bg-tertiary); border-radius: 12px; border: 1px dashed var(--border-color);">
+                            <p style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.5rem;">Database Table Not Found</p>
+                            <p style="font-size: 0.9rem; margin-bottom: 1rem;">The <code>event_submissions</code> table has not been initialized in Supabase yet.</p>
+                            <p style="font-size: 0.85rem;">Run the migration script <strong>doc/db/event_raids_schema.sql</strong> in your Supabase SQL Editor to enable real-time reviews.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                throw error;
+            }
+
+            currentSubmissionsList = data || [];
+
+            // Update badge counts
+            const pendingCount = currentSubmissionsList.filter(s => s.status === 'pending').length;
+            const approvedCount = currentSubmissionsList.filter(s => s.status === 'approved').length;
+            const rejectedCount = currentSubmissionsList.filter(s => s.status === 'rejected').length;
+
+            const pBadge = document.getElementById('review-pending-badge');
+            const aBadge = document.getElementById('review-approved-badge');
+            const rBadge = document.getElementById('review-rejected-badge');
+            if (pBadge) pBadge.innerText = pendingCount;
+            if (aBadge) aBadge.innerText = approvedCount;
+            if (rBadge) rBadge.innerText = rejectedCount;
+
+            const dashBadge = document.getElementById('pending-reviews-count-badge');
+            if (dashBadge) dashBadge.innerText = pendingCount;
+
+        } catch (err) {
+            console.error("Fetch submissions error:", err);
+            container.innerHTML = `<p class="empty-list-text" style="color: #ef4444;">Failed to load submissions: ${escapeHTML(err.message)}</p>`;
+        }
+    }
+
+    // Render Submissions List based on current status filter
+    function renderSubmissionsList() {
+        const container = document.getElementById('review-submissions-container');
+        if (!container) return;
+
+        const filtered = currentSubmissionsList.filter(s => s.status === currentReviewFilter);
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<p class="empty-list-text">No ${currentReviewFilter} submissions found.</p>`;
+            return;
+        }
+
+        container.innerHTML = '';
+
+        filtered.forEach(sub => {
+            const card = document.createElement('div');
+            card.className = 'review-card';
+
+            const createdDate = sub.created_at ? new Date(sub.created_at).toLocaleDateString(undefined, {
+                year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            }) : 'Recent';
+
+            const raidData = sub.data || {};
+            const isUpdate = sub.submission_type === 'update';
+            const badgeClass = isUpdate ? 'type-update' : 'type-new';
+            const badgeLabel = isUpdate ? `Update: Raid #${sub.raid_num}` : 'New Raid Proposal';
+
+            // Find original raid for diff if updating
+            let originalRaid = null;
+            if (isUpdate && pastRaidsData) {
+                originalRaid = pastRaidsData.find(r => r.Raid_Num === sub.raid_num);
+            }
+
+            let diffHtml = '';
+            if (isUpdate && originalRaid) {
+                diffHtml = buildDiffTable(originalRaid, raidData);
+            } else {
+                diffHtml = buildNewRaidSummary(raidData);
+            }
+
+            let actionsHtml = '';
+            if (sub.status === 'pending') {
+                actionsHtml = `
+                    <div class="review-actions-row">
+                        <button type="button" class="btn-reject" data-reject-id="${sub.id}">Reject</button>
+                        <button type="button" class="btn-approve" data-approve-id="${sub.id}">Approve Proposal</button>
+                    </div>
+                `;
+            } else {
+                actionsHtml = `
+                    <div style="font-size: 0.8rem; color: var(--text-muted); text-align: right;">
+                        Status: <strong style="text-transform: capitalize; color: ${sub.status === 'approved' ? '#10b981' : '#ef4444'}">${sub.status}</strong>
+                        ${sub.reviewed_at ? ` on ${new Date(sub.reviewed_at).toLocaleDateString()}` : ''}
+                        ${sub.review_notes ? `<br>Note: <em>${escapeHTML(sub.review_notes)}</em>` : ''}
+                    </div>
+                `;
+            }
+
+            card.innerHTML = `
+                <div class="review-card-header">
+                    <div class="review-card-title-group">
+                        <h4>${escapeHTML(raidData.title || 'Untitled Raid')}</h4>
+                        <p class="review-submitter-meta">
+                            Submitted by <strong>${escapeHTML(sub.user_name || sub.user_email)}</strong> (${escapeHTML(sub.user_email)}) • ${createdDate}
+                        </p>
+                    </div>
+                    <span class="review-type-badge ${badgeClass}">${badgeLabel}</span>
+                </div>
+
+                ${sub.review_notes ? `<div style="font-size: 0.85rem; color: var(--text-secondary); background: var(--bg-secondary); padding: 0.5rem 0.75rem; border-radius: 6px;"><strong>Submitter Note:</strong> ${escapeHTML(sub.review_notes)}</div>` : ''}
+
+                <div class="review-details-box">
+                    ${diffHtml}
+                </div>
+
+                ${actionsHtml}
+            `;
+
+            // Action button listeners
+            const approveBtn = card.querySelector('[data-approve-id]');
+            if (approveBtn) {
+                approveBtn.addEventListener('click', () => approveSubmission(sub));
+            }
+
+            const rejectBtn = card.querySelector('[data-reject-id]');
+            if (rejectBtn) {
+                rejectBtn.addEventListener('click', () => rejectSubmission(sub));
+            }
+
+            container.appendChild(card);
+        });
+    }
+
+    // Helper: Build Side-by-Side Diff Table for Updates
+    function buildDiffTable(oldRaid, newRaid) {
+        const fields = [
+            { label: 'Title', oldVal: oldRaid.title, newVal: newRaid.title },
+            { label: 'Type', oldVal: oldRaid.Type, newVal: newRaid.Type },
+            { label: 'Status', oldVal: oldRaid.Status, newVal: newRaid.Status },
+            { label: 'Dates', oldVal: oldRaid.dateRange, newVal: newRaid.dateRange },
+            { label: 'Start Date', oldVal: oldRaid.startDate, newVal: newRaid.startDate },
+            { label: 'End Date', oldVal: oldRaid.endDate, newVal: newRaid.endDate },
+            { label: 'Registration End', oldVal: oldRaid.RegEndDate, newVal: newRaid.RegEndDate },
+            { label: 'Venue', oldVal: oldRaid.venue, newVal: newRaid.venue },
+            { label: 'City', oldVal: oldRaid.city || '', newVal: newRaid.city || '' },
+            { label: 'Fee', oldVal: oldRaid.fee, newVal: newRaid.fee },
+            { label: 'Virtual / Online', oldVal: Boolean(oldRaid.IsOnline), newVal: Boolean(newRaid.IsOnline) },
+            { label: 'Outside Dhaka', oldVal: Boolean(oldRaid.OutsideDhaka), newVal: Boolean(newRaid.OutsideDhaka) }
+        ];
+
+        let rows = '';
+        fields.forEach(f => {
+            const hasChanged = String(f.oldVal) !== String(f.newVal);
+            rows += `
+                <tr>
+                    <th>${escapeHTML(f.label)}</th>
+                    <td>
+                        ${hasChanged ? `<span class="diff-val-old">${escapeHTML(String(f.oldVal || '-'))}</span> &rarr; ` : ''}
+                        <span class="${hasChanged ? 'diff-val-new' : ''}">${escapeHTML(String(f.newVal || '-'))}</span>
+                    </td>
+                </tr>
+            `;
+        });
+
+        return `
+            <table class="review-diff-table">
+                <tbody>${rows}</tbody>
+            </table>
+        `;
+    }
+
+    // Helper: Build New Raid Summary Table
+    function buildNewRaidSummary(newRaid) {
+        return `
+            <table class="review-diff-table">
+                <tbody>
+                    <tr><th>Type</th><td>${escapeHTML(newRaid.Type || '-')}</td></tr>
+                    <tr><th>Date Range</th><td>${escapeHTML(newRaid.dateRange || '-')} (${escapeHTML(newRaid.startDate || '')} to ${escapeHTML(newRaid.endDate || '')})</td></tr>
+                    <tr><th>Registration</th><td>${escapeHTML(newRaid.RegEndDate || '-')}</td></tr>
+                    <tr><th>Venue</th><td>${escapeHTML(newRaid.venue || '-')} ${newRaid.IsOnline ? '(Online)' : ''}</td></tr>
+                    <tr><th>Fee</th><td>${escapeHTML(newRaid.fee || 'Free')}</td></tr>
+                    <tr><th>Details</th><td>${escapeHTML(newRaid.details || '-')}</td></tr>
+                    <tr><th>Sub-Events</th><td>${Array.isArray(newRaid.subEvents) ? newRaid.subEvents.map(s => `<strong>${escapeHTML(s.title)}</strong>`).join(', ') : 'None'}</td></tr>
+                </tbody>
+            </table>
+        `;
+    }
+
+    // Approve a submission
+    async function approveSubmission(submission) {
+        if (!confirm(`Are you sure you want to approve "${submission.data ? submission.data.title : 'this submission'}"?`)) {
+            return;
+        }
+
+        try {
+            if (!supabaseClient) throw new Error("Database not connected.");
+
+            const { error } = await supabaseClient
+                .from('event_submissions')
+                .update({
+                    status: 'approved',
+                    reviewer_id: currentSessionUser.id,
+                    reviewer_email: currentSessionUser.email,
+                    reviewed_at: new Date().toISOString()
+                })
+                .eq('id', submission.id);
+
+            if (error) throw error;
+
+            // Apply in-memory update so the active user sees the approved data immediately
+            applyApprovedSubmissionToMemory(submission);
+
+            showModalAlert('review-dashboard-alert', 'Submission approved successfully!', 'success');
+            await fetchSubmissions();
+            renderSubmissionsList();
+            filterAndRenderRaids();
+
+        } catch (err) {
+            console.error("Approve error:", err);
+            showModalAlert('review-dashboard-alert', err.message || 'Failed to approve submission.');
+        }
+    }
+
+    // Reject a submission
+    async function rejectSubmission(submission) {
+        const reason = prompt("Enter a reason or feedback for rejection (optional):", "");
+        if (reason === null) return; // User cancelled
+
+        try {
+            if (!supabaseClient) throw new Error("Database not connected.");
+
+            const { error } = await supabaseClient
+                .from('event_submissions')
+                .update({
+                    status: 'rejected',
+                    reviewer_id: currentSessionUser.id,
+                    reviewer_email: currentSessionUser.email,
+                    review_notes: reason ? reason.trim() : submission.review_notes,
+                    reviewed_at: new Date().toISOString()
+                })
+                .eq('id', submission.id);
+
+            if (error) throw error;
+
+            showModalAlert('review-dashboard-alert', 'Submission rejected.', 'info');
+            await fetchSubmissions();
+            renderSubmissionsList();
+
+        } catch (err) {
+            console.error("Reject error:", err);
+            showModalAlert('review-dashboard-alert', err.message || 'Failed to reject submission.');
+        }
+    }
+
+    // Apply approved submission directly into pastRaidsData
+    function applyApprovedSubmissionToMemory(submission) {
+        if (!pastRaidsData || !submission.data) return;
+
+        if (submission.submission_type === 'update') {
+            const index = pastRaidsData.findIndex(r => r.Raid_Num === submission.raid_num);
+            if (index !== -1) {
+                pastRaidsData[index] = Object.assign({}, pastRaidsData[index], submission.data);
+            }
+        } else {
+            // New raid: prepend to list
+            pastRaidsData.unshift(submission.data);
+            // Sort by Raid_Num descending
+            pastRaidsData.sort((a, b) => b.Raid_Num - a.Raid_Num);
+        }
+    }
+
+    // Generate updated JSON formatted matching raids.json
+    function generateUpdatedRaidsJson() {
+        if (!pastRaidsData) return '[]';
+        return JSON.stringify(pastRaidsData, null, 2);
+    }
+
+    // Open Mod Management Modal (Admin Only)
+    async function openModManagementModal() {
+        if (currentUserRole !== 'admin') {
+            alert('Access restricted: Only Guild Admins can manage moderators.');
+            return;
+        }
+
+        openModal('mod-management-modal');
+        await fetchCommunityUsers();
+        renderCommunityUsersList();
+    }
+
+    // Fetch Community Users from profiles & event_roles
+    async function fetchCommunityUsers() {
+        const listContainer = document.getElementById('mod-users-list');
+        if (!listContainer || !supabaseClient) return;
+
+        listContainer.innerHTML = '<div class="review-loading-state">Loading registered community members...</div>';
+        clearModalAlert('mod-management-alert');
+
+        try {
+            // 1. Fetch profiles
+            const { data: profiles, error: pError } = await supabaseClient
+                .from('profiles')
+                .select('id, full_name, email, student_id, department, project_tags')
+                .order('created_at', { ascending: false })
+                .limit(100);
+
+            if (pError) throw pError;
+
+            // 2. Fetch existing roles
+            let roleMap = {};
+            try {
+                const { data: roles, error: rError } = await supabaseClient
+                    .from('event_roles')
+                    .select('user_id, role');
+
+                if (!rError && roles) {
+                    roles.forEach(r => { roleMap[r.user_id] = r.role; });
+                }
+            } catch (re) {
+                console.warn("Could not query event_roles:", re);
+            }
+
+            communityUsersList = (profiles || []).map(p => {
+                let userRole = roleMap[p.id] || 'user';
+                // Tag check fallback
+                if (userRole === 'user' && Array.isArray(p.project_tags)) {
+                    if (p.project_tags.includes('events_admin') || p.project_tags.includes('admin')) userRole = 'admin';
+                    else if (p.project_tags.includes('events_mod') || p.project_tags.includes('mod')) userRole = 'mod';
+                }
+                return {
+                    id: p.id,
+                    name: p.full_name || 'Member',
+                    email: p.email,
+                    student_id: p.student_id || 'N/A',
+                    department: p.department || 'N/A',
+                    role: userRole
+                };
+            });
+
+        } catch (err) {
+            console.error("Fetch community users error:", err);
+            listContainer.innerHTML = `<p class="empty-list-text" style="color: #ef4444;">Failed to load users: ${escapeHTML(err.message)}</p>`;
+        }
+    }
+
+    // Render Community Users in Mod Management Modal
+    function renderCommunityUsersList(searchQuery = '') {
+        const listContainer = document.getElementById('mod-users-list');
+        if (!listContainer) return;
+
+        let filtered = communityUsersList;
+        if (searchQuery) {
+            filtered = filtered.filter(u =>
+                (u.name && u.name.toLowerCase().includes(searchQuery)) ||
+                (u.email && u.email.toLowerCase().includes(searchQuery)) ||
+                (u.student_id && String(u.student_id).toLowerCase().includes(searchQuery))
+            );
+        }
+
+        if (filtered.length === 0) {
+            listContainer.innerHTML = '<p class="empty-list-text">No community members matched your search.</p>';
+            return;
+        }
+
+        listContainer.innerHTML = '';
+        filtered.forEach(u => {
+            const row = document.createElement('div');
+            row.className = 'mod-user-row';
+
+            const isCurrentUser = currentSessionUser && currentSessionUser.id === u.id;
+            const isAdmin = u.role === 'admin';
+            const isMod = u.role === 'mod';
+
+            let actionButton = '';
+            if (isAdmin) {
+                actionButton = `<span class="role-badge role-admin">Admin</span>`;
+            } else if (isCurrentUser) {
+                actionButton = `<span class="role-badge role-admin">You (Admin)</span>`;
+            } else {
+                actionButton = `
+                    <button type="button" class="btn-toggle-mod ${isMod ? 'is-mod' : 'not-mod'}" data-user-id="${u.id}" data-action="${isMod ? 'revoke' : 'promote'}">
+                        ${isMod ? 'Revoke Mod' : 'Appoint Mod'}
+                    </button>
+                `;
+            }
+
+            row.innerHTML = `
+                <div class="mod-user-details">
+                    <h5 class="mod-user-name">${escapeHTML(u.name)}</h5>
+                    <p class="mod-user-meta">${escapeHTML(u.email)} • ID: ${escapeHTML(u.student_id)} • Dept: ${escapeHTML(u.department)}</p>
+                </div>
+                <div class="mod-user-action">
+                    ${actionButton}
+                </div>
+            `;
+
+            const toggleBtn = row.querySelector('[data-user-id]');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const makeMod = toggleBtn.getAttribute('data-action') === 'promote';
+                    toggleModRole(u.id, makeMod);
+                });
+            }
+
+            listContainer.appendChild(row);
+        });
+    }
+
+    // Assign / Revoke Moderator Role in Supabase
+    async function toggleModRole(userId, makeMod) {
+        clearModalAlert('mod-management-alert');
+        try {
+            if (!supabaseClient) throw new Error("Database not connected.");
+
+            const targetRole = makeMod ? 'mod' : 'user';
+
+            const { error } = await supabaseClient
+                .from('event_roles')
+                .upsert({
+                    user_id: userId,
+                    role: targetRole,
+                    assigned_by: currentSessionUser.id,
+                    updated_at: new Date().toISOString()
+                }, { onConflict: 'user_id' });
+
+            if (error) {
+                if (error.code === '42P01' || (error.message && error.message.includes('does not exist'))) {
+                    throw new Error("The 'event_roles' table has not been initialized. Please run doc/db/event_raids_schema.sql in Supabase SQL Editor.");
+                }
+                throw error;
+            }
+
+            showModalAlert('mod-management-alert', `Moderator role ${makeMod ? 'appointed' : 'revoked'} successfully!`, 'success');
+            await fetchCommunityUsers();
+            const searchVal = document.getElementById('mod-user-search-input')?.value.trim().toLowerCase() || '';
+            renderCommunityUsersList(searchVal);
+
+        } catch (err) {
+            console.error("Toggle mod role error:", err);
+            showModalAlert('mod-management-alert', err.message || 'Failed to update moderator role.');
+        }
+    }
+
+    /* ==========================================================================
+       9. Initialize Application
        ========================================================================== */
     initializeTheme();
     initCalendar();
     initDropdownFilter();
     initPastRaidsToggle();
     initCacheAndNotifications();
+    initSupabaseAuth();
     routePage();
 });

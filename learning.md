@@ -232,6 +232,32 @@ graph TD
 
 ---
 
+### Central Supabase Authentication & Role-Based Access Subsystem
+* **Files:** [app.js](app.js), [index.html](index.html), [style.css](style.css), [env-config.js](env-config.js), [doc/db/event_raids_schema.sql](doc/db/event_raids_schema.sql).
+* **Database Tables:** `public.profiles` (central), `public.event_roles` (project-scoped).
+
+#### How it works:
+1. **Central Database Connection:** Bootstraps `@supabase/supabase-js@2` using credentials configured in `env-config.js` (`SUPABASE_URL`, `SUPABASE_ANON_KEY`), sharing identical user profiles across `ou1ts.github.io` sub-projects.
+2. **Google OAuth Sign-In:** Leverages `supabaseClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } })`. Handles redirect callbacks cleanly by stripping OAuth hashes/query strings from the browser URL bar via `window.history.replaceState`. Automatically retrieves the user's avatar from OAuth metadata and displays it in the dashboard.
+3. **Session Persistence & Role Sync:** Evaluates `supabaseClient.auth.getSession()` on DOM load and tracks changes via `onAuthStateChange`. Resolves user profile information and queries `public.event_roles` to determine access tier (`admin`, `mod`, or `user`).
+4. **Adaptive Desktop & Mobile UI Buttons:** Desktop viewports render a floating action button (`#desktop-auth-btn`), while mobile viewports position the button at the bottom of the navigation sidebar (`#mobile-auth-btn`). Both dynamically convert from "Login" to "Dashboard" (displaying user initials or avatar, plus role badge) when authenticated.
+5. **Guild Dashboard Console:** Renders account specifications, member ID, department, recent submission status history, and securely places the application's Log Out action inside the dashboard modal.
+
+---
+
+### Event Proposals & Community Review Workflow Subsystem
+* **Files:** [app.js](app.js), [index.html](index.html), [style.css](style.css), [raids.json](raids.json).
+* **Database Tables:** `public.event_submissions`.
+
+#### How it works:
+1. **Member Proposal Modal:** Authenticated users can propose new raids or suggest edits to existing events through `#event-form-modal`. Clicking "✏️ Edit" directly on any raid card pre-populates all existing parameters (dates, categories, fees, venues, sub-events repeater, links). Submissions are recorded in `public.event_submissions` with `status: 'pending'`.
+2. **Staff Review Dashboard:** Admins and Moderators access `#review-dashboard-modal` featuring real-time tabbed status views (Pending, Approved, Rejected). For event edits, a visual side-by-side diff table highlights modified parameters against the active `raids.json` data.
+3. **Approval & In-Memory Live Sync:** Approving a submission updates its database record and immediately patches the in-memory client `pastRaidsData`, delivering instant UI previews without requiring full reload.
+4. **JSON Export Engine:** The review dashboard features one-click "Download raids.json" and "Copy JSON" tools, merging approved submissions into a clean, formatted JSON payload ready for direct git commit.
+5. **Moderator Management Console:** Admins can open `#mod-management-modal` to search all registered community profiles and toggle/assign Moderator permissions in `public.event_roles`.
+
+---
+
 ## 3. User Experience (UX) Impact Matrix
 
 | Component | Code Implementation | Front-end Visual Effect | UX Benefit |
@@ -247,3 +273,8 @@ graph TD
 | **Deadline Alerts** | `checkRegistrationDeadlines` | Premium glassmorphic toasts & system push warnings | Alerts user exactly 1 day before registration closes; prevents duplicate alerts. |
 | **GHA Pipeline** | `send-push.js` & `notify.yml` | Automatic OneSignal API trigger | Sends automated, credentials-secured notifications on new raids or upcoming deadlines. |
 | **RSS Feed Syndication** | `generate-rss.js` & `feed.xml` | Public RSS 2.0 XML endpoint & HTML discovery | Enables cross-platform alerts (Discord, Telegram, b1t-Sched) with zero manual overhead. |
+| **Central Database Auth** | `initSupabaseAuth`, `syncAuthState` | Floating desktop & mobile bottom sidebar auth buttons | Unified account management across oU1TS initiatives with persistent session memory. |
+| **Google OAuth Sign-In** | `signInWithOAuth`, `syncAuthState` | One-click Google button in modal with brand icon & avatar rendering | Frictionless onboarding; auto-extracts name and profile image with zero typing. |
+| **Raid Proposal & In-Card Edit** | `openEventFormModal`, `renderRaids` | "✏️ Edit" button on cards & modal proposal form | Empowers guild members to crowdsource new events and suggest corrections. |
+| **Staff Review Dashboard** | `openReviewDashboardModal`, `fetchSubmissions` | Visual side-by-side diff cards, Approve/Reject tools | Enables staff to verify community submissions before publishing updates. |
+| **Moderator Management** | `openModManagementModal`, `toggleModRole` | Searchable registered user list with Mod assign toggles | Streamlines guild governance directly within the app interface. |

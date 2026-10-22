@@ -1,5 +1,36 @@
 [
   {
+    "Raid_Num": 20,
+    "title": "HI Cyber Con 2026",
+    "Status": "Future",
+    "Type": "Conferences / Webinars",
+    "dateRange": "30 October – 01 November 2026",
+    "startDate": "2026-10-30",
+    "endDate": "2026-11-01",
+    "RegEndDate": "2026-10-30",
+    "venue": "Fully Virtual • Worldwide",
+    "fee": "Free",
+    "details": "Organized by Hidden Investigations in partnership with Washington University of Science and Technology (WUST) and sponsored by ReSecurity, HI Cyber Con 2026 is a premier global virtual cybersecurity event. Bringing together industry professionals, researchers, students, CTF players, and security communities worldwide, the 3-day convergence features expert sessions from 12 speakers alongside an intensive 48-hour international CTF tournament offering a USD $2,500 prize pool for the top 5 global leaderboard teams.",
+    "subEvents": [
+      {
+        "title": "3-Day Cybersecurity Conference",
+        "details": "Presentations, panels, and expert talks delivered by 12 speakers spanning offensive/defensive cybersecurity, threat research, industry architecture, and academic security breakthroughs."
+      },
+      {
+        "title": "48-Hour International CTF",
+        "details": "A continuous 48-hour jeopardy/challenge-based CTF competition for teams of 1 to 5 members competing across diverse cybersecurity categories, featuring a USD $2,500 prize pool rewarded across the Top 5 teams."
+      }
+    ],
+    "links": {
+      "Event Website": "https://hicybercon.hiddeninvestigations.net",
+      "CTF Registration": "https://ctf.hiddeninvestigations.net",
+      "Facebook Event": "https://www.facebook.com/share/189smuHtN9/",
+      "Email": "hi@hiddeninvestigations.net"
+    },
+    "OutsideDhaka": false,
+    "IsOnline": true
+  },
+  {
     "Raid_Num": 19,
     "title": "InfoSecCon 2026 (5th Edition)",
     "Status": "Future",

@@ -21,6 +21,10 @@
     <!-- RSS Syndication Feed -->
     <link rel="alternate" type="application/rss+xml" title="UITS Event Raiders RSS Feed" href="feed.xml">
 
+    <!-- Supabase Environment Configuration & Client SDK -->
+    <script src="env-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <!-- OneSignal Web Push Integration -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
@@ -77,6 +81,18 @@
                 <a href="#notes" class="nav-link" data-section="notes">Event Notes</a>
                 <a href="#join" class="nav-link" data-section="join">Join Us</a>
                 <a href="#learn-more" class="nav-link" data-section="learn-more">Learn More</a>
+
+                <!-- Mobile Sidebar Auth Button (at the very bottom in mobile sidebar) -->
+                <div class="nav-mobile-auth-wrapper">
+                    <button id="mobile-auth-btn" class="nav-mobile-auth-btn" aria-label="Account Login or Dashboard">
+                        <svg class="auth-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span id="mobile-auth-label">Login</span>
+                    </button>
+                </div>
             </nav>
 
             <!-- Theme Toggle Switch -->
@@ -581,6 +597,468 @@
             <line x1="3" y1="10" x2="21" y2="10"></line>
         </svg>
     </button>
+
+    <!-- Floating Auth / Dashboard Button (Desktop) -->
+    <button id="desktop-auth-btn" class="floating-auth-btn" aria-label="Account Login or Dashboard">
+        <svg class="auth-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span id="desktop-auth-label" class="floating-auth-text">Login</span>
+    </button>
+
+    <!-- ==========================================================================
+         AUTHENTICATION & MANAGEMENT MODALS
+         ========================================================================== -->
+
+    <!-- 1. AUTHENTICATION MODAL -->
+    <div id="auth-modal" class="custom-modal" aria-hidden="true">
+        <div class="custom-modal-backdrop" data-close-modal="auth-modal"></div>
+        <div class="custom-modal-content auth-modal-content">
+            <div class="custom-modal-header">
+                <div class="modal-header-tag">
+                    <span class="auth-icon-badge">🛡️</span>
+                    <h3 class="custom-modal-title" id="auth-modal-title">Sign In to Event Raiders</h3>
+                </div>
+                <button class="custom-modal-close" data-close-modal="auth-modal" aria-label="Close modal">&times;</button>
+            </div>
+            
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab-btn active" data-auth-tab="login">Login</button>
+                <button type="button" class="auth-tab-btn" data-auth-tab="register">Register</button>
+                <button type="button" class="auth-tab-btn" data-auth-tab="forgot">Forgot Password</button>
+            </div>
+
+            <div id="auth-alert" class="modal-alert" style="display: none;"></div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" class="form-input" placeholder="you@uits.edu.bd" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-full" id="login-submit-btn">
+                        <span>Sign In</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reg-name">Full Name *</label>
+                        <input type="text" id="reg-name" class="form-input" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-student-id">Student ID *</label>
+                        <input type="text" id="reg-student-id" class="form-input" placeholder="04325..." required pattern="^[0-9]+$" title="Digits only">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reg-dept">Department *</label>
+                        <select id="reg-dept" class="form-input" required>
+                            <option value="">Select Department</option>
+                            <option value="CSE">CSE</option>
+                            <option value="IT">IT</option>
+                            <option value="EEE">EEE</option>
+                            <option value="Civil">Civil</option>
+                            <option value="Pharmacy">Pharmacy</option>
+                            <option value="BBA">BBA</option>
+                            <option value="English">English</option>
+                            <option value="Law">Law</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-blood">Blood Group</label>
+                        <select id="reg-blood" class="form-input">
+                            <option value="">Select (Optional)</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email Address *</label>
+                    <input type="email" id="reg-email" class="form-input" placeholder="student@uits.edu.bd" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password (min 6 characters) *</label>
+                    <input type="password" id="reg-password" class="form-input" placeholder="••••••••" required minlength="6" autocomplete="new-password">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-full" id="register-submit-btn">
+                        <span>Create Account</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form id="forgot-form" class="auth-form" style="display: none;">
+                <p class="form-hint">Enter your registered email address to receive a secure password recovery link.</p>
+                <div class="form-group">
+                    <label for="forgot-email">Account Email</label>
+                    <input type="email" id="forgot-email" class="form-input" placeholder="you@uits.edu.bd" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-full" id="forgot-submit-btn">
+                        <span>Send Reset Link</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- OAuth Divider and Google Login Button -->
+            <div class="auth-divider" id="oauth-divider">
+                <span>or continue with</span>
+            </div>
+
+            <button type="button" class="oauth-btn" id="google-login-btn">
+                <svg class="google-icon" width="18" height="18" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.98 0 12s.45 3.83 1.25 5.42l4.03-3.15z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                </svg>
+                <span>Continue with Google</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. USER DASHBOARD MODAL -->
+    <div id="dashboard-modal" class="custom-modal" aria-hidden="true">
+        <div class="custom-modal-backdrop" data-close-modal="dashboard-modal"></div>
+        <div class="custom-modal-content dashboard-modal-content">
+            <div class="custom-modal-header">
+                <div class="modal-header-tag">
+                    <span class="auth-icon-badge">⚡</span>
+                    <h3 class="custom-modal-title">Guild Dashboard</h3>
+                </div>
+                <button class="custom-modal-close" data-close-modal="dashboard-modal" aria-label="Close modal">&times;</button>
+            </div>
+
+            <!-- User Profile Summary Card -->
+            <div class="dashboard-user-card">
+                <div class="dashboard-avatar" id="dash-avatar">U</div>
+                <div class="dashboard-user-info">
+                    <div class="dashboard-name-row">
+                        <h4 id="dash-user-name" class="dashboard-user-name">Loading...</h4>
+                        <span id="dash-role-badge" class="role-badge role-user">Member</span>
+                    </div>
+                    <p id="dash-user-email" class="dashboard-user-email">email@example.com</p>
+                    <div class="dashboard-meta-tags">
+                        <span id="dash-student-id" class="meta-tag">ID: -</span>
+                        <span id="dash-dept" class="meta-tag">Dept: -</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operations / Actions Grid -->
+            <div class="dashboard-actions-grid">
+                <button id="dash-propose-event-btn" class="dashboard-action-card">
+                    <div class="action-card-icon">➕</div>
+                    <div class="action-card-text">
+                        <h5>Propose / Update Event</h5>
+                        <p>Submit a new event or propose updates to existing raids.</p>
+                    </div>
+                </button>
+
+                <!-- Admin & Mod Only: Review Dashboard -->
+                <button id="dash-review-btn" class="dashboard-action-card staff-only" style="display: none;">
+                    <div class="action-card-icon">📋</div>
+                    <div class="action-card-text">
+                        <div class="action-heading-with-badge">
+                            <h5>Review Submissions</h5>
+                            <span id="pending-reviews-count-badge" class="count-badge">0</span>
+                        </div>
+                        <p>Review community event submissions and approve updates.</p>
+                    </div>
+                </button>
+
+                <!-- Admin Only: Mod Management -->
+                <button id="dash-mods-btn" class="dashboard-action-card admin-only" style="display: none;">
+                    <div class="action-card-icon">🛡️</div>
+                    <div class="action-card-text">
+                        <h5>Manage Moderators</h5>
+                        <p>Select and appoint guild moderators from logged-in users.</p>
+                    </div>
+                </button>
+            </div>
+
+            <!-- User's own submission history -->
+            <div class="dashboard-user-submissions">
+                <h5 class="sub-heading">Your Recent Submissions</h5>
+                <div id="user-submissions-list" class="user-submissions-list">
+                    <p class="empty-list-text">No submissions yet. Propose an event to get started!</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Footer with Logout -->
+            <div class="dashboard-footer">
+                <button id="logout-btn" class="btn btn-secondary logout-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Log Out</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. EVENT PROPOSAL & UPDATE FORM MODAL -->
+    <div id="event-form-modal" class="custom-modal" aria-hidden="true">
+        <div class="custom-modal-backdrop" data-close-modal="event-form-modal"></div>
+        <div class="custom-modal-content event-form-modal-content">
+            <div class="custom-modal-header">
+                <div>
+                    <span id="event-form-mode-tag" class="section-tag" style="display: inline-block; margin-bottom: 4px;">New Proposal</span>
+                    <h3 class="custom-modal-title" id="event-form-modal-title">Propose Event / Raid</h3>
+                </div>
+                <button class="custom-modal-close" data-close-modal="event-form-modal" aria-label="Close modal">&times;</button>
+            </div>
+
+            <div id="event-form-alert" class="modal-alert" style="display: none;"></div>
+
+            <form id="raid-submission-form" class="custom-form-scrollable">
+                <input type="hidden" id="form-submission-type" value="new">
+                <input type="hidden" id="form-target-raid-num" value="">
+
+                <div class="form-row">
+                    <div class="form-group" style="flex: 0 0 120px;">
+                        <label for="form-raid-num">Raid #</label>
+                        <input type="number" id="form-raid-num" class="form-input" required readonly>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="form-title">Event Title *</label>
+                        <input type="text" id="form-title" class="form-input" placeholder="e.g. National Hackathon 2026" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-type">Event Category / Type *</label>
+                        <select id="form-type" class="form-input" required>
+                            <option value="Hackathons">Hackathons</option>
+                            <option value="Contests">Contests</option>
+                            <option value="Conferences / Webinars">Conferences / Webinars</option>
+                            <option value="Showcases">Showcases</option>
+                            <option value="Bootcamps / Workshops">Bootcamps / Workshops</option>
+                            <option value="Academic">Academic</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-status">Initial Status *</label>
+                        <select id="form-status" class="form-input" required>
+                            <option value="Future">Future (Upcoming)</option>
+                            <option value="Past">Past</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-date-range">Date Range Text *</label>
+                        <input type="text" id="form-date-range" class="form-input" placeholder="e.g. 15 – 17 November 2026" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-reg-end-date">Registration Deadline (YYYY-MM-DD)</label>
+                        <input type="date" id="form-reg-end-date" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="form-start-date">Start Date (YYYY-MM-DD) *</label>
+                        <input type="date" id="form-start-date" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="form-end-date">End Date (YYYY-MM-DD) *</label>
+                        <input type="date" id="form-end-date" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group" style="flex: 2;">
+                        <label for="form-venue">Venue / Location *</label>
+                        <input type="text" id="form-venue" class="form-input" placeholder="e.g. UITS Auditorium, Dhaka or Virtual" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label for="form-city">City</label>
+                        <input type="text" id="form-city" class="form-input" placeholder="e.g. Dhaka">
+                    </div>
+                </div>
+
+                <div class="form-row checkbox-row">
+                    <label class="form-checkbox-label">
+                        <input type="checkbox" id="form-is-online">
+                        <span>Is Online / Virtual Event</span>
+                    </label>
+                    <label class="form-checkbox-label">
+                        <input type="checkbox" id="form-outside-dhaka">
+                        <span>Venue Outside Dhaka</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-fee">Fee Information</label>
+                    <input type="text" id="form-fee" class="form-input" placeholder="e.g. Free, or Tk 500 per team">
+                </div>
+
+                <div class="form-group">
+                    <label for="form-details">Event Details / Description *</label>
+                    <textarea id="form-details" class="form-input form-textarea" rows="4" placeholder="Comprehensive summary of what this event is about, prizes, schedule, etc." required></textarea>
+                </div>
+
+                <!-- Sub-Events Section (Repeater) -->
+                <div class="form-sub-section">
+                    <div class="sub-section-header">
+                        <label>Sub-Events / Tracks / Schedule Highlights</label>
+                        <button type="button" id="add-sub-event-btn" class="btn btn-secondary btn-sm">+ Add Sub-Event</button>
+                    </div>
+                    <div id="sub-events-repeater" class="sub-events-repeater">
+                        <!-- Dynamically populated rows -->
+                    </div>
+                </div>
+
+                <!-- Links Section -->
+                <div class="form-sub-section">
+                    <label>Official Links & Resources</label>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="form-link-website">Event Website</label>
+                            <input type="url" id="form-link-website" class="form-input" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-link-registration">Registration Link</label>
+                            <input type="url" id="form-link-registration" class="form-input" placeholder="https://...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="form-link-facebook">Facebook Post / Event</label>
+                            <input type="url" id="form-link-facebook" class="form-input" placeholder="https://facebook.com/...">
+                        </div>
+                        <div class="form-group">
+                            <label for="form-link-notes">Local Notes Path (optional)</label>
+                            <input type="text" id="form-link-notes" class="form-input" placeholder="doc/notes/example.md">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="form-submitter-note">Proposal Note for Reviewers (optional)</label>
+                    <input type="text" id="form-submitter-note" class="form-input" placeholder="e.g. Updated prize money and registration deadline from official announcement.">
+                </div>
+
+                <div class="form-actions modal-footer-actions">
+                    <button type="button" class="btn btn-secondary" data-close-modal="event-form-modal">Cancel</button>
+                    <button type="submit" id="submit-event-btn" class="btn btn-primary">
+                        <span>Submit for Approval</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. REVIEW DASHBOARD MODAL (Admin & Mods Only) -->
+    <div id="review-dashboard-modal" class="custom-modal" aria-hidden="true">
+        <div class="custom-modal-backdrop" data-close-modal="review-dashboard-modal"></div>
+        <div class="custom-modal-content review-dashboard-modal-content">
+            <div class="custom-modal-header">
+                <div class="modal-header-tag">
+                    <span class="auth-icon-badge">📋</span>
+                    <div>
+                        <h3 class="custom-modal-title">Review Dashboard</h3>
+                        <p class="modal-sub-label">Event Raider Submissions Review & Approval Console</p>
+                    </div>
+                </div>
+                <button class="custom-modal-close" data-close-modal="review-dashboard-modal" aria-label="Close modal">&times;</button>
+            </div>
+
+            <!-- Review Filter Tabs & Export Tools -->
+            <div class="review-toolbar">
+                <div class="review-filter-tabs">
+                    <button class="review-tab-btn active" data-status-filter="pending">
+                        Pending <span id="review-pending-badge" class="count-badge">0</span>
+                    </button>
+                    <button class="review-tab-btn" data-status-filter="approved">
+                        Approved <span id="review-approved-badge" class="count-badge">0</span>
+                    </button>
+                    <button class="review-tab-btn" data-status-filter="rejected">
+                        Rejected <span id="review-rejected-badge" class="count-badge">0</span>
+                    </button>
+                </div>
+
+                <div class="review-export-actions">
+                    <button id="download-raids-json-btn" class="btn btn-secondary btn-sm" title="Download updated raids.json with approved changes">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Download raids.json</span>
+                    </button>
+                    <button id="copy-raids-json-btn" class="btn btn-secondary btn-sm" title="Copy updated raids.json payload to clipboard">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copy JSON</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="review-dashboard-alert" class="modal-alert" style="display: none;"></div>
+
+            <!-- Submissions Scroll Area -->
+            <div id="review-submissions-container" class="review-submissions-container">
+                <div class="review-loading-state">Loading submissions...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. MOD MANAGEMENT MODAL (Admin Only) -->
+    <div id="mod-management-modal" class="custom-modal" aria-hidden="true">
+        <div class="custom-modal-backdrop" data-close-modal="mod-management-modal"></div>
+        <div class="custom-modal-content mod-management-modal-content">
+            <div class="custom-modal-header">
+                <div class="modal-header-tag">
+                    <span class="auth-icon-badge">🛡️</span>
+                    <div>
+                        <h3 class="custom-modal-title">Moderator Management</h3>
+                        <p class="modal-sub-label">Appoint or revoke moderators from logged-in community members</p>
+                    </div>
+                </div>
+                <button class="custom-modal-close" data-close-modal="mod-management-modal" aria-label="Close modal">&times;</button>
+            </div>
+
+            <div class="mod-search-bar">
+                <input type="text" id="mod-user-search-input" class="form-input" placeholder="Search by name, student ID, or email...">
+            </div>
+
+            <div id="mod-management-alert" class="modal-alert" style="display: none;"></div>
+
+            <div id="mod-users-list" class="mod-users-list">
+                <div class="review-loading-state">Loading community users...</div>
+            </div>
+        </div>
+    </div>
 
     <!-- Core SPA Router & App Scripts -->
     <script src="app.js"></script>

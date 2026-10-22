@@ -136,7 +136,18 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.11.0 — Automated RSS 2.0 Syndication Feed & Cross-Platform Integration (Current)
+### 🚀 v1.12.0 — Central Supabase Authentication, Event Proposals & Review Dashboard (Current)
+* **Features:**
+  - **Central Database User Management**: Connected the portal to the central Supabase database (`ou1ts.github.io`). Integrated `@supabase/supabase-js@2` and `env-config.js` to handle user registration, logins, persistent session tracking, password reset, and profile management (with Student ID, Department, and Blood Group attributes).
+  - **Floating Desktop & Mobile Sidebar Auth Buttons**: Added a floating action button for desktop viewports (`#desktop-auth-btn`) and a dedicated button at the bottom of the mobile sidebar drawer (`#mobile-auth-btn`). Both dynamically toggle from "Login" to "Dashboard" with member avatar and role badges upon authentication.
+  - **Form Modal for Proposing & Updating Events**: Implemented `#event-form-modal` for authenticated members to submit new events or propose updates to existing `raids.json` entries (supporting title, dates, deadlines, venues, fee, descriptions, dynamic sub-events repeaters, and links).
+  - **In-Card Suggest Edit Controls**: Dynamically injected a "✏️ Edit" button onto each raid card summary for logged-in users, pre-populating the proposal modal with the clicked raid's full dataset for instant editing.
+  - **Staff Review Dashboard Console**: Built `#review-dashboard-modal` restricted to Admins and Moderators. Displays pending submissions with submitter metadata, side-by-side visual diff comparisons, and one-click Approve/Reject actions with optional feedback notes.
+  - **Raids JSON Export & Sync Engine**: Integrated single-click "Download raids.json" and "Copy JSON" tools in the Review Dashboard to compile and export approved proposals ready for git commit.
+  - **Admin Moderator Management**: Developed `#mod-management-modal` allowing Guild Admins to query registered community members and appoint or revoke Moderator roles (`event_roles`).
+  - **Database Migration Schema**: Created `doc/db/event_raids_schema.sql` defining `public.event_roles` and `public.event_submissions` tables with Row Level Security (RLS) policies and security-definer helper functions.
+
+### 🚀 v1.11.0 — Automated RSS 2.0 Syndication Feed & Cross-Platform Integration
 * **Features:**
   - **Live RSS 2.0 Syndication Feed**: Generated `feed.xml` adhering to RSS 2.0 and Atom standards to broadcast active campaigns across external platforms.
   - **Automated Generator Script**: Built `.github/scripts/generate-rss.js` to dynamically filter active events, build CDATA-encapsulated HTML descriptions (sub-events, fees, venues, deadlines), and compile RFC 822 publication dates.
@@ -159,6 +170,16 @@ events/
   - **Past Calendar Date Cell Graying**: Date cells in the calendar view containing past-only campaigns are rendered in grayed-out muted tones (`.past-only`), while multi-event dates with active events preserve vibrant highlight styles. All click interactions remain active.
   - **Floating Action Stack**: Stacked `#floating-past-raids-btn` above `#floating-calendar-btn` at the bottom-right corner with `IntersectionObserver` scroll visibility and dual-button state synchronization.
   - **Mobile Icon-Only Past Raids Button**: Configured `#toggle-past-raids-btn` to display as a compact centered icon button on mobile viewports while preserving text labels for Calendar and Event Type controls.
+
+### 🚀 v1.9.0 — Central Supabase Auth, Google OAuth, Review Dashboard & Role Governance
+* **Features:**
+  - **Central Database Integration**: Connected `events` to the centralized Supabase instance (`ou1ts.github.io`) using `env-config.js` and `@supabase/supabase-js`.
+  - **Google OAuth Sign-In**: Integrated one-click Google OAuth via `supabaseClient.auth.signInWithOAuth({ provider: 'google' })` with automatic token/code URL cleanup, profile picture rendering in dashboard, and file protocol guard.
+  - **Responsive Auth Controls**: Desktop floating pill button (`#desktop-auth-btn`) positioned bottom-left; Mobile sidebar button (`#mobile-auth-btn`) pinned at the very bottom of `#main-nav`. State automatically switches between "Login" and "Dashboard" upon sign-in/out.
+  - **Event Proposal & Edit Form**: Modal `#event-form-modal` allows logged-in members to propose new events or click the in-card "✏️ Edit" button on any raid card to submit proposed updates with custom sub-events and links.
+  - **Review Dashboard Modal (`#review-dashboard-modal`)**: Accessible exclusively by guild Admins and Moderators. Features side-by-side diff viewers showing proposed vs current values, status filtering tabs (Pending, Approved, Rejected), one-click approval/rejection with reviewer notes, and export tools (`Download raids.json` & `Copy JSON`).
+  - **Moderator Management Console (`#mod-management-modal`)**: Admin-only modal to search all logged-in community members and appoint or revoke moderator roles dynamically in `public.event_roles`.
+  - **Database Schema & RLS**: Created `doc/db/event_raids_schema.sql` defining `public.event_roles` and `public.event_submissions` with Row Level Security policies and helper functions (`is_event_admin()`, `is_event_staff()`).
 
 ### 🚀 v1.8.0 — Client-Side Caching, Web Push & Automated CI/CD Dispatch
 * **Features:**
