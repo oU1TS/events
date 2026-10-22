@@ -5,8 +5,25 @@
     <link>https://ou1ts.github.io/events/</link>
     <description>Live feed of active tech contests, hackathons, olympiads, and symposiums for UITS students.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Oct 2026 10:55:54 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 22 Oct 2026 17:13:49 GMT</lastBuildDate>
     <atom:link href="https://ou1ts.github.io/events/feed.xml" rel="self" type="application/rss+xml" />
+
+    <item>
+      <title><![CDATA[[Conferences / Webinars] HI Cyber Con 2026]]></title>
+      <link>https://ou1ts.github.io/events/#raid-20</link>
+      <guid isPermaLink="false">uits-raid-20</guid>
+      <pubDate>Fri, 30 Oct 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[Conferences / Webinars]]></category>
+      <description><![CDATA[<p><strong>Category:</strong> Conferences / Webinars</p>
+      <p><strong>Date:</strong> 30 October – 01 November 2026</p>
+      <p><strong>Registration Deadline:</strong> 2026-10-30</p>
+      <p><strong>Venue:</strong> Fully Virtual • Worldwide</p>
+      <p><strong>Fee:</strong> Free</p>
+      <p><strong>Details:</strong> Organized by Hidden Investigations in partnership with Washington University of Science and Technology (WUST) and sponsored by ReSecurity, HI Cyber Con 2026 is a premier global virtual cybersecurity event. Bringing together industry professionals, researchers, students, CTF players, and security communities worldwide, the 3-day convergence features expert sessions from 12 speakers alongside an intensive 48-hour international CTF tournament offering a USD $2,500 prize pool for the top 5 global leaderboard teams.</p>
+      <h4>Sub-Events:</h4><ul><li><strong>3-Day Cybersecurity Conference:</strong> Presentations, panels, and expert talks delivered by 12 speakers spanning offensive/defensive cybersecurity, threat research, industry architecture, and academic security breakthroughs.</li><li><strong>48-Hour International CTF:</strong> A continuous 48-hour jeopardy/challenge-based CTF competition for teams of 1 to 5 members competing across diverse cybersecurity categories, featuring a USD $2,500 prize pool rewarded across the Top 5 teams.</li></ul>
+      <h4>Related Links:</h4><ul><li><a href="https://hicybercon.hiddeninvestigations.net">Event Website</a></li><li><a href="https://ctf.hiddeninvestigations.net">CTF Registration</a></li><li><a href="https://www.facebook.com/share/189smuHtN9/">Facebook Event</a></li><li><a href="hi@hiddeninvestigations.net">Email</a></li></ul>
+      <p><a href="https://ou1ts.github.io/events/#raid-20">View Full Raid on UITS Event Raiders &rarr;</a></p>]]></description>
+    </item>
 
     <item>
       <title><![CDATA[[Hackathons] NASA Space Apps Challenge 2026]]></title>
