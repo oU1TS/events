@@ -136,7 +136,14 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.12.0 — Central Supabase Authentication, Event Proposals & Review Dashboard (Current)
+### 🚀 v1.13.0 — Gemini JSON Proposal Block Mode & Raids Section Download Tool (Current)
+* **Features:**
+  - **Gemini JSON Block Paste Mode**: Added an interactive segmented mode switcher in `#event-form-modal` ("Form Mode" vs "Paste JSON Block"). Enables community members and staff to paste Gemini-generated raid JSON blocks directly (with auto-incremented `"Raid_Num"`), restoring the popular pre-database workflow without filling out manual form fields.
+  - **Bidirectional Mode Synchronization**: Switching between Form Mode and JSON Mode seamlessly synchronizes fields in real time. Features dedicated "Insert Starter Template", "Format / Beautify", and "Sync to Form Fields" quick-action tools.
+  - **Real-Time JSON Syntax Validator**: Added live syntax verification with dynamic indicator badges (`✓ Valid JSON: Raid #...` vs `⚠ Syntax Error`), preventing malformed payloads before submission.
+  - **Direct Download raids.json in #raids Section**: Added a prominent "Download raids.json" button in the `#raids` section toolbar (`.calendar-btn-container`), mirroring the Review Dashboard export tool for direct local dataset downloads anytime.
+
+### 🚀 v1.12.0 — Central Supabase Authentication, Event Proposals & Review Dashboard
 * **Features:**
   - **Central Database User Management**: Connected the portal to the central Supabase database (`ou1ts.github.io`). Integrated `@supabase/supabase-js@2` and `env-config.js` to handle user registration, logins, persistent session tracking, password reset, and profile management (with Student ID, Department, and Blood Group attributes).
   - **Floating Desktop & Mobile Sidebar Auth Buttons**: Added a floating action button for desktop viewports (`#desktop-auth-btn`) and a dedicated button at the bottom of the mobile sidebar drawer (`#mobile-auth-btn`). Both dynamically toggle from "Login" to "Dashboard" with member avatar and role badges upon authentication.

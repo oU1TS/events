@@ -1812,7 +1812,84 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // 7. Event Proposal / Edit Form Handler
+        // 7. Proposal Mode Switcher & Raw JSON Actions
+        const pillForm = document.getElementById('mode-pill-form');
+        const pillJson = document.getElementById('mode-pill-json');
+        if (pillForm) {
+            pillForm.addEventListener('click', () => switchProposalInputMode('form', true));
+        }
+        if (pillJson) {
+            pillJson.addEventListener('click', () => switchProposalInputMode('json', true));
+        }
+
+        const btnInsertTemplate = document.getElementById('btn-insert-json-template');
+        if (btnInsertTemplate) {
+            btnInsertTemplate.addEventListener('click', () => {
+                const targetNum = parseInt(document.getElementById('form-target-raid-num').value, 10) || 1;
+                const jsonTextarea = document.getElementById('form-json-raw');
+                if (jsonTextarea) {
+                    jsonTextarea.value = getStarterJsonTemplate(targetNum);
+                    updateJsonSyntaxBadge();
+                }
+            });
+        }
+
+        const btnFormatJson = document.getElementById('btn-format-json');
+        if (btnFormatJson) {
+            btnFormatJson.addEventListener('click', () => {
+                const jsonTextarea = document.getElementById('form-json-raw');
+                if (!jsonTextarea) return;
+                const raw = jsonTextarea.value.trim();
+                if (!raw) {
+                    showModalAlert('event-form-alert', 'JSON editor is currently empty.', 'info');
+                    return;
+                }
+                try {
+                    let parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed) && parsed.length > 0) parsed = parsed[0];
+                    jsonTextarea.value = JSON.stringify(parsed, null, 2);
+                    updateJsonSyntaxBadge();
+                    showModalAlert('event-form-alert', 'JSON formatted successfully!', 'success');
+                    setTimeout(() => clearModalAlert('event-form-alert'), 2000);
+                } catch (e) {
+                    showModalAlert('event-form-alert', 'Cannot format invalid JSON: ' + e.message);
+                }
+            });
+        }
+
+        const btnSyncToForm = document.getElementById('btn-sync-json-to-form');
+        if (btnSyncToForm) {
+            btnSyncToForm.addEventListener('click', () => {
+                const jsonTextarea = document.getElementById('form-json-raw');
+                if (!jsonTextarea) return;
+                const raw = jsonTextarea.value.trim();
+                if (!raw) {
+                    showModalAlert('event-form-alert', 'Please paste a JSON block before syncing.', 'info');
+                    return;
+                }
+                try {
+                    let parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed)) {
+                        if (parsed.length === 0) throw new Error("Array is empty");
+                        parsed = parsed[0];
+                    }
+                    if (!parsed || typeof parsed !== 'object') throw new Error("Must be a JSON object");
+                    populateFormFromRaidObject(parsed);
+                    switchProposalInputMode('form', false);
+                    showModalAlert('event-form-alert', 'Form fields populated from JSON block!', 'success');
+                    setTimeout(() => clearModalAlert('event-form-alert'), 2500);
+                } catch (e) {
+                    showModalAlert('event-form-alert', 'Cannot sync invalid JSON: ' + e.message);
+                }
+            });
+        }
+
+        const jsonCodeEditor = document.getElementById('form-json-raw');
+        if (jsonCodeEditor) {
+            jsonCodeEditor.addEventListener('input', updateJsonSyntaxBadge);
+        }
+
+        // 8. Event Proposal / Edit Form Handler
         const raidSubmissionForm = document.getElementById('raid-submission-form');
         if (raidSubmissionForm) {
             raidSubmissionForm.addEventListener('submit', async (e) => {
@@ -1824,64 +1901,115 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                const submissionType = document.getElementById('form-submission-type').value;
-                const raidNum = parseInt(document.getElementById('form-raid-num').value, 10);
-                const title = document.getElementById('form-title').value.trim();
-                const type = document.getElementById('form-type').value;
-                const status = document.getElementById('form-status').value;
-                const dateRange = document.getElementById('form-date-range').value.trim();
-                const startDate = document.getElementById('form-start-date').value;
-                const endDate = document.getElementById('form-end-date').value;
-                const regEndDate = document.getElementById('form-reg-end-date').value;
-                const venue = document.getElementById('form-venue').value.trim();
-                const city = document.getElementById('form-city').value.trim();
-                const isOnline = document.getElementById('form-is-online').checked;
-                const outsideDhaka = document.getElementById('form-outside-dhaka').checked;
-                const fee = document.getElementById('form-fee').value.trim() || 'Free';
-                const details = document.getElementById('form-details').value.trim();
-                const submitterNote = document.getElementById('form-submitter-note').value.trim();
+                let submissionType;
+                let raidNum;
+                let raidData;
+                const submitterNote = (document.getElementById('form-submitter-note').value || '').trim();
 
-                // Collect sub-events
-                const subEvents = [];
-                const subRows = document.querySelectorAll('#sub-events-repeater .sub-event-row');
-                subRows.forEach(row => {
-                    const st = row.querySelector('.sub-event-title-input').value.trim();
-                    const sd = row.querySelector('.sub-event-details-input').value.trim();
-                    if (st) {
-                        subEvents.push({ title: st, details: sd });
+                if (currentProposalInputMode === 'json') {
+                    const rawJsonText = (document.getElementById('form-json-raw')?.value || '').trim();
+                    if (!rawJsonText) {
+                        showModalAlert('event-form-alert', 'Please paste a JSON block before submitting.');
+                        return;
                     }
-                });
+                    let parsed;
+                    try {
+                        parsed = JSON.parse(rawJsonText);
+                    } catch (parseErr) {
+                        showModalAlert('event-form-alert', 'Invalid JSON syntax: ' + parseErr.message);
+                        return;
+                    }
 
-                // Collect links
-                const links = {};
-                const webLink = document.getElementById('form-link-website').value.trim();
-                const regLink = document.getElementById('form-link-registration').value.trim();
-                const fbLink = document.getElementById('form-link-facebook').value.trim();
-                const notesLink = document.getElementById('form-link-notes').value.trim();
+                    if (Array.isArray(parsed)) {
+                        if (parsed.length === 0) {
+                            showModalAlert('event-form-alert', 'Pasted JSON array is empty.');
+                            return;
+                        }
+                        parsed = parsed[0];
+                    }
 
-                if (webLink) links['Event Website'] = webLink;
-                if (regLink) links['Registration'] = regLink;
-                if (fbLink) links['Facebook Event'] = fbLink;
-                if (notesLink) links['notes'] = notesLink;
+                    if (!parsed || typeof parsed !== 'object') {
+                        showModalAlert('event-form-alert', 'Pasted content must be a valid JSON object.');
+                        return;
+                    }
 
-                const raidData = {
-                    Raid_Num: raidNum,
-                    title: title,
-                    Status: status,
-                    Type: type,
-                    dateRange: dateRange,
-                    startDate: startDate,
-                    endDate: endDate,
-                    RegEndDate: regEndDate || endDate,
-                    venue: venue,
-                    fee: fee,
-                    details: details,
-                    subEvents: subEvents,
-                    links: links,
-                    OutsideDhaka: outsideDhaka,
-                    IsOnline: isOnline
-                };
-                if (city) raidData.city = city;
+                    if (!parsed.title || !String(parsed.title).trim()) {
+                        showModalAlert('event-form-alert', 'The event JSON block must include a "title" property.');
+                        return;
+                    }
+
+                    let parsedNum = parseInt(parsed.Raid_Num, 10);
+                    if (isNaN(parsedNum)) {
+                        parsedNum = parseInt(document.getElementById('form-target-raid-num').value, 10) || 1;
+                        parsed.Raid_Num = parsedNum;
+                    }
+                    raidNum = parsedNum;
+
+                    // Automatically determine whether this is an update or a new proposal
+                    const exists = pastRaidsData && pastRaidsData.some(r => r.Raid_Num === raidNum);
+                    submissionType = exists ? 'update' : 'new';
+                    raidData = parsed;
+
+                } else {
+                    // Form Mode
+                    submissionType = document.getElementById('form-submission-type').value;
+                    raidNum = parseInt(document.getElementById('form-raid-num').value, 10);
+                    const title = document.getElementById('form-title').value.trim();
+                    const type = document.getElementById('form-type').value;
+                    const status = document.getElementById('form-status').value;
+                    const dateRange = document.getElementById('form-date-range').value.trim();
+                    const startDate = document.getElementById('form-start-date').value;
+                    const endDate = document.getElementById('form-end-date').value;
+                    const regEndDate = document.getElementById('form-reg-end-date').value;
+                    const venue = document.getElementById('form-venue').value.trim();
+                    const city = document.getElementById('form-city').value.trim();
+                    const isOnline = document.getElementById('form-is-online').checked;
+                    const outsideDhaka = document.getElementById('form-outside-dhaka').checked;
+                    const fee = document.getElementById('form-fee').value.trim() || 'Free';
+                    const details = document.getElementById('form-details').value.trim();
+
+                    // Collect sub-events
+                    const subEvents = [];
+                    const subRows = document.querySelectorAll('#sub-events-repeater .sub-event-row');
+                    subRows.forEach(row => {
+                        const st = row.querySelector('.sub-event-title-input').value.trim();
+                        const sd = row.querySelector('.sub-event-details-input').value.trim();
+                        if (st) {
+                            subEvents.push({ title: st, details: sd });
+                        }
+                    });
+
+                    // Collect links
+                    const links = {};
+                    const webLink = document.getElementById('form-link-website').value.trim();
+                    const regLink = document.getElementById('form-link-registration').value.trim();
+                    const fbLink = document.getElementById('form-link-facebook').value.trim();
+                    const notesLink = document.getElementById('form-link-notes').value.trim();
+
+                    if (webLink) links['Event Website'] = webLink;
+                    if (regLink) links['Registration'] = regLink;
+                    if (fbLink) links['Facebook Event'] = fbLink;
+                    if (notesLink) links['notes'] = notesLink;
+
+                    raidData = {
+                        Raid_Num: raidNum,
+                        title: title,
+                        Status: status,
+                        Type: type,
+                        dateRange: dateRange,
+                        startDate: startDate,
+                        endDate: endDate,
+                        RegEndDate: regEndDate || endDate,
+                        venue: venue,
+                        fee: fee,
+                        details: details,
+                        subEvents: subEvents,
+                        links: links,
+                        OutsideDhaka: outsideDhaka,
+                        IsOnline: isOnline
+                    };
+                    if (city) raidData.city = city;
+                }
 
                 const submitBtn = document.getElementById('submit-event-btn');
                 submitBtn.disabled = true;
@@ -1931,7 +2059,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // 8. Review Dashboard Filter Tabs
+        // 9. Review Dashboard Filter Tabs
         document.querySelectorAll('.review-tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.review-tab-btn').forEach(b => b.classList.remove('active'));
@@ -1941,12 +2069,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // 9. Download & Copy raids.json Export Buttons
-        const downloadRaidsBtn = document.getElementById('download-raids-json-btn');
-        if (downloadRaidsBtn) {
-            downloadRaidsBtn.addEventListener('click', () => {
-                const updatedJson = generateUpdatedRaidsJson();
-                const blob = new Blob([updatedJson], { type: 'application/json' });
+        // 10. Download & Copy raids.json Export Buttons
+        function downloadRaidsJsonFile() {
+            const doDownload = (jsonText) => {
+                const blob = new Blob([jsonText], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -1955,7 +2081,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-            });
+            };
+
+            if (pastRaidsData && pastRaidsData.length > 0) {
+                doDownload(generateUpdatedRaidsJson());
+            } else {
+                fetch('raids.json')
+                    .then(r => r.json())
+                    .then(data => {
+                        pastRaidsData = data;
+                        doDownload(JSON.stringify(data, null, 2));
+                    })
+                    .catch(err => {
+                        console.error('Download error:', err);
+                        alert('Could not download raids.json: ' + err.message);
+                    });
+            }
+        }
+
+        const downloadRaidsBtn = document.getElementById('download-raids-json-btn');
+        if (downloadRaidsBtn) {
+            downloadRaidsBtn.addEventListener('click', downloadRaidsJsonFile);
+        }
+
+        const downloadRaidsSectionBtn = document.getElementById('download-raids-json-section-btn');
+        if (downloadRaidsSectionBtn) {
+            downloadRaidsSectionBtn.addEventListener('click', downloadRaidsJsonFile);
         }
 
         const copyRaidsBtn = document.getElementById('copy-raids-json-btn');
@@ -2224,6 +2375,279 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Proposal Input Mode State & Helpers
+    let currentProposalInputMode = 'form';
+
+    function switchProposalInputMode(mode, syncData = true) {
+        currentProposalInputMode = mode;
+        const pillForm = document.getElementById('mode-pill-form');
+        const pillJson = document.getElementById('mode-pill-json');
+        const formView = document.getElementById('proposal-form-fields-view');
+        const jsonView = document.getElementById('proposal-json-view');
+        const indicator = document.getElementById('mode-active-indicator');
+        const rawJsonTextarea = document.getElementById('form-json-raw');
+        const raidForm = document.getElementById('raid-submission-form');
+
+        if (mode === 'json') {
+            if (pillForm) {
+                pillForm.classList.remove('active');
+                pillForm.setAttribute('aria-selected', 'false');
+            }
+            if (pillJson) {
+                pillJson.classList.add('active');
+                pillJson.setAttribute('aria-selected', 'true');
+            }
+            if (formView) formView.style.display = 'none';
+            if (jsonView) jsonView.style.display = 'block';
+            if (indicator) indicator.textContent = 'Direct Gemini JSON block mode';
+            if (raidForm) raidForm.noValidate = true;
+
+            if (syncData && rawJsonTextarea) {
+                const currentVal = rawJsonTextarea.value.trim();
+                if (!currentVal) {
+                    const currentFormObj = getRaidObjectFromForm();
+                    if (currentFormObj && currentFormObj.title) {
+                        rawJsonTextarea.value = JSON.stringify(currentFormObj, null, 2);
+                    } else {
+                        const targetNum = parseInt(document.getElementById('form-target-raid-num').value, 10) || 1;
+                        rawJsonTextarea.value = getStarterJsonTemplate(targetNum);
+                    }
+                }
+            }
+            updateJsonSyntaxBadge();
+        } else {
+            if (pillForm) {
+                pillForm.classList.add('active');
+                pillForm.setAttribute('aria-selected', 'true');
+            }
+            if (pillJson) {
+                pillJson.classList.remove('active');
+                pillJson.setAttribute('aria-selected', 'false');
+            }
+            if (formView) formView.style.display = 'block';
+            if (jsonView) jsonView.style.display = 'none';
+            if (indicator) indicator.textContent = 'Interactive form input';
+            if (raidForm) raidForm.noValidate = false;
+
+            if (syncData && rawJsonTextarea) {
+                const rawVal = rawJsonTextarea.value.trim();
+                if (rawVal) {
+                    try {
+                        let parsed = JSON.parse(rawVal);
+                        if (Array.isArray(parsed) && parsed.length > 0) parsed = parsed[0];
+                        if (parsed && typeof parsed === 'object') {
+                            populateFormFromRaidObject(parsed);
+                        }
+                    } catch (e) {
+                        // Ignore syntax errors during toggle
+                    }
+                }
+            }
+        }
+    }
+
+    function updateJsonSyntaxBadge() {
+        const indicator = document.getElementById('json-syntax-indicator');
+        const jsonTextarea = document.getElementById('form-json-raw');
+        if (!indicator || !jsonTextarea) return;
+
+        const text = jsonTextarea.value.trim();
+        if (!text) {
+            indicator.className = 'json-syntax-badge';
+            indicator.innerText = 'Empty (Paste JSON block)';
+            return;
+        }
+
+        try {
+            let parsed = JSON.parse(text);
+            if (Array.isArray(parsed)) {
+                if (parsed.length === 0) throw new Error("Array is empty");
+                parsed = parsed[0];
+            }
+            if (!parsed || typeof parsed !== 'object') {
+                throw new Error("Must be a JSON object");
+            }
+            const raidNum = parsed.Raid_Num !== undefined ? `#${parsed.Raid_Num}` : 'No #';
+            const title = parsed.title ? `"${parsed.title.slice(0, 20)}${parsed.title.length > 20 ? '...' : ''}"` : 'Untitled';
+            indicator.className = 'json-syntax-badge valid';
+            indicator.innerText = `✓ Valid JSON: Raid ${raidNum} • ${title}`;
+        } catch (e) {
+            indicator.className = 'json-syntax-badge invalid';
+            indicator.innerText = `⚠ Syntax Error: ${e.message.slice(0, 36)}`;
+        }
+    }
+
+    function getStarterJsonTemplate(raidNum) {
+        const num = raidNum || 1;
+        return JSON.stringify({
+            "Raid_Num": num,
+            "title": "New Event Title 2026",
+            "Status": "Future",
+            "Type": "Hackathons",
+            "dateRange": "DD - DD Month YYYY",
+            "startDate": "2026-11-15",
+            "endDate": "2026-11-17",
+            "RegEndDate": "2026-11-10",
+            "venue": "Campus / Venue, Dhaka, Bangladesh",
+            "fee": "Free",
+            "details": "Comprehensive description of the competition or raid...",
+            "subEvents": [
+                {
+                    "title": "Main Track / Hackathon",
+                    "details": "Details about the track, round, or contest segment."
+                }
+            ],
+            "links": {
+                "Official Website": "https://...",
+                "Registration": "https://...",
+                "Facebook Post": "https://facebook.com/..."
+            },
+            "OutsideDhaka": false,
+            "IsOnline": false
+        }, null, 2);
+    }
+
+    function getRaidObjectFromForm() {
+        const raidNumInput = document.getElementById('form-raid-num');
+        const raidNum = raidNumInput ? (parseInt(raidNumInput.value, 10) || 1) : 1;
+        const title = (document.getElementById('form-title')?.value || '').trim();
+        const type = document.getElementById('form-type')?.value || 'Hackathons';
+        const status = document.getElementById('form-status')?.value || 'Future';
+        const dateRange = (document.getElementById('form-date-range')?.value || '').trim();
+        const startDate = document.getElementById('form-start-date')?.value || '';
+        const endDate = document.getElementById('form-end-date')?.value || '';
+        const regEndDate = document.getElementById('form-reg-end-date')?.value || endDate;
+        const venue = (document.getElementById('form-venue')?.value || '').trim();
+        const city = (document.getElementById('form-city')?.value || '').trim();
+        const isOnline = Boolean(document.getElementById('form-is-online')?.checked);
+        const outsideDhaka = Boolean(document.getElementById('form-outside-dhaka')?.checked);
+        const fee = (document.getElementById('form-fee')?.value || '').trim() || 'Free';
+        const details = (document.getElementById('form-details')?.value || '').trim();
+
+        const subEvents = [];
+        const subRows = document.querySelectorAll('#sub-events-repeater .sub-event-row');
+        subRows.forEach(row => {
+            const st = row.querySelector('.sub-event-title-input')?.value.trim();
+            const sd = row.querySelector('.sub-event-details-input')?.value.trim();
+            if (st) subEvents.push({ title: st, details: sd });
+        });
+
+        const links = {};
+        const webLink = (document.getElementById('form-link-website')?.value || '').trim();
+        const regLink = (document.getElementById('form-link-registration')?.value || '').trim();
+        const fbLink = (document.getElementById('form-link-facebook')?.value || '').trim();
+        const notesLink = (document.getElementById('form-link-notes')?.value || '').trim();
+
+        if (webLink) links['Event Website'] = webLink;
+        if (regLink) links['Registration'] = regLink;
+        if (fbLink) links['Facebook Event'] = fbLink;
+        if (notesLink) links['notes'] = notesLink;
+
+        const obj = {
+            Raid_Num: raidNum,
+            title: title,
+            Status: status,
+            Type: type,
+            dateRange: dateRange,
+            startDate: startDate,
+            endDate: endDate,
+            RegEndDate: regEndDate,
+            venue: venue,
+            fee: fee,
+            details: details,
+            subEvents: subEvents,
+            links: links,
+            OutsideDhaka: outsideDhaka,
+            IsOnline: isOnline
+        };
+        if (city) obj.city = city;
+        return obj;
+    }
+
+    function populateFormFromRaidObject(data) {
+        if (!data || typeof data !== 'object') return;
+
+        if (data.Raid_Num !== undefined) {
+            const rnInput = document.getElementById('form-raid-num');
+            const trnInput = document.getElementById('form-target-raid-num');
+            if (rnInput) rnInput.value = data.Raid_Num;
+            if (trnInput) trnInput.value = data.Raid_Num;
+        }
+        if (data.title) {
+            const t = document.getElementById('form-title');
+            if (t) t.value = data.title;
+        }
+        if (data.Type) {
+            const typeSel = document.getElementById('form-type');
+            if (typeSel) typeSel.value = data.Type;
+        }
+        if (data.Status) {
+            const stSel = document.getElementById('form-status');
+            if (stSel) stSel.value = data.Status;
+        }
+        if (data.dateRange) {
+            const dr = document.getElementById('form-date-range');
+            if (dr) dr.value = data.dateRange;
+        }
+        if (data.startDate) {
+            const sd = document.getElementById('form-start-date');
+            if (sd) sd.value = data.startDate;
+        }
+        if (data.endDate) {
+            const ed = document.getElementById('form-end-date');
+            if (ed) ed.value = data.endDate;
+        }
+        if (data.RegEndDate) {
+            const red = document.getElementById('form-reg-end-date');
+            if (red) red.value = data.RegEndDate;
+        }
+        if (data.venue) {
+            const v = document.getElementById('form-venue');
+            if (v) v.value = data.venue;
+        }
+        if (data.city) {
+            const c = document.getElementById('form-city');
+            if (c) c.value = data.city;
+        }
+        if (data.fee !== undefined) {
+            const f = document.getElementById('form-fee');
+            if (f) f.value = data.fee;
+        }
+        if (data.details) {
+            const d = document.getElementById('form-details');
+            if (d) d.value = data.details;
+        }
+
+        const onlineCheck = document.getElementById('form-is-online');
+        if (onlineCheck) onlineCheck.checked = Boolean(data.IsOnline);
+
+        const dhakaCheck = document.getElementById('form-outside-dhaka');
+        if (dhakaCheck) dhakaCheck.checked = Boolean(data.OutsideDhaka);
+
+        const links = data.links || {};
+        const webInput = document.getElementById('form-link-website');
+        if (webInput) webInput.value = links['Event Website'] || links['Official Website'] || links['Official Portal'] || links['Website'] || '';
+
+        const regInput = document.getElementById('form-link-registration');
+        if (regInput) regInput.value = links['Registration'] || links['Registration Portal'] || links['CTF Registration'] || '';
+
+        const fbInput = document.getElementById('form-link-facebook');
+        if (fbInput) fbInput.value = links['Facebook Event'] || links['Facebook Post'] || '';
+
+        const notesInput = document.getElementById('form-link-notes');
+        if (notesInput) notesInput.value = links['notes'] || '';
+
+        const repeater = document.getElementById('sub-events-repeater');
+        if (repeater) {
+            repeater.innerHTML = '';
+            if (Array.isArray(data.subEvents) && data.subEvents.length > 0) {
+                data.subEvents.forEach(se => addSubEventRow(se.title, se.details));
+            } else {
+                addSubEventRow('', '');
+            }
+        }
+    }
+
     // Open Event Proposal / Edit Modal
     window.openEventFormModal = function (mode, existingRaid = null) {
         if (!currentSessionUser) {
@@ -2258,9 +2682,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const fbInput = document.getElementById('form-link-facebook');
         const notesInput = document.getElementById('form-link-notes');
         const noteInput = document.getElementById('form-submitter-note');
+        const jsonRawTextarea = document.getElementById('form-json-raw');
 
         const subEventsRepeater = document.getElementById('sub-events-repeater');
         if (subEventsRepeater) subEventsRepeater.innerHTML = '';
+
+        // Reset mode to Form View by default
+        switchProposalInputMode('form', false);
 
         if (mode === 'update' && existingRaid) {
             if (formModeTag) formModeTag.innerText = `Edit Proposal • Raid #${existingRaid.Raid_Num}`;
@@ -2289,6 +2717,10 @@ document.addEventListener('DOMContentLoaded', () => {
             fbInput.value = links['Facebook Event'] || links['Facebook Post'] || '';
             notesInput.value = links['notes'] || '';
             noteInput.value = '';
+
+            if (jsonRawTextarea) {
+                jsonRawTextarea.value = JSON.stringify(existingRaid, null, 2);
+            }
 
             if (Array.isArray(existingRaid.subEvents) && existingRaid.subEvents.length > 0) {
                 existingRaid.subEvents.forEach(se => addSubEventRow(se.title, se.details));
@@ -2330,9 +2762,14 @@ document.addEventListener('DOMContentLoaded', () => {
             notesInput.value = '';
             noteInput.value = '';
 
+            if (jsonRawTextarea) {
+                jsonRawTextarea.value = getStarterJsonTemplate(nextNum);
+            }
+
             addSubEventRow('', '');
         }
 
+        updateJsonSyntaxBadge();
         openModal('event-form-modal');
     };
 

@@ -276,5 +276,7 @@ graph TD
 | **Central Database Auth** | `initSupabaseAuth`, `syncAuthState` | Floating desktop & mobile bottom sidebar auth buttons | Unified account management across oU1TS initiatives with persistent session memory. |
 | **Google OAuth Sign-In** | `signInWithOAuth`, `syncAuthState` | One-click Google button in modal with brand icon & avatar rendering | Frictionless onboarding; auto-extracts name and profile image with zero typing. |
 | **Raid Proposal & In-Card Edit** | `openEventFormModal`, `renderRaids` | "✏️ Edit" button on cards & modal proposal form | Empowers guild members to crowdsource new events and suggest corrections. |
+| **Gemini JSON Paste Mode** | `switchProposalInputMode`, `updateJsonSyntaxBadge` | Segmented pill toggle, monospace JSON block editor & live syntax badge | Restores fast direct-pasting of Gemini event updates without manual form entry. |
+| **Direct raids.json Download** | `downloadRaidsJsonFile` | Secondary button in `#raids` toolbar (`.calendar-btn-container`) | Allows instant 1-click export of the active event database directly from the roadmap. |
 | **Staff Review Dashboard** | `openReviewDashboardModal`, `fetchSubmissions` | Visual side-by-side diff cards, Approve/Reject tools | Enables staff to verify community submissions before publishing updates. |
 | **Moderator Management** | `openModManagementModal`, `toggleModRole` | Searchable registered user list with Mod assign toggles | Streamlines guild governance directly within the app interface. |

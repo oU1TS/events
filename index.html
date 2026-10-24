@@ -239,6 +239,18 @@
                     </svg>
                     <span id="toggle-past-raids-text">Unhide Past Raids</span>
                 </button>
+
+                <!-- Download raids.json Button -->
+                <button id="download-raids-json-section-btn" class="btn btn-secondary" aria-label="Download raids.json dataset"
+                    title="Download active raids.json dataset">
+                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span id="download-raids-json-text">Download raids.json</span>
+                </button>
             </div>
 
             <!-- Dynamic Grid for Raids -->
@@ -832,138 +844,196 @@
                 <button class="custom-modal-close" data-close-modal="event-form-modal" aria-label="Close modal">&times;</button>
             </div>
 
+            <!-- Proposal Mode Toggle: Form vs Raw JSON Paste -->
+            <div class="proposal-mode-toolbar">
+                <div class="proposal-mode-pills" role="tablist" aria-label="Proposal Input Method">
+                    <button type="button" class="mode-pill active" id="mode-pill-form" role="tab" aria-selected="true" aria-controls="proposal-form-fields-view">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                        <span>Form Mode</span>
+                    </button>
+                    <button type="button" class="mode-pill" id="mode-pill-json" role="tab" aria-selected="false" aria-controls="proposal-json-view">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16 18 22 12 16 6"></polyline>
+                            <polyline points="8 6 2 12 8 18"></polyline>
+                        </svg>
+                        <span>Paste JSON Block</span>
+                    </button>
+                </div>
+                <div class="mode-active-indicator" id="mode-active-indicator">Interactive form input</div>
+            </div>
+
             <div id="event-form-alert" class="modal-alert" style="display: none;"></div>
 
             <form id="raid-submission-form" class="custom-form-scrollable">
                 <input type="hidden" id="form-submission-type" value="new">
                 <input type="hidden" id="form-target-raid-num" value="">
 
-                <div class="form-row">
-                    <div class="form-group" style="flex: 0 0 120px;">
-                        <label for="form-raid-num">Raid #</label>
-                        <input type="number" id="form-raid-num" class="form-input" required readonly>
+                <!-- 1. Interactive Form Fields Container -->
+                <div id="proposal-form-fields-view">
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 0 0 120px;">
+                            <label for="form-raid-num">Raid #</label>
+                            <input type="number" id="form-raid-num" class="form-input" required readonly>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="form-title">Event Title *</label>
+                            <input type="text" id="form-title" class="form-input" placeholder="e.g. National Hackathon 2026" required>
+                        </div>
                     </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label for="form-title">Event Title *</label>
-                        <input type="text" id="form-title" class="form-input" placeholder="e.g. National Hackathon 2026" required>
-                    </div>
-                </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="form-type">Event Category / Type *</label>
-                        <select id="form-type" class="form-input" required>
-                            <option value="Hackathons">Hackathons</option>
-                            <option value="Contests">Contests</option>
-                            <option value="Conferences / Webinars">Conferences / Webinars</option>
-                            <option value="Showcases">Showcases</option>
-                            <option value="Bootcamps / Workshops">Bootcamps / Workshops</option>
-                            <option value="Academic">Academic</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="form-status">Initial Status *</label>
-                        <select id="form-status" class="form-input" required>
-                            <option value="Future">Future (Upcoming)</option>
-                            <option value="Past">Past</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="form-date-range">Date Range Text *</label>
-                        <input type="text" id="form-date-range" class="form-input" placeholder="e.g. 15 – 17 November 2026" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="form-reg-end-date">Registration Deadline (YYYY-MM-DD)</label>
-                        <input type="date" id="form-reg-end-date" class="form-input">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="form-start-date">Start Date (YYYY-MM-DD) *</label>
-                        <input type="date" id="form-start-date" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="form-end-date">End Date (YYYY-MM-DD) *</label>
-                        <input type="date" id="form-end-date" class="form-input" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group" style="flex: 2;">
-                        <label for="form-venue">Venue / Location *</label>
-                        <input type="text" id="form-venue" class="form-input" placeholder="e.g. UITS Auditorium, Dhaka or Virtual" required>
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label for="form-city">City</label>
-                        <input type="text" id="form-city" class="form-input" placeholder="e.g. Dhaka">
-                    </div>
-                </div>
-
-                <div class="form-row checkbox-row">
-                    <label class="form-checkbox-label">
-                        <input type="checkbox" id="form-is-online">
-                        <span>Is Online / Virtual Event</span>
-                    </label>
-                    <label class="form-checkbox-label">
-                        <input type="checkbox" id="form-outside-dhaka">
-                        <span>Venue Outside Dhaka</span>
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label for="form-fee">Fee Information</label>
-                    <input type="text" id="form-fee" class="form-input" placeholder="e.g. Free, or Tk 500 per team">
-                </div>
-
-                <div class="form-group">
-                    <label for="form-details">Event Details / Description *</label>
-                    <textarea id="form-details" class="form-input form-textarea" rows="4" placeholder="Comprehensive summary of what this event is about, prizes, schedule, etc." required></textarea>
-                </div>
-
-                <!-- Sub-Events Section (Repeater) -->
-                <div class="form-sub-section">
-                    <div class="sub-section-header">
-                        <label>Sub-Events / Tracks / Schedule Highlights</label>
-                        <button type="button" id="add-sub-event-btn" class="btn btn-secondary btn-sm">+ Add Sub-Event</button>
-                    </div>
-                    <div id="sub-events-repeater" class="sub-events-repeater">
-                        <!-- Dynamically populated rows -->
-                    </div>
-                </div>
-
-                <!-- Links Section -->
-                <div class="form-sub-section">
-                    <label>Official Links & Resources</label>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-link-website">Event Website</label>
-                            <input type="url" id="form-link-website" class="form-input" placeholder="https://...">
+                            <label for="form-type">Event Category / Type *</label>
+                            <select id="form-type" class="form-input" required>
+                                <option value="Hackathons">Hackathons</option>
+                                <option value="Contests">Contests</option>
+                                <option value="Conferences / Webinars">Conferences / Webinars</option>
+                                <option value="Showcases">Showcases</option>
+                                <option value="Bootcamps / Workshops">Bootcamps / Workshops</option>
+                                <option value="Academic">Academic</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="form-link-registration">Registration Link</label>
-                            <input type="url" id="form-link-registration" class="form-input" placeholder="https://...">
+                            <label for="form-status">Initial Status *</label>
+                            <select id="form-status" class="form-input" required>
+                                <option value="Future">Future (Upcoming)</option>
+                                <option value="Past">Past</option>
+                            </select>
                         </div>
                     </div>
+
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="form-link-facebook">Facebook Post / Event</label>
-                            <input type="url" id="form-link-facebook" class="form-input" placeholder="https://facebook.com/...">
+                            <label for="form-date-range">Date Range Text *</label>
+                            <input type="text" id="form-date-range" class="form-input" placeholder="e.g. 15 – 17 November 2026" required>
                         </div>
                         <div class="form-group">
-                            <label for="form-link-notes">Local Notes Path (optional)</label>
-                            <input type="text" id="form-link-notes" class="form-input" placeholder="doc/notes/example.md">
+                            <label for="form-reg-end-date">Registration Deadline (YYYY-MM-DD)</label>
+                            <input type="date" id="form-reg-end-date" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="form-start-date">Start Date (YYYY-MM-DD) *</label>
+                            <input type="date" id="form-start-date" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-end-date">End Date (YYYY-MM-DD) *</label>
+                            <input type="date" id="form-end-date" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label for="form-venue">Venue / Location *</label>
+                            <input type="text" id="form-venue" class="form-input" placeholder="e.g. UITS Auditorium, Dhaka or Virtual" required>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="form-city">City</label>
+                            <input type="text" id="form-city" class="form-input" placeholder="e.g. Dhaka">
+                        </div>
+                    </div>
+
+                    <div class="form-row checkbox-row">
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" id="form-is-online">
+                            <span>Is Online / Virtual Event</span>
+                        </label>
+                        <label class="form-checkbox-label">
+                            <input type="checkbox" id="form-outside-dhaka">
+                            <span>Venue Outside Dhaka</span>
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="form-fee">Fee Information</label>
+                        <input type="text" id="form-fee" class="form-input" placeholder="e.g. Free, or Tk 500 per team">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="form-details">Event Details / Description *</label>
+                        <textarea id="form-details" class="form-input form-textarea" rows="4" placeholder="Comprehensive summary of what this event is about, prizes, schedule, etc." required></textarea>
+                    </div>
+
+                    <!-- Sub-Events Section (Repeater) -->
+                    <div class="form-sub-section">
+                        <div class="sub-section-header">
+                            <label>Sub-Events / Tracks / Schedule Highlights</label>
+                            <button type="button" id="add-sub-event-btn" class="btn btn-secondary btn-sm">+ Add Sub-Event</button>
+                        </div>
+                        <div id="sub-events-repeater" class="sub-events-repeater">
+                            <!-- Dynamically populated rows -->
+                        </div>
+                    </div>
+
+                    <!-- Links Section -->
+                    <div class="form-sub-section">
+                        <label>Official Links & Resources</label>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="form-link-website">Event Website</label>
+                                <input type="url" id="form-link-website" class="form-input" placeholder="https://...">
+                            </div>
+                            <div class="form-group">
+                                <label for="form-link-registration">Registration Link</label>
+                                <input type="url" id="form-link-registration" class="form-input" placeholder="https://...">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="form-link-facebook">Facebook Post / Event</label>
+                                <input type="url" id="form-link-facebook" class="form-input" placeholder="https://facebook.com/...">
+                            </div>
+                            <div class="form-group">
+                                <label for="form-link-notes">Local Notes Path (optional)</label>
+                                <input type="text" id="form-link-notes" class="form-input" placeholder="doc/notes/example.md">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <!-- 2. Raw JSON Paste Container -->
+                <div id="proposal-json-view" style="display: none;">
+                    <div class="json-paste-guide-card">
+                        <div class="guide-header">
+                            <span class="guide-icon">✨</span>
+                            <div>
+                                <h5>Paste Gemini JSON Block</h5>
+                                <p>Paste the updated event JSON object generated by Gemini (with incremented <code>"Raid_Num"</code>). You can submit directly or switch to Form Mode anytime to inspect and edit fields.</p>
+                            </div>
+                        </div>
+                        <div class="json-quick-actions">
+                            <button type="button" id="btn-insert-json-template" class="btn btn-secondary btn-xs" title="Insert a clean starter JSON template with next Raid #">
+                                <span>Insert Starter Template</span>
+                            </button>
+                            <button type="button" id="btn-format-json" class="btn btn-secondary btn-xs" title="Beautify and validate JSON indentation">
+                                <span>Format / Beautify</span>
+                            </button>
+                            <button type="button" id="btn-sync-json-to-form" class="btn btn-secondary btn-xs" title="Populate form fields from this JSON">
+                                <span>Sync to Form Fields</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="json-textarea-header">
+                            <label for="form-json-raw">Raid JSON Block *</label>
+                            <span id="json-syntax-indicator" class="json-syntax-badge">Ready</span>
+                        </div>
+                        <textarea id="form-json-raw" class="form-input form-textarea json-code-editor" rows="14" spellcheck="false" placeholder='{\n  "Raid_Num": 21,\n  "title": "Example Event 2026",\n  "Status": "Future",\n  "Type": "Hackathons",\n  "dateRange": "15 – 17 November 2026",\n  "startDate": "2026-11-15",\n  "endDate": "2026-11-17",\n  "RegEndDate": "2026-11-10",\n  "venue": "UITS Auditorium, Dhaka",\n  "fee": "Free",\n  "details": "Comprehensive summary...",\n  "subEvents": [],\n  "links": {\n    "Event Website": "https://..."\n  },\n  "OutsideDhaka": false,\n  "IsOnline": false\n}'></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 1rem;">
                     <label for="form-submitter-note">Proposal Note for Reviewers (optional)</label>
-                    <input type="text" id="form-submitter-note" class="form-input" placeholder="e.g. Updated prize money and registration deadline from official announcement.">
+                    <input type="text" id="form-submitter-note" class="form-input" placeholder="e.g. Gemini-generated update with incremented Raid # from official announcement.">
                 </div>
 
                 <div class="form-actions modal-footer-actions">
