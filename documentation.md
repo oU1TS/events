@@ -136,7 +136,15 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.13.0 — Gemini JSON Proposal Block Mode & Raids Section Download Tool (Current)
+### 🚀 v1.14.0 — Mobile Viewport Spacing, Safe-Area Insets & Elevated Navigation Controls (Current)
+* **Features:**
+  - **Elevated Mobile Navigation Auth Button**: Lifted `.nav-mobile-auth-wrapper` and `#mobile-auth-btn` inside the mobile sidebar drawer with `padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 24px))` and `margin-bottom: 1.5rem`, preventing overlap from mobile browser dynamic bottom address bars and home indicator bars.
+  - **Dynamic Viewport Height (`100dvh`) Integration**: Upgraded the mobile `.nav` sidebar drawer to use `height: calc(100dvh - 68px)` with fallback `calc(100vh - 68px)`, preventing bottom overflow clipping when mobile browser chrome retracts or expands.
+  - **Mobile Sidebar Scrolling & Safe-Area Padding**: Added `overflow-y: auto`, `-webkit-overflow-scrolling: touch`, `overscroll-behavior-y: contain`, and `justify-content: flex-start` to `.nav` so all navigation links and the auth button remain comfortably reachable on small screens and landscape orientations.
+  - **Safe-Area Inset Support (`viewport-fit=cover`)**: Enhanced `<meta name="viewport">` in `index.html` and `render.html` with `viewport-fit=cover` to unlock accurate `env(safe-area-inset-bottom)` values across iOS Safari and mobile Chromium browsers.
+  - **Floating Action Stack & Modal Clearance**: Added mobile clearance padding across `.floating-calendar-btn`, `.floating-past-raids-btn`, `.custom-modal`, `.calendar-modal`, `.toast-container`, `.main-content`, and `.footer` to eliminate touch target occlusion by mobile browser toolbars.
+
+### 🚀 v1.13.0 — Gemini JSON Proposal Block Mode & Raids Section Download Tool
 * **Features:**
   - **Gemini JSON Block Paste Mode**: Added an interactive segmented mode switcher in `#event-form-modal` ("Form Mode" vs "Paste JSON Block"). Enables community members and staff to paste Gemini-generated raid JSON blocks directly (with auto-incremented `"Raid_Num"`), restoring the popular pre-database workflow without filling out manual form fields.
   - **Bidirectional Mode Synchronization**: Switching between Form Mode and JSON Mode seamlessly synchronizes fields in real time. Features dedicated "Insert Starter Template", "Format / Beautify", and "Sync to Form Fields" quick-action tools.

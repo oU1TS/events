@@ -280,3 +280,4 @@ graph TD
 | **Direct raids.json Download** | `downloadRaidsJsonFile` | Secondary button in `#raids` toolbar (`.calendar-btn-container`) | Allows instant 1-click export of the active event database directly from the roadmap. |
 | **Staff Review Dashboard** | `openReviewDashboardModal`, `fetchSubmissions` | Visual side-by-side diff cards, Approve/Reject tools | Enables staff to verify community submissions before publishing updates. |
 | **Moderator Management** | `openModManagementModal`, `toggleModRole` | Searchable registered user list with Mod assign toggles | Streamlines guild governance directly within the app interface. |
+| **Mobile Viewport & Auth Spacing** | `viewport-fit=cover`, `100dvh`, `.nav-mobile-auth-wrapper` | Elevated sidebar auth button & safe-area clearances | Prevents button overlap from mobile browser bottom address bars and OS home bars. |

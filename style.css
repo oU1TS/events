@@ -1449,14 +1449,20 @@ body.light-theme .details-dropdown[open] {
         left: 0;
         width: 100%;
         height: calc(100vh - 68px);
+        height: calc(100dvh - 68px);
+        max-height: calc(100dvh - 68px);
         background-color: var(--bg-secondary);
         flex-direction: column;
-        justify-content: center;
-        gap: 2.5rem;
-        padding: 2rem;
+        justify-content: flex-start;
+        gap: 1.75rem;
+        padding: 2rem 2rem calc(3.5rem + env(safe-area-inset-bottom, 24px)) 2rem;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
         transform: translateX(-100%);
         transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         border-top: 1px solid var(--border-color);
+        box-sizing: border-box;
     }
 
     .nav.open {
@@ -1468,7 +1474,7 @@ body.light-theme .details-dropdown[open] {
     }
 
     .main-content {
-        padding: 2rem 1.25rem 4rem 1.25rem;
+        padding: 2rem 1.25rem calc(6.5rem + env(safe-area-inset-bottom, 24px)) 1.25rem;
     }
 
     .hero-wrapper {
@@ -1544,6 +1550,49 @@ body.light-theme .details-dropdown[open] {
 
     #raids .section-desc {
         display: none;
+    }
+
+    /* Mobile Footer & Layout Protection */
+    .footer {
+        padding: 2.5rem 1.5rem calc(4.5rem + env(safe-area-inset-bottom, 24px)) 1.5rem;
+    }
+
+    /* Floating Action Buttons Clearance on Mobile */
+    .floating-calendar-btn {
+        bottom: calc(2.25rem + env(safe-area-inset-bottom, 16px));
+        right: 1.25rem;
+    }
+
+    .floating-past-raids-btn {
+        bottom: calc(5.75rem + env(safe-area-inset-bottom, 16px));
+        right: 1.25rem;
+    }
+
+    /* Modals & Toast Clearance on Mobile */
+    .custom-modal {
+        padding: 1rem 0.75rem calc(1.5rem + env(safe-area-inset-bottom, 16px)) 0.75rem;
+    }
+
+    .custom-modal-content {
+        max-height: calc(88dvh - env(safe-area-inset-bottom, 16px));
+        max-height: calc(88vh - env(safe-area-inset-bottom, 16px));
+    }
+
+    .calendar-modal {
+        padding: 1rem 0.75rem calc(1.5rem + env(safe-area-inset-bottom, 16px)) 0.75rem;
+    }
+
+    .calendar-modal-content {
+        max-height: calc(88dvh - env(safe-area-inset-bottom, 16px));
+        max-height: calc(88vh - env(safe-area-inset-bottom, 16px));
+    }
+
+    .toast-container {
+        bottom: calc(2.25rem + env(safe-area-inset-bottom, 20px));
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+        max-width: calc(100vw - 2rem);
     }
 }
 
@@ -1876,6 +1925,7 @@ body.light-theme .raid-venue-corner-badge.outside-dhaka-tag.icon-only:hover {
 .floating-calendar-btn {
     position: fixed;
     bottom: 2rem;
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     right: 2rem;
     z-index: 1000;
     width: 48px;
@@ -1909,6 +1959,7 @@ body.light-theme .raid-venue-corner-badge.outside-dhaka-tag.icon-only:hover {
 /* Floating Past Raids Toggle Button */
 .floating-past-raids-btn {
     bottom: 5.5rem;
+    bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
     right: 2rem;
 }
 
@@ -2529,6 +2580,7 @@ body.light-theme .day-events-overlay {
 .floating-auth-btn {
     position: fixed;
     bottom: 2rem;
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
     left: 5.5rem;
     z-index: 1000;
     display: inline-flex;
@@ -2575,30 +2627,39 @@ body.light-theme .day-events-overlay {
     width: 100%;
     margin-top: auto;
     padding-top: 1.5rem;
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 24px));
+    margin-bottom: 1.5rem;
     border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .nav-mobile-auth-btn {
     width: 100%;
+    min-height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
     padding: 0.85rem 1.25rem;
-    border-radius: 10px;
+    border-radius: 12px;
     background-color: var(--bg-tertiary);
     border: 1px solid var(--accent);
     color: var(--accent);
     font-size: 1.05rem;
     font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
     transition: all 0.2s ease;
     cursor: pointer;
+    touch-action: manipulation;
 }
 
 .nav-mobile-auth-btn:hover,
 .nav-mobile-auth-btn:active {
     background-color: var(--accent);
     color: var(--bg-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.35);
 }
 
 /* Responsive Visibility for Floating vs Mobile */
