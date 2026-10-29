@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-22T17:13:49.769Z",
+  "lastUpdated": "2026-10-29T12:02:56.673Z",
   "eventsCount": 20,
   "activeReminders": [
     {
@@ -10,7 +10,7 @@
     {
       "raidNum": 20,
       "regEndDate": "2026-10-30",
-      "reminderSent": false
+      "reminderSent": true
     }
   ]
 }
