@@ -4,28 +4,30 @@
     "title": "17th National Undergraduate Mathematics Olympiad 2026",
     "Status": "Future",
     "Type": "Olympiad / Carnival",
-    "dateRange": "TBA (Regional Olympiad & National Final)",
-    "startDate": "2026-11-01",
-    "endDate": "2026-12-31",
-    "RegEndDate": "TBA",
-    "venue": "Regional Host Centers & A F Mujibur Rahman Ganit Bhaban, University of Dhaka (Final Round)",
-    "fee": "TBA",
-    "details": "Jointly organized by the Bangladesh Mathematical Society and the A F Mujibur Rahman Foundation, the 17th National Undergraduate Mathematics Olympiad 2026 is designed for undergraduate students—preferably from STEM disciplines—enrolled in universities and colleges across Bangladesh. Eligible participants must be 23 years of age or younger by July 2027 (in alignment with the International Mathematics Competition [IMC]) with no minimum age constraint. The working language of the competition is English, assessing contestants across Algebra, Real & Complex Analysis, and Geometry & Combinatorics.",
+    "dateRange": "6 November – 4 December 2026",
+    "startDate": "2026-11-06",
+    "endDate": "2026-12-04",
+    "RegEndDate": "2026-10-30",
+    "venue": "Regional Centers (BRAC University for Dhaka North, CoU, IU, GSTU, SUST, RU, Premier University, HSTU) & A F Mujibur Rahman Ganit Bhaban, DU (Final Round)",
+    "fee": "200 BDT (Registration fee; online payment gateway processing may incur nominal additional charge)",
+    "details": "Jointly organized by the Bangladesh Mathematical Society and the A F Mujibur Rahman Foundation, the 17th National Undergraduate Mathematics Olympiad 2026 is designed for undergraduate students—preferably from STEM disciplines—enrolled in universities and colleges across Bangladesh. Participants must be 23 years of age or younger by July 2027 (in alignment with the International Mathematics Competition [IMC]) with no minimum age constraint. All participants receive a T-shirt and certificate; final top 10 winners receive cash prizes, and the top 3 contestants earn fully sponsored participation at IMC 2027. The Olympiad covers Algebra, Real & Complex Analysis, and Geometry & Combinatorics.",
     "subEvents": [
       {
-        "title": "Regional Olympiad Round",
-        "details": "A 2-hour examination (10:00 AM – 12:00 PM) featuring 6–8 compulsory problems testing polynomials, linear algebra, convergence, calculus, complex analysis, primes, and combinatorics."
+        "title": "Regional Olympiad Rounds (6 November 2026)",
+        "details": "Conducted across 8 regional zones on Friday, 6 November 2026: Dhaka North (BRAC University), Dhaka South (Comilla University), Khulna (Islamic University), Barishal (Gopalganj Science & Technology University), Sylhet (SUST), Rajshahi (University of Rajshahi), Chittagong (Premier University), and Rangpur (HSTU). Features a 2-hour examination (10:00 AM – 12:00 PM) with 6–8 compulsory problems."
       },
       {
-        "title": "National Final Round",
-        "details": "A 2-hour advanced problem-solving competition consisting of 4–6 problems held at the Department of Applied Mathematics, A F Mujibur Rahman Ganit Bhaban, University of Dhaka."
+        "title": "National Final Round (4 December 2026)",
+        "details": "A 2-hour advanced problem-solving final comprising 4–6 problems held on Friday, 4 December 2026 at the Department of Applied Mathematics, A F Mujibur Rahman Ganit Bhaban, University of Dhaka."
       }
     ],
     "links": {
-      "Official NUMO Portal": "https://bdmathsociety.org/numo-2026/",
+      "Registration": "https://bdmathsociety.org/numo-registration/",
       "Event Modality Page": "https://bdmathsociety.org/olympiad/17th-national-undergraduate-mathematics-olympiad-2026/",
+      "Official NUMO Portal": "https://bdmathsociety.org/numo-2026/",
       "Final Round Host (DU APMAT)": "https://www.du.ac.bd/body/APMAT",
-      "Question Archives & Resources": "https://matholympiad.org.bd/bdmo-questions"
+      "Question Archives & Resources": "https://matholympiad.org.bd/bdmo-questions",
+      "Dhaka North Zone Portal (BRACU)": "https://numo-bracu.com/"
     },
     "OutsideDhaka": false,
     "IsOnline": false,
@@ -36,7 +38,7 @@
     "title": "Bangladesh AI Business Summit 2026",
     "Status": "Future",
     "Type": "Conferences / Webinars",
-    "dateRange": "05 November 2026",
+    "dateRange": "November 5, 2026",
     "startDate": "2026-11-05",
     "endDate": "2026-11-05",
     "RegEndDate": "2026-11-05",
@@ -46,11 +48,12 @@
     "subEvents": [
       {
         "title": "Summit Sessions & Industry Exhibition",
-        "details": "High-level panel discussions and innovation exhibition showcasing industrial AI applications, government digital policy frameworks, Women in AI initiatives, and university project showcases."
+        "details": "High-level discussions, networking sessions, and collaborative roundtables running from 12:00 PM to 6:00 PM exploring business AI integration, regulatory roadmaps, and economic enablement."
       }
     ],
     "links": {
-      "Event Information": "https://www.dhakachamber.com"
+      "Facebook Event": "https://www.facebook.com/events/2387047865464305",
+      "Official Registration & Expo Link": "https://aisummit.dhakachamber.com/expo/93/"
     },
     "OutsideDhaka": false,
     "IsOnline": false,
@@ -90,7 +93,7 @@
   {
     "Raid_Num": 19,
     "title": "InfoSecCon 2026 (5th Edition)",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Conferences / Webinars",
     "dateRange": "26 September 2026",
     "startDate": "2026-09-26",
@@ -116,7 +119,7 @@
   {
     "Raid_Num": 18,
     "title": "upay Presents AI DEV FEST 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Hackathons",
     "dateRange": "6 - 7 October 2026",
     "startDate": "2026-10-06",
@@ -177,7 +180,7 @@
   {
     "Raid_Num": 16,
     "title": "PSTU IT Carnival 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Olympiad / Carnival",
     "dateRange": "13 - 15 August 2026",
     "startDate": "2026-08-13",
@@ -226,7 +229,7 @@
   {
     "Raid_Num": 15,
     "title": "Blockchain & AI Olympiad Bangladesh 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Olympiad / Carnival",
     "dateRange": "03 August - 09 September 2026",
     "startDate": "2026-08-03",
@@ -255,7 +258,7 @@
   {
     "Raid_Num": 14,
     "title": "Fresh presents CreADive 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Idea & Bizcomps",
     "dateRange": "September 11, 2026",
     "startDate": "2026-09-11",
@@ -280,7 +283,7 @@
   {
     "Raid_Num": 13,
     "title": "Blueprint 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Idea & Bizcomps",
     "dateRange": "August 4 - August 27, 2026",
     "startDate": "2026-08-04",
@@ -322,7 +325,7 @@
   {
     "Raid_Num": 12,
     "title": "Biggest IELTS & UK Higher Education Expo 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Expos / Fairs",
     "dateRange": "1 August 2026",
     "startDate": "2026-08-01",
@@ -352,7 +355,7 @@
   {
     "Raid_Num": 11,
     "title": "National STEAM Carnival",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Olympiad / Carnival",
     "dateRange": "13 August - 15 August 2026",
     "startDate": "2026-08-13",
@@ -394,7 +397,7 @@
   {
     "Raid_Num": 10,
     "title": "Cloud Technical Series: Agentic AI Edition",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Conferences / Webinars",
     "dateRange": "July 23, 2026",
     "startDate": "2026-07-23",
@@ -426,7 +429,7 @@
   {
     "Raid_Num": 9,
     "title": "Idea Competition 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Idea & Bizcomps",
     "dateRange": "22 - 23 July 2026",
     "startDate": "2026-07-22",
@@ -457,7 +460,7 @@
   {
     "Raid_Num": 8,
     "title": "raylib 6.x gamejam",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Contests",
     "dateRange": "06 July - 18 July 2026",
     "startDate": "2026-07-06",
@@ -481,7 +484,7 @@
   {
     "Raid_Num": 7,
     "title": "i-BIOHACKATHON 2026: SOLVING BIOLOGICAL QUESTIONS WITH AI & BIOINFORMATICS",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Hackathons",
     "dateRange": "27 July - 24 September 2026",
     "startDate": "2026-07-27",
@@ -519,7 +522,7 @@
   {
     "Raid_Num": 6,
     "title": "Techathon Nationals & Rover Summit 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Hackathons",
     "dateRange": "10 - 11 July 2026",
     "startDate": "2026-07-10",
@@ -559,7 +562,7 @@
   {
     "Raid_Num": 5,
     "title": "BDSec CTF 2026",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Bug Bounties / CTF",
     "dateRange": "20-21th July",
     "startDate": "2026-07-20",
@@ -626,7 +629,7 @@
   {
     "Raid_Num": 3,
     "title": "MarXcellence 2026 (International Inter-University Digital Marketing Case Competition)",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Idea & Bizcomps",
     "dateRange": "Workshop 1 Begins: 10 July, 2026",
     "startDate": "2026-07-10",
@@ -669,7 +672,7 @@
   {
     "Raid_Num": 2,
     "title": "AMD Developer Hackathon: ACT II",
-    "Status": "Future",
+    "Status": "Past",
     "Type": "Hackathons",
     "dateRange": "6-11 July, 2026",
     "startDate": "2026-07-06",

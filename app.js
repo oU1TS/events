@@ -364,6 +364,87 @@ document.addEventListener('DOMContentLoaded', () => {
         return dateStr;
     }
 
+    // Generate formatted plain-text summary of raid card contents for sharing/clipboard
+    function formatRaidCardText(raid) {
+        if (!raid) return '';
+        const lines = [];
+
+        // Title and Raid number
+        const raidNumStr = (raid.Raid_Num !== undefined && raid.Raid_Num !== null) ? ` (Raid #${raid.Raid_Num})` : '';
+        lines.push(`🏆 ${raid.title || 'Untitled Event'}${raidNumStr}`);
+        lines.push('');
+
+        // Key Metadata
+        if (raid.dateRange) {
+            lines.push(`📅 Date: ${raid.dateRange}`);
+        }
+        if (raid.Type) {
+            lines.push(`🏷️ Type: ${raid.Type}`);
+        }
+        if (raid.Status) {
+            lines.push(`⚡ Status: ${raid.Status}`);
+        }
+        if (raid.venue) {
+            lines.push(`📍 Venue: ${raid.venue}`);
+        }
+        if (raid.fee) {
+            lines.push(`💰 Fees: ${raid.fee}`);
+        }
+        if (raid.RegEndDate) {
+            const formattedReg = formatLocalDate(raid.RegEndDate) || raid.RegEndDate;
+            lines.push(`⏳ Registration Deadline: ${formattedReg}`);
+        }
+
+        // Details / Description
+        if (raid.details && raid.details.trim()) {
+            lines.push('');
+            lines.push('📝 Description:');
+            lines.push(raid.details.trim());
+        }
+
+        // Sub Events / Schedule
+        if (raid.subEvents) {
+            lines.push('');
+            lines.push('🗓️ Schedule:');
+            if (Array.isArray(raid.subEvents) && raid.subEvents.length > 0) {
+                raid.subEvents.forEach(sub => {
+                    if (sub.title && sub.details) {
+                        lines.push(`• ${sub.title}: ${sub.details}`);
+                    } else if (sub.title) {
+                        lines.push(`• ${sub.title}`);
+                    } else if (sub.details) {
+                        lines.push(`• ${sub.details}`);
+                    }
+                });
+            } else if (typeof raid.subEvents === 'string' && raid.subEvents.trim()) {
+                lines.push(raid.subEvents.trim());
+            }
+        }
+
+        // Links
+        if (raid.links && Object.keys(raid.links).length > 0) {
+            lines.push('');
+            lines.push('🔗 Links:');
+            Object.entries(raid.links).forEach(([linkName, url]) => {
+                if (linkName.toLowerCase() === 'notes') {
+                    const fullNotesUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + `render.html?file=${encodeURIComponent(url)}`;
+                    lines.push(`• View Notes: ${fullNotesUrl}`);
+                } else {
+                    lines.push(`• ${linkName}: ${url}`);
+                }
+            });
+        }
+
+        // Deep Link back to this card on Event Raiders
+        if (raid.Raid_Num !== undefined && raid.Raid_Num !== null) {
+            const raidUrl = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + '#raid-' + raid.Raid_Num;
+            lines.push('');
+            lines.push(`🌐 Event Raiders: ${raidUrl}`);
+        }
+
+        return lines.join('\n');
+    }
+
     function renderRaids(raids) {
         // Clear skeleton loader elements
         raidsContainer.innerHTML = '';
@@ -492,6 +573,53 @@ document.addEventListener('DOMContentLoaded', () => {
             const titleEl = document.createElement('h3');
             titleEl.className = 'raid-title';
             titleEl.textContent = raid.title;
+
+            // Make title selectable without triggering parent details toggle on selection/drag/double-click
+            let titleClickTimeout = null;
+            let isDraggingTitle = false;
+            let titleStartX = 0;
+            let titleStartY = 0;
+
+            titleEl.addEventListener('mousedown', (e) => {
+                titleStartX = e.clientX;
+                titleStartY = e.clientY;
+                isDraggingTitle = false;
+            });
+
+            titleEl.addEventListener('mousemove', (e) => {
+                if (Math.hypot(e.clientX - titleStartX, e.clientY - titleStartY) > 5) {
+                    isDraggingTitle = true;
+                }
+            });
+
+            titleEl.addEventListener('click', (e) => {
+                e.stopPropagation();
+
+                const hasSelection = window.getSelection() && window.getSelection().toString().trim().length > 0;
+                if (isDraggingTitle || hasSelection || e.detail > 1) {
+                    if (titleClickTimeout) {
+                        clearTimeout(titleClickTimeout);
+                        titleClickTimeout = null;
+                    }
+                    return;
+                }
+
+                if (titleClickTimeout) {
+                    clearTimeout(titleClickTimeout);
+                    titleClickTimeout = null;
+                    return;
+                }
+
+                // Single click without drag or text selection - smoothly toggles card
+                titleClickTimeout = setTimeout(() => {
+                    titleClickTimeout = null;
+                    const currentSelection = window.getSelection() && window.getSelection().toString().trim().length > 0;
+                    if (!currentSelection) {
+                        card.open = !card.open;
+                    }
+                }, 220);
+            });
+
             titleRow.appendChild(titleEl);
 
             const arrowSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -733,6 +861,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 bodyDiv.appendChild(linksWrapper);
             }
+
+            // Protruding Copy Content Button at bottom-right corner of card (only visible when expanded)
+            const copyContentBtn = document.createElement('button');
+            copyContentBtn.type = 'button';
+            copyContentBtn.className = 'copy-raid-content-btn';
+            copyContentBtn.title = 'Copy card contents (formatted text)';
+            copyContentBtn.setAttribute('aria-label', 'Copy card contents in formatted text');
+            copyContentBtn.innerHTML = `
+                <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+            `;
+            copyContentBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const formattedText = formatRaidCardText(raid);
+                navigator.clipboard.writeText(formattedText).then(() => {
+                    copyContentBtn.classList.add('copied');
+                    copyContentBtn.innerHTML = `
+                        <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    `;
+                    copyContentBtn.title = 'Card contents copied!';
+                    setTimeout(() => {
+                        copyContentBtn.classList.remove('copied');
+                        copyContentBtn.innerHTML = `
+                            <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        `;
+                        copyContentBtn.title = 'Copy card contents (formatted text)';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy card contents: ', err);
+                });
+            });
+            bodyDiv.appendChild(copyContentBtn);
 
             card.appendChild(bodyDiv);
 

@@ -241,6 +241,11 @@ events/
   * **Mobile Spacing Optimization**: Compressed card padding (`1.15rem`), grid gaps (`1rem`), and header typography on mobile to fit more cards and reduce vertical scrolling height.
   * **Velo-Boost Scroll Multiplier**: Added flick gesture recognition on touchscreens that adds smooth, velocity-proportional scrolling offsets to enhance mobile traversal speed.
 
+### 🚀 v1.6.0 — Selectable Raid Titles & Expanded Formatted Card Copy
+* **Features:**
+  * **Selectable Card Titles**: Enabled text selection on raid card titles (`user-select: text`) with intelligent drag, text-selection, and double-click detection in `app.js` to guarantee title text can be highlighted and copied without accidentally collapsing or expanding the card.
+  * **Formatted Event Details Copy Button**: Added a dedicated copy button at the bottom-right corner of individual raid cards (rendered only when expanded). Clicking formats all event metadata, description, schedules, links, and direct URLs into structured, emoji-bulleted text and copies it to clipboard with instant checkmark feedback.
+
 ### 🚀 v1.5.0 — Deep Linking, Copy-to-Clipboard Buttons & Highlight Animations
 * **Features:**
   * **Deep Linking to Raids**: Extended SPA hash routing to support `#raid-<number>` paths. The portal auto-routes to "Raid Campaigns", smooth-scrolls to the target card, and triggers a highlight effect.
