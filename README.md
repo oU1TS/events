@@ -29,7 +29,7 @@ Then follow these steps:
 ## 🌟 Key Features
 
 1. **Single Page Application (SPA):** Seamless navigation using URL hash routing (`#home`, `#raids`, `#notes`, `#join`, `#learn-more`) which allows full browser back/forward history and direct bookmarking.
-2. **Parent Collapsible Raid Cards:** Event cards are rendered as native parent `<details class="raid-card parent-raid-card">` components. The summary header displays `"dateRange"`, `"Type"`, `"Status"`, `"title"`, copy button, and chevron; expanding reveals full event specifications, schedule drawers, and resources. Auto-expands upon deep-link navigation (`#raid-<number>`).
+2. **Parent Collapsible Raid Cards & Selectable Titles:** Event cards are rendered as native parent `<details class="raid-card parent-raid-card">` components with selectable titles (`user-select: text` with smart drag/double-click debounce to prevent accidental toggling). Summary headers display dates, category tags, status, venue corner badges, and deep-link copy buttons; expanding reveals complete event specifications, multi-day schedules, external links, and a bottom-right **Formatted Text Copy Button** for instant sharing on WhatsApp, Discord, or notes.
 3. **Past Raids Toggle & Auto-Unhide:** Past campaigns are hidden by default (`showPastRaids = false`) to emphasize active events. Features inline and stacked floating eye toggle buttons to reveal/hide past campaigns on demand. Direct navigation to past raid URLs automatically unhides past campaigns and updates toggle states.
 4. **Dynamic Event Notes Section:** Dedicated reports/writeups tab listing note cards with concise shortened titles. Links to local notes load in the same tab so the back button can return readers to the homepage.
 5. **Interactive Campaign Calendar:** Visual month-by-month calendar modal opening dynamically to the current system month, with overlap count badges, day events overlay list, past-only date cell graying, and scroll viewport-tracking floating activation button.
@@ -44,8 +44,9 @@ Then follow these steps:
 11. **Local Cache-First Sync:** Aggressively fetches `tracker.json` using cache-bypassing fetch controls on page load to check remote state parameters against `localStorage` (key: `ev_tracker`), flushing local caches and downloading fresh event roadmap sheets when required.
 12. **On-Screen Glassmorphic Alerts:** Warns users exactly 1 day prior to any registration end date using system web push messages and custom on-screen UI slides, saving token keys locally to avoid duplication.
 13. **Background Push Notification Support:** Integrated OneSignal Web Push SDK page interfaces and globally hosted background service worker execution modules.
-14. **Automated CI/CD Workflows:** Automated GitHub Actions pipeline (`.github/workflows/notify.yml`) triggered on database updates (for new raid announcements) or daily cron schedule (for upcoming registration deadlines) using Node.js REST API scripts.
-15. **RSS 2.0 Syndication Feed:** Live automated RSS 2.0 XML feed (`feed.xml`) generated via `.github/scripts/generate-rss.js` on every update, allowing external platforms (Discord, Telegram, RSS readers, or `b1t-Sched`) to syndicate active campaigns.
+14. **GitOps Bidirectional Database Sync Pipeline:** Complete two-way synchronization between Supabase PostgreSQL (`public.event_submissions`) and the Git repository (`raids.json`). Database approvals trigger real-time GitHub Actions (`sync-database-raids.yml`) via native `pg_net` triggers, merging submissions into `raids.json` in canonical key order, updating `tracker.json`, and compiling `feed.xml`. Full setup guide in [`doc/db/gitops_two_way_sync_guide.md`](doc/db/gitops_two_way_sync_guide.md).
+15. **Automated CI/CD Workflows:** Automated GitHub Actions pipelines for push notifications (`notify.yml`) and database sync (`sync-database-raids.yml`) triggered via repository dispatch, scheduled cron fallback (every 6 hours), and manual execution.
+16. **RSS 2.0 Syndication Feed:** Live automated RSS 2.0 XML feed (`feed.xml`) generated via `.github/scripts/generate-rss.js` on every update, allowing external platforms (Discord, Telegram, RSS readers, or `b1t-Sched`) to syndicate active campaigns.
 
 ---
 
@@ -55,10 +56,13 @@ Then follow these steps:
 events/
 ├── .github/
 │   ├── scripts/
-│   │   ├── generate-rss.js  # Automated RSS 2.0 feed generator script
-│   │   └── send-push.js     # OneSignal REST API automated Node.js dispatch script
+│   │   ├── generate-rss.js          # Automated RSS 2.0 feed generator script
+│   │   ├── send-push.js             # OneSignal REST API automated Node.js dispatch script
+│   │   ├── sync-supabase-to-git.js  # Fetches approved proposals from Supabase & updates raids.json
+│   │   └── sync-git-to-supabase.js  # Seeds git commits on raids.json into Supabase submissions table
 │   └── workflows/
-│       └── notify.yml       # GHA event notification and alerting pipeline
+│       ├── notify.yml               # GHA event notification and alerting pipeline
+│       └── sync-database-raids.yml  # Bidirectional GitOps sync pipeline (cron, dispatch, manual)
 ├── feed.xml                 # Live RSS 2.0 XML syndication feed
 ├── index.html               # Main SPA layout skeleton (with OneSignal SDK integration & RSS discovery)
 ├── style.css                # Custom CSS variables, transitions, responsive grids, and toast styles
@@ -73,6 +77,9 @@ events/
 ├── css/
 │   └── render.css           # Markdown renderer theme styling
 └── doc/
+    ├── db/                  # Database schema, RLS policies, and GitOps setup guides
+    │   ├── event_raids_schema.sql
+    │   └── gitops_two_way_sync_guide.md
     ├── idea/                # Initiative brainstorming and mock requirements
     ├── notes/               # Custom markdown notes linked from event cards
     └── prompts/             # Historical prompts, logs, and development walkthroughs

@@ -136,7 +136,14 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.15.0 — Calendar Initial Month Alignment, Database Approved Raid Sync & Raid #21 (Current)
+### 🚀 v1.16.0 — Selectable Raid Titles, Expanded Formatted Card Copy & GitOps Setup (Current)
+* **Features & Architectural Polish:**
+  * **Selectable Card Titles**: Enabled text selection on raid card titles (`user-select: text`) with intelligent pointer drag, selection, and double-click handling in `app.js` so users can freely highlight, double-click, and copy event titles without triggering unintended accordion card collapse or expansion.
+  * **Expanded Formatted Text Copy Button**: Added a dedicated 32px circular copy button positioned at the bottom-right corner of individual raid cards (displayed strictly when expanded). Clicking formats all event metadata, dates, venue, fees, deadline, description, multi-day schedules, external links, and deep links into an emoji-bulleted summary optimized for instant sharing across WhatsApp, Discord, Telegram, and markdown notes.
+  * **GitOps Two-Way Sync Setup Guide**: Authored comprehensive database and workflow setup documentation in [`doc/db/gitops_two_way_sync_guide.md`](doc/db/gitops_two_way_sync_guide.md). Contains ready-to-run PostgreSQL trigger queries utilizing `pg_net` (`net.http_post`) to automatically dispatch GitHub Actions on proposal approvals, RLS policies for anonymous public reads, and personal access token configurations for organization repositories.
+  * **Home Benefits Section & Card Buttons**: Added a dedicated "Benefits" grid directly beneath the home hero banner. Features 3 interactive, glassmorphic card buttons linking directly to **Event Notes** (`#notes`), **Community Onboarding** (`#join`), and **Knowledge & Resources** (`#learn-more`) with hover elevation, badge chips, and smooth SPA hash navigation.
+
+### 🚀 v1.15.0 — Calendar Initial Month Alignment, Database Approved Raid Sync & Raid #21
 * **Features & Bugfixes:**
   - **Dynamic Calendar Initial Month Alignment**: Fixed the Campaign Calendar modal opening to a hardcoded July 2026 month. `calendarYear` and `calendarMonth` are now dynamically initialized with `new Date()` and reset to the current month/year each time the calendar is opened via `#open-calendar-btn` or `#floating-calendar-btn`.
   - **Database Approved Raid Live Sync & Persistence**: Addressed an issue where approving a submission in the Review Dashboard only updated volatile browser RAM, reverting the catalog after a page refresh. Added `applyApprovedSubmissionsToDataset()`, `applyCachedApprovedSubmissions()`, and `syncApprovedSubmissionsFromDatabase()` in `app.js`. Approved database records are now immediately cached in `localStorage` (`event_raids_approved_cache`) and queried live from Supabase `event_submissions` on page load, keeping approved community submissions visible across reloads.
@@ -240,11 +247,6 @@ events/
   * **Dedicated Floating Button**: Added an icon-only circular floating calendar button at the viewport corner that is controlled by an `IntersectionObserver` tracking the inline button's scroll state.
   * **Mobile Spacing Optimization**: Compressed card padding (`1.15rem`), grid gaps (`1rem`), and header typography on mobile to fit more cards and reduce vertical scrolling height.
   * **Velo-Boost Scroll Multiplier**: Added flick gesture recognition on touchscreens that adds smooth, velocity-proportional scrolling offsets to enhance mobile traversal speed.
-
-### 🚀 v1.6.0 — Selectable Raid Titles & Expanded Formatted Card Copy
-* **Features:**
-  * **Selectable Card Titles**: Enabled text selection on raid card titles (`user-select: text`) with intelligent drag, text-selection, and double-click detection in `app.js` to guarantee title text can be highlighted and copied without accidentally collapsing or expanding the card.
-  * **Formatted Event Details Copy Button**: Added a dedicated copy button at the bottom-right corner of individual raid cards (rendered only when expanded). Clicking formats all event metadata, description, schedules, links, and direct URLs into structured, emoji-bulleted text and copies it to clipboard with instant checkmark feedback.
 
 ### 🚀 v1.5.0 — Deep Linking, Copy-to-Clipboard Buttons & Highlight Animations
 * **Features:**
