@@ -290,3 +290,4 @@ graph TD
 | **Selectable Card Titles** | `renderRaids` pointer & click debounce | Smooth cursor selection without card toggle | Allows users to freely highlight and copy event titles without accidental card collapsing. |
 | **Formatted Card Copy** | `formatRaidCardText`, `copyContentBtn` | Protruding circular copy button at bottom-right corner | Copies clean, formatted emoji-bulleted summary with event details, schedules, and links for instant sharing. |
 | **Home Benefits Cards** | `.benefits-grid`, `.benefit-card` | Glassmorphic interactive action cards on Home page | Streamlines direct discovery of Event Notes, WhatsApp Community, and Knowledge Resources from hero. |
+| **Deep Link Stability** | `scrollToRaid`, `renderRaids`, `syncAuthState` | Stable 2-second glowing pulse without retraction or glitch | Direct raid links expand and showcase the target event cleanly without mid-animation collapse. |

@@ -136,7 +136,14 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.16.0 — Selectable Raid Titles, Expanded Formatted Card Copy & GitOps Setup (Current)
+### 🚀 v1.16.1 — Raid Card Deep Link Stability & Highlight Pulse Bugfix (Current)
+* **Bugfixes & UI Polish:**
+  * **Deep Link State Preservation & Retraction Fix**: Resolved race condition where accessing direct raid card URLs (`#raid-<num>`) caused the targeted card to flicker, abort its highlight pulse halfway through, and retract to collapsed default view.
+  * **Background Auth Re-Render Guard**: Guarded `syncAuthState` in `app.js` to only re-render the card grid if the user's role or identity actually changed, preventing asynchronous initial auth queries from tearing down and rebuilding active DOM cards.
+  * **Accordion & Highlight State Retention**: Updated `renderRaids` to capture currently open cards and active `.highlighted` state before clearing container, keeping targeted and previously opened cards open across re-renders.
+  * **Smart Deep-Link Routing**: Optimized `routePage` to directly scroll to already rendered cards rather than wiping the container, with debounce protection and clean CSS animation reflow in `scrollToRaid`.
+
+### 🚀 v1.16.0 — Selectable Raid Titles, Expanded Formatted Card Copy & GitOps Setup
 * **Features & Architectural Polish:**
   * **Selectable Card Titles**: Enabled text selection on raid card titles (`user-select: text`) with intelligent pointer drag, selection, and double-click handling in `app.js` so users can freely highlight, double-click, and copy event titles without triggering unintended accordion card collapse or expansion.
   * **Expanded Formatted Text Copy Button**: Added a dedicated 32px circular copy button positioned at the bottom-right corner of individual raid cards (displayed strictly when expanded). Clicking formats all event metadata, dates, venue, fees, deadline, description, multi-day schedules, external links, and deep links into an emoji-bulleted summary optimized for instant sharing across WhatsApp, Discord, Telegram, and markdown notes.

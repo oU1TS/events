@@ -123,11 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetRaidNum) {
                 if (pastRaidsData) {
                     const targetRaid = pastRaidsData.find(r => r.Raid_Num === targetRaidNum);
-                    if (targetRaid && isPastRaid(targetRaid)) {
+                    let needsReFilter = false;
+                    if (targetRaid && isPastRaid(targetRaid) && !showPastRaids) {
                         showPastRaids = true;
                         updatePastRaidsToggleUI();
+                        needsReFilter = true;
                     }
-                    filterAndRenderRaids();
+                    const existingCard = document.getElementById(`raid-card-${targetRaidNum}`);
+                    if (!existingCard || needsReFilter) {
+                        filterAndRenderRaids();
+                    }
                     scrollToRaid(targetRaidNum);
                 } else {
                     pendingRaidScroll = targetRaidNum;
@@ -162,21 +167,44 @@ document.addEventListener('DOMContentLoaded', () => {
         closeMobileMenu();
     }
 
+    let activeRaidScrollTimeout = null;
+    let activeHighlightTimeout = null;
+
     function scrollToRaid(raidNum) {
-        // Wait slightly to ensure elements are rendered and transition finished
-        setTimeout(() => {
+        if (activeRaidScrollTimeout) {
+            clearTimeout(activeRaidScrollTimeout);
+        }
+        // Wait slightly to ensure elements are rendered and layout settled
+        activeRaidScrollTimeout = setTimeout(() => {
             const card = document.getElementById(`raid-card-${raidNum}`);
             if (card) {
                 if (card.tagName.toLowerCase() === 'details') {
                     card.open = true;
                 }
                 card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Reset and re-apply highlight smoothly with forced reflow
+                card.classList.remove('highlighted');
+                void card.offsetWidth;
                 card.classList.add('highlighted');
+
+                if (activeHighlightTimeout) {
+                    clearTimeout(activeHighlightTimeout);
+                }
+                activeHighlightTimeout = setTimeout(() => {
+                    card.classList.remove('highlighted');
+                    activeHighlightTimeout = null;
+                }, 3800);
+
                 card.addEventListener('animationend', () => {
                     card.classList.remove('highlighted');
+                    if (activeHighlightTimeout) {
+                        clearTimeout(activeHighlightTimeout);
+                        activeHighlightTimeout = null;
+                    }
                 }, { once: true });
             }
-        }, 200);
+        }, 120);
     }
 
     // Hash change event listener
@@ -446,6 +474,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderRaids(raids) {
+        // Preserve open card IDs and active highlight state across re-renders
+        const openCardIds = new Set(
+            Array.from(raidsContainer.querySelectorAll('details.parent-raid-card[open]')).map(el => el.id)
+        );
+        const highlightedCard = raidsContainer.querySelector('.raid-card.highlighted');
+        const highlightedCardId = highlightedCard ? highlightedCard.id : null;
+
         // Clear skeleton loader elements
         raidsContainer.innerHTML = '';
 
@@ -462,6 +497,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('details');
             card.className = 'raid-card parent-raid-card';
             card.id = `raid-card-${raid.Raid_Num}`;
+
+            // Automatically open if previously open, pending scroll, or targeted by current URL hash
+            const isTargetedRaid = (pendingRaidScroll === raid.Raid_Num) ||
+                (window.location.hash === `#raid-${raid.Raid_Num}`);
+            if (openCardIds.has(card.id) || isTargetedRaid) {
+                card.open = true;
+            }
+
+            // Restore active highlight if re-rendered during pulse animation
+            if (highlightedCardId === card.id) {
+                card.classList.add('highlighted');
+                card.addEventListener('animationend', () => {
+                    card.classList.remove('highlighted');
+                }, { once: true });
+            }
 
             // Create Summary Header Element (<summary>)
             const summaryEl = document.createElement('summary');
@@ -2350,11 +2400,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sync Authentication State & Fetch Role from Supabase
     async function syncAuthState(session) {
+        const prevRole = currentUserRole;
+        const prevUserId = currentSessionUser ? currentSessionUser.id : null;
+
         if (!session || !session.user) {
             currentSessionUser = null;
             currentUserRole = 'user';
             updateAuthUI();
-            filterAndRenderRaids();
+            // Only re-render if role or user identity actually changed
+            if (prevRole !== 'user' || prevUserId !== null) {
+                filterAndRenderRaids();
+            }
             return;
         }
 
@@ -2431,8 +2487,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Sync approved submissions from database with active credentials
         syncApprovedSubmissionsFromDatabase();
 
-        // Re-render raids to show "Suggest Edit" buttons on cards
-        filterAndRenderRaids();
+        // Re-render raids to show "Suggest Edit" buttons on cards only if role or session changed
+        if (prevRole !== currentUserRole || prevUserId !== user.id) {
+            filterAndRenderRaids();
+        }
     }
 
     // Update Floating Desktop and Mobile Navigation Auth Button States
