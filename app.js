@@ -626,11 +626,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 const regDate = new Date(raid.RegEndDate);
-                regDate.setHours(0, 0, 0, 0);
+                const isValidDate = !isNaN(regDate.getTime());
+                let isClosed = false;
+                let regText = raid.RegEndDate;
 
-                const isClosed = today > regDate;
-                const formattedRegDate = formatLocalDate(raid.RegEndDate);
-                const regText = isClosed ? `${formattedRegDate} (Closed)` : formattedRegDate;
+                if (isValidDate) {
+                    regDate.setHours(0, 0, 0, 0);
+                    isClosed = today > regDate;
+                    const formattedRegDate = formatLocalDate(raid.RegEndDate);
+                    regText = isClosed ? `${formattedRegDate} (Closed)` : formattedRegDate;
+                }
 
                 const regEndItem = createInfoItem('Reg Deadline', regText);
                 const valSpan = regEndItem.querySelector('.raid-info-value');
@@ -3267,10 +3272,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Helper: Normalize raid object properties into canonical schema order
+    function normalizeRaidKeyOrder(raid) {
+        if (!raid || typeof raid !== 'object') return raid;
+        const canonicalKeys = [
+            'Raid_Num',
+            'title',
+            'Status',
+            'Type',
+            'dateRange',
+            'startDate',
+            'endDate',
+            'RegEndDate',
+            'venue',
+            'fee',
+            'details',
+            'subEvents',
+            'links',
+            'OutsideDhaka',
+            'IsOnline',
+            'city'
+        ];
+        const normalized = {};
+        canonicalKeys.forEach(k => {
+            if (k in raid) normalized[k] = raid[k];
+        });
+        // Include any additional custom properties
+        Object.keys(raid).forEach(k => {
+            if (!(k in normalized)) normalized[k] = raid[k];
+        });
+        return normalized;
+    }
+
     // Generate updated JSON formatted matching raids.json
     function generateUpdatedRaidsJson() {
         if (!pastRaidsData) return '[]';
-        return JSON.stringify(pastRaidsData, null, 2);
+        const sorted = [...pastRaidsData].sort((a, b) => (b.Raid_Num || 0) - (a.Raid_Num || 0));
+        const normalizedList = sorted.map(normalizeRaidKeyOrder);
+        return JSON.stringify(normalizedList, null, 2);
     }
 
     // Open Mod Management Modal (Admin Only)

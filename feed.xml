@@ -5,8 +5,25 @@
     <link>https://ou1ts.github.io/events/</link>
     <description>Live feed of active tech contests, hackathons, olympiads, and symposiums for UITS students.</description>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Nov 2026 06:45:29 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 01 Nov 2026 10:07:54 GMT</lastBuildDate>
     <atom:link href="https://ou1ts.github.io/events/feed.xml" rel="self" type="application/rss+xml" />
+
+    <item>
+      <title><![CDATA[[Olympiad / Carnival] 17th National Undergraduate Mathematics Olympiad 2026]]></title>
+      <link>https://ou1ts.github.io/events/#raid-22</link>
+      <guid isPermaLink="false">uits-raid-22</guid>
+      <pubDate>Sun, 01 Nov 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[Olympiad / Carnival]]></category>
+      <description><![CDATA[<p><strong>Category:</strong> Olympiad / Carnival</p>
+      <p><strong>Date:</strong> TBA (Regional Olympiad &amp; National Final)</p>
+      <p><strong>Registration Deadline:</strong> TBA</p>
+      <p><strong>Venue:</strong> Regional Host Centers &amp; A F Mujibur Rahman Ganit Bhaban, University of Dhaka (Final Round)</p>
+      <p><strong>Fee:</strong> TBA</p>
+      <p><strong>Details:</strong> Jointly organized by the Bangladesh Mathematical Society and the A F Mujibur Rahman Foundation, the 17th National Undergraduate Mathematics Olympiad 2026 is designed for undergraduate students—preferably from STEM disciplines—enrolled in universities and colleges across Bangladesh. Eligible participants must be 23 years of age or younger by July 2027 (in alignment with the International Mathematics Competition [IMC]) with no minimum age constraint. The working language of the competition is English, assessing contestants across Algebra, Real &amp; Complex Analysis, and Geometry &amp; Combinatorics.</p>
+      <h4>Sub-Events:</h4><ul><li><strong>Regional Olympiad Round:</strong> A 2-hour examination (10:00 AM – 12:00 PM) featuring 6–8 compulsory problems testing polynomials, linear algebra, convergence, calculus, complex analysis, primes, and combinatorics.</li><li><strong>National Final Round:</strong> A 2-hour advanced problem-solving competition consisting of 4–6 problems held at the Department of Applied Mathematics, A F Mujibur Rahman Ganit Bhaban, University of Dhaka.</li></ul>
+      <h4>Related Links:</h4><ul><li><a href="https://bdmathsociety.org/numo-2026/">Official NUMO Portal</a></li><li><a href="https://bdmathsociety.org/olympiad/17th-national-undergraduate-mathematics-olympiad-2026/">Event Modality Page</a></li><li><a href="https://www.du.ac.bd/body/APMAT">Final Round Host (DU APMAT)</a></li><li><a href="https://matholympiad.org.bd/bdmo-questions">Question Archives &amp; Resources</a></li></ul>
+      <p><a href="https://ou1ts.github.io/events/#raid-22">View Full Raid on UITS Event Raiders &rarr;</a></p>]]></description>
+    </item>
 
     <item>
       <title><![CDATA[[Conferences / Webinars] Bangladesh AI Business Summit 2026]]></title>

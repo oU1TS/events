@@ -1,0 +1,54 @@
+name: Sync Database Approved Raids to Git
+
+on:
+  repository_dispatch:
+    types: [sync_raids_from_db]
+  workflow_dispatch:
+  schedule:
+    # Automated safety net: run every 6 hours
+    - cron: '0 */6 * * *'
+
+permissions:
+  contents: write
+
+jobs:
+  sync-database-to-git:
+    name: Sync Supabase Approved Raids
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Sync Supabase to raids.json
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://bennnocwssmcpiqradvc.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlbm5ub2N3c3NtY3BpcXJhZHZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3Mjk0MjAsImV4cCI6MjEwNTMwNTQyMH0.fOi4e7zdQDkPGA94a9__MgN_Q4u57Pj4-fBl4zz56Bc' }}
+        run: |
+          node .github/scripts/sync-supabase-to-git.js
+          node .github/scripts/generate-rss.js
+
+      - name: Commit and Push Synchronization Updates
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add raids.json tracker.json feed.xml || true
+          if [ -d "events" ]; then
+            git add events/raids.json events/tracker.json events/feed.xml || true
+          fi
+
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(sync): update raids.json from database approvals [skip ci]"
+            git push
+            echo "Successfully committed and pushed database updates to git."
+          else
+            echo "No database changes to commit."
+          fi
+

@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   dispatch-notifications:
-    name: Dispatch Alerts
+    name: Dispatch Alerts & Sync
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +29,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+
+      - name: Sync Git raids.json to Supabase Database
+        if: github.event_name == 'push'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || 'https://bennnocwssmcpiqradvc.supabase.co' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlbm5ub2N3c3NtY3BpcXJhZHZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3Mjk0MjAsImV4cCI6MjEwNTMwNTQyMH0.fOi4e7zdQDkPGA94a9__MgN_Q4u57Pj4-fBl4zz56Bc' }}
+        run: |
+          node .github/scripts/sync-git-to-supabase.js
 
       - name: Dispatch Push Notification
         env:

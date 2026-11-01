@@ -1,5 +1,37 @@
 [
   {
+    "Raid_Num": 22,
+    "title": "17th National Undergraduate Mathematics Olympiad 2026",
+    "Status": "Future",
+    "Type": "Olympiad / Carnival",
+    "dateRange": "TBA (Regional Olympiad & National Final)",
+    "startDate": "2026-11-01",
+    "endDate": "2026-12-31",
+    "RegEndDate": "TBA",
+    "venue": "Regional Host Centers & A F Mujibur Rahman Ganit Bhaban, University of Dhaka (Final Round)",
+    "fee": "TBA",
+    "details": "Jointly organized by the Bangladesh Mathematical Society and the A F Mujibur Rahman Foundation, the 17th National Undergraduate Mathematics Olympiad 2026 is designed for undergraduate students—preferably from STEM disciplines—enrolled in universities and colleges across Bangladesh. Eligible participants must be 23 years of age or younger by July 2027 (in alignment with the International Mathematics Competition [IMC]) with no minimum age constraint. The working language of the competition is English, assessing contestants across Algebra, Real & Complex Analysis, and Geometry & Combinatorics.",
+    "subEvents": [
+      {
+        "title": "Regional Olympiad Round",
+        "details": "A 2-hour examination (10:00 AM – 12:00 PM) featuring 6–8 compulsory problems testing polynomials, linear algebra, convergence, calculus, complex analysis, primes, and combinatorics."
+      },
+      {
+        "title": "National Final Round",
+        "details": "A 2-hour advanced problem-solving competition consisting of 4–6 problems held at the Department of Applied Mathematics, A F Mujibur Rahman Ganit Bhaban, University of Dhaka."
+      }
+    ],
+    "links": {
+      "Official NUMO Portal": "https://bdmathsociety.org/numo-2026/",
+      "Event Modality Page": "https://bdmathsociety.org/olympiad/17th-national-undergraduate-mathematics-olympiad-2026/",
+      "Final Round Host (DU APMAT)": "https://www.du.ac.bd/body/APMAT",
+      "Question Archives & Resources": "https://matholympiad.org.bd/bdmo-questions"
+    },
+    "OutsideDhaka": false,
+    "IsOnline": false,
+    "city": "Dhaka"
+  },
+  {
     "Raid_Num": 21,
     "title": "Bangladesh AI Business Summit 2026",
     "Status": "Future",

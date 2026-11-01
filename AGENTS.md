@@ -38,8 +38,9 @@
   - Increment the sequence integer ONLY when starting an entirely distinct, new conversation session that does not belong to a pre-existing thread.
   - Keep all conversation turns for that session inside the main file `doc/prompts/<Prefix>. <Session Title>.md`.
 - **Chat Archive Fidelity & Sanitization**:
-  - Reproduce the conversation clearly (user request blocks verbatim, with sensitive keys redacted).
-  - Include the thinking/reasoning process (`### Thinking`) alongside the final response (`### AI Response`).
+  - Reproduce the conversation with full fidelity: user request blocks verbatim (with sensitive keys redacted), structured reasoning summary in `### Thinking Process`, and complete verbatim `### AI Response`.
+  - Include all diagrams (Mermaid flowcharts, sequence charts, architectural layouts), callouts, step-by-step guides, and suggested Git commits exactly as presented in the live dialogue—never truncate, abridge, or omit diagrams or response sections.
+  - Maintain high-level reasoning summaries in `### Thinking Process` covering requirements analysis, architectural decisions, and verification steps while omitting internal scratchpad backtracking.
   - Verify that all API keys and secrets have been replaced with placeholders before writing.
   - Preserve frontmatter tags comments (e.g., `<!-- Frontmatter Tags: ... -->`) at the top of the archive file.
 

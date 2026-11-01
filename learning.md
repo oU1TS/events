@@ -285,3 +285,5 @@ graph TD
 | **Approved Raid Persistence** | `syncApprovedSubmissionsFromDatabase`, `applyApprovedSubmissionsToDataset` | Merges DB-approved submissions on load & caches to `localStorage` | Guarantees approved community submissions remain visible on the portal across page reloads. |
 | **Proposal Event Types Sync** | `#form-type` options & dynamic generation | Full 8 category parity with Roadmap filter | Eliminates category mismatches between proposed events and page filter dropdowns. |
 | **Custom Links Repeater** | `addCustomLinkRow`, `collectLinksFromForm` | Repeater rows with datalist suggestions | Enables attaching poster image links, PDF brochures, rulebooks, and slide decks to raids. |
+| **GitOps Two-Way Sync** | `sync-supabase-to-git.js`, `sync-git-to-supabase.js` | Automated GitHub Action commits on DB approvals & DB sync on git pushes | Maintains perfect two-way consistency between git repository (`raids.json`) and Supabase database. |
+| **Canonical JSON Key Order** | `normalizeRaidKeyOrder` | Enforces standard property sequence | Prevents disorganized JSON keys in downloads and git diffs. |
