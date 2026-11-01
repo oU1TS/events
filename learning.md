@@ -252,7 +252,7 @@ graph TD
 #### How it works:
 1. **Member Proposal Modal:** Authenticated users can propose new raids or suggest edits to existing events through `#event-form-modal`. Clicking "✏️ Edit" directly on any raid card pre-populates all existing parameters (dates, categories, fees, venues, sub-events repeater, links). Submissions are recorded in `public.event_submissions` with `status: 'pending'`.
 2. **Staff Review Dashboard:** Admins and Moderators access `#review-dashboard-modal` featuring real-time tabbed status views (Pending, Approved, Rejected). For event edits, a visual side-by-side diff table highlights modified parameters against the active `raids.json` data.
-3. **Approval & In-Memory Live Sync:** Approving a submission updates its database record and immediately patches the in-memory client `pastRaidsData`, delivering instant UI previews without requiring full reload.
+3. **Approval, Live Sync & Reload Persistence:** Approving a submission updates its database record to `status = 'approved'`, saves the approved item in `localStorage` (`event_raids_approved_cache`), and patches the in-memory `pastRaidsData`. On subsequent page loads, `loadPastRaids()` immediately applies cached approved submissions and queries `public.event_submissions` from Supabase to merge any approved additions or updates, guaranteeing database additions persist seamlessly across page reloads.
 4. **JSON Export Engine:** The review dashboard features one-click "Download raids.json" and "Copy JSON" tools, merging approved submissions into a clean, formatted JSON payload ready for direct git commit.
 5. **Moderator Management Console:** Admins can open `#mod-management-modal` to search all registered community profiles and toggle/assign Moderator permissions in `public.event_roles`.
 
@@ -281,3 +281,5 @@ graph TD
 | **Staff Review Dashboard** | `openReviewDashboardModal`, `fetchSubmissions` | Visual side-by-side diff cards, Approve/Reject tools | Enables staff to verify community submissions before publishing updates. |
 | **Moderator Management** | `openModManagementModal`, `toggleModRole` | Searchable registered user list with Mod assign toggles | Streamlines guild governance directly within the app interface. |
 | **Mobile Viewport & Auth Spacing** | `viewport-fit=cover`, `100dvh`, `.nav-mobile-auth-wrapper` | Elevated sidebar auth button & safe-area clearances | Prevents button overlap from mobile browser bottom address bars and OS home bars. |
+| **Calendar Dynamic Month Init** | `openModalWithData`, `initCalendar` | Sets active month/year on modal open | Opens directly to current system month instead of defaulting to July. |
+| **Approved Raid Persistence** | `syncApprovedSubmissionsFromDatabase`, `applyApprovedSubmissionsToDataset` | Merges DB-approved submissions on load & caches to `localStorage` | Guarantees approved community submissions remain visible on the portal across page reloads. |

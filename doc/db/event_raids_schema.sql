@@ -88,6 +88,12 @@ CREATE POLICY "Admins can manage event roles" ON public.event_roles
 -- RLS Policies for event_submissions
 -- ============================================================================
 
+-- Anyone (including public / anonymous visitors) can view approved event submissions
+DROP POLICY IF EXISTS "Public can view approved submissions" ON public.event_submissions;
+CREATE POLICY "Public can view approved submissions" ON public.event_submissions
+    FOR SELECT
+    USING (status = 'approved');
+
 -- Authenticated users can insert their own submissions
 DROP POLICY IF EXISTS "Users can insert own submissions" ON public.event_submissions;
 CREATE POLICY "Users can insert own submissions" ON public.event_submissions

@@ -136,7 +136,14 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.14.0 — Mobile Viewport Spacing, Safe-Area Insets & Elevated Navigation Controls (Current)
+### 🚀 v1.15.0 — Calendar Initial Month Alignment, Database Approved Raid Sync & Raid #21 (Current)
+* **Features & Bugfixes:**
+  - **Dynamic Calendar Initial Month Alignment**: Fixed the Campaign Calendar modal opening to a hardcoded July 2026 month. `calendarYear` and `calendarMonth` are now dynamically initialized with `new Date()` and reset to the current month/year each time the calendar is opened via `#open-calendar-btn` or `#floating-calendar-btn`.
+  - **Database Approved Raid Live Sync & Persistence**: Addressed an issue where approving a submission in the Review Dashboard only updated volatile browser RAM, reverting the catalog after a page refresh. Added `applyApprovedSubmissionsToDataset()`, `applyCachedApprovedSubmissions()`, and `syncApprovedSubmissionsFromDatabase()` in `app.js`. Approved database records are now immediately cached in `localStorage` (`event_raids_approved_cache`) and queried live from Supabase `event_submissions` on page load, keeping approved community submissions visible across reloads.
+  - **Pre-Compiled Raid #21**: Added Raid #21 ("Bangladesh AI Business Summit 2026") directly to `raids.json` and updated `tracker.json` (`eventsCount: 21` and active reminder for Nov 5, 2026).
+  - **Public RLS Policy for Approved Submissions**: Updated `doc/db/event_raids_schema.sql` with a public SELECT policy (`status = 'approved'`) ensuring anonymous site visitors and search engines can also fetch database-approved events directly from Supabase.
+
+### 🚀 v1.14.0 — Mobile Viewport Spacing, Safe-Area Insets & Elevated Navigation Controls
 * **Features:**
   - **Elevated Mobile Navigation Auth Button**: Lifted `.nav-mobile-auth-wrapper` and `#mobile-auth-btn` inside the mobile sidebar drawer with `padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 24px))` and `margin-bottom: 1.5rem`, preventing overlap from mobile browser dynamic bottom address bars and home indicator bars.
   - **Dynamic Viewport Height (`100dvh`) Integration**: Upgraded the mobile `.nav` sidebar drawer to use `height: calc(100dvh - 68px)` with fallback `calc(100vh - 68px)`, preventing bottom overflow clipping when mobile browser chrome retracts or expands.

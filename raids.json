@@ -1,5 +1,30 @@
 [
   {
+    "Raid_Num": 21,
+    "title": "Bangladesh AI Business Summit 2026",
+    "Status": "Future",
+    "Type": "Conferences / Webinars",
+    "dateRange": "05 November 2026",
+    "startDate": "2026-11-05",
+    "endDate": "2026-11-05",
+    "RegEndDate": "2026-11-05",
+    "venue": "Bangladesh-China Friendship Exhibition Center (BBCFEC), Purbachal, Dhaka, Bangladesh",
+    "fee": "Free",
+    "details": "Organized jointly by the Ministry of Science and Technology (MoST), GoB, and the Dhaka Chamber of Commerce & Industry (DCCI), the Bangladesh AI Business Summit 2026 gathers policymakers, business leaders, innovators, investors, academics, and AI practitioners under the theme 'Where AI Powers Bangladesh's Economic Future.' The summit is open to all and focuses on exploring real-world industrial AI applications, developing nationwide technical talent, fostering cross-sector collaborations, and architecting an AI-driven economic trajectory for the nation.",
+    "subEvents": [
+      {
+        "title": "Summit Sessions & Industry Exhibition",
+        "details": "High-level panel discussions and innovation exhibition showcasing industrial AI applications, government digital policy frameworks, Women in AI initiatives, and university project showcases."
+      }
+    ],
+    "links": {
+      "Event Information": "https://www.dhakachamber.com"
+    },
+    "OutsideDhaka": false,
+    "IsOnline": false,
+    "city": "Dhaka"
+  },
+  {
     "Raid_Num": 20,
     "title": "HI Cyber Con 2026",
     "Status": "Future",

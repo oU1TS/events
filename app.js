@@ -226,6 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             pastRaidsData = await response.json();
+
+            // 1. Immediately apply cached approved submissions from localStorage
+            applyCachedApprovedSubmissions();
+
             if (pendingRaidScroll) {
                 const targetRaid = pastRaidsData.find(r => r.Raid_Num === pendingRaidScroll);
                 if (targetRaid && isPastRaid(targetRaid)) {
@@ -235,6 +239,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             filterAndRenderRaids();
             renderEventNotes(pastRaidsData);
+
+            // 2. Fetch fresh approved submissions from Supabase in the background
+            syncApprovedSubmissionsFromDatabase();
 
         } catch (error) {
             console.error('Error fetching past raids:', error);
@@ -798,9 +805,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const overlayEventsList = document.getElementById('overlay-events-list');
         const closeOverlayBtn = document.getElementById('close-overlay-btn');
 
-        // State for currently displayed calendar month (Default: July 2026)
-        let calendarYear = 2026;
-        let calendarMonth = 6; // July (0-indexed)
+        // State for currently displayed calendar month (Defaults to Current Month & Year)
+        const currentCalendarDate = new Date();
+        let calendarYear = currentCalendarDate.getFullYear();
+        let calendarMonth = currentCalendarDate.getMonth(); // 0-indexed
+
+        // Expose renderCalendarGrid globally so data updates can refresh calendar
+        window.renderCalendarGrid = () => {
+            renderCalendarGrid();
+        };
 
         if (!openCalendarBtn || !calendarModal) return;
 
@@ -837,6 +850,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const openModalWithData = () => {
+            // Always reset to current month & year when opening the calendar
+            const now = new Date();
+            calendarYear = now.getFullYear();
+            calendarMonth = now.getMonth();
+
             if (!pastRaidsData) {
                 loadPastRaids().then(() => {
                     renderCalendarGrid();
@@ -2149,7 +2167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         try {
                             const cleanHash = (window.location.hash && !window.location.hash.includes('access_token=')) ? window.location.hash : (window.location.hash.startsWith('#') && !window.location.hash.includes('=') ? window.location.hash : '');
                             window.history.replaceState(null, document.title, window.location.pathname + cleanHash);
-                        } catch (e) {}
+                        } catch (e) { }
                     }
                 }
                 await syncAuthState(session);
@@ -2187,7 +2205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!profile.project_tags || !profile.project_tags.includes('events')) {
                         try {
                             await supabaseClient.rpc('add_project_tag', { tag: 'events' });
-                        } catch (te) {}
+                        } catch (te) { }
                     }
                 }
             } catch (pe) {
@@ -2238,6 +2256,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentUserRole === 'admin' || currentUserRole === 'mod') {
             updateStaffBadgeCount();
         }
+
+        // Sync approved submissions from database with active credentials
+        syncApprovedSubmissionsFromDatabase();
 
         // Re-render raids to show "Suggest Edit" buttons on cards
         filterAndRenderRaids();
@@ -3062,6 +3083,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (error) throw error;
 
+            // If it was cached as approved, remove it from cache
+            try {
+                const raw = localStorage.getItem('event_raids_approved_cache');
+                if (raw) {
+                    let cache = JSON.parse(raw);
+                    if (Array.isArray(cache)) {
+                        cache = cache.filter(item => item.id !== submission.id);
+                        localStorage.setItem('event_raids_approved_cache', JSON.stringify(cache));
+                    }
+                }
+            } catch (e) { }
+
             showModalAlert('review-dashboard-alert', 'Submission rejected.', 'info');
             await fetchSubmissions();
             renderSubmissionsList();
@@ -3072,20 +3105,110 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Apply approved submission directly into pastRaidsData
+    // Apply cached approved submissions from localStorage
+    function applyCachedApprovedSubmissions() {
+        try {
+            const cached = localStorage.getItem('event_raids_approved_cache');
+            if (cached) {
+                const approvedList = JSON.parse(cached);
+                if (Array.isArray(approvedList) && approvedList.length > 0) {
+                    applyApprovedSubmissionsToDataset(approvedList);
+                }
+            }
+        } catch (e) {
+            console.warn("Could not read approved submissions cache:", e);
+        }
+    }
+
+    // Apply approved submissions (array or single object) directly into pastRaidsData
+    function applyApprovedSubmissionsToDataset(submissions) {
+        if (!pastRaidsData) return false;
+        const list = Array.isArray(submissions) ? submissions : [submissions];
+        let hasChanges = false;
+
+        list.forEach(sub => {
+            if (!sub || !sub.data) return;
+            const raidPayload = sub.data;
+            const targetRaidNum = sub.raid_num || raidPayload.Raid_Num;
+
+            if (sub.submission_type === 'update') {
+                const index = pastRaidsData.findIndex(r => r.Raid_Num === targetRaidNum);
+                if (index !== -1) {
+                    pastRaidsData[index] = Object.assign({}, pastRaidsData[index], raidPayload);
+                    hasChanges = true;
+                }
+            } else {
+                // New raid: Check if already present to avoid duplicates
+                const index = pastRaidsData.findIndex(r => r.Raid_Num === raidPayload.Raid_Num);
+                if (index !== -1) {
+                    pastRaidsData[index] = Object.assign({}, pastRaidsData[index], raidPayload);
+                } else {
+                    pastRaidsData.unshift(raidPayload);
+                }
+                hasChanges = true;
+            }
+        });
+
+        if (hasChanges) {
+            pastRaidsData.sort((a, b) => (b.Raid_Num || 0) - (a.Raid_Num || 0));
+        }
+
+        return hasChanges;
+    }
+
+    // Sync approved submissions from Supabase and cache them
+    async function syncApprovedSubmissionsFromDatabase() {
+        if (!supabaseClient) return;
+        try {
+            const { data, error } = await supabaseClient
+                .from('event_submissions')
+                .select('*')
+                .eq('status', 'approved')
+                .order('created_at', { ascending: true });
+
+            if (error) {
+                return;
+            }
+
+            if (data && Array.isArray(data)) {
+                localStorage.setItem('event_raids_approved_cache', JSON.stringify(data));
+                const changed = applyApprovedSubmissionsToDataset(data);
+                if (changed) {
+                    filterAndRenderRaids();
+                    renderEventNotes(pastRaidsData);
+                    if (window.renderCalendarGrid) {
+                        window.renderCalendarGrid();
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn("Could not sync approved submissions from database:", err);
+        }
+    }
+
+    // Apply approved submission directly into pastRaidsData and persist to localStorage cache
     function applyApprovedSubmissionToMemory(submission) {
         if (!pastRaidsData || !submission.data) return;
 
-        if (submission.submission_type === 'update') {
-            const index = pastRaidsData.findIndex(r => r.Raid_Num === submission.raid_num);
-            if (index !== -1) {
-                pastRaidsData[index] = Object.assign({}, pastRaidsData[index], submission.data);
+        applyApprovedSubmissionsToDataset([submission]);
+
+        // Persist to localStorage cache so it remains across page reloads
+        try {
+            let cache = [];
+            const raw = localStorage.getItem('event_raids_approved_cache');
+            if (raw) {
+                try { cache = JSON.parse(raw); } catch (e) { }
             }
-        } else {
-            // New raid: prepend to list
-            pastRaidsData.unshift(submission.data);
-            // Sort by Raid_Num descending
-            pastRaidsData.sort((a, b) => b.Raid_Num - a.Raid_Num);
+            if (!Array.isArray(cache)) cache = [];
+            const existingIdx = cache.findIndex(item => item.id === submission.id);
+            if (existingIdx !== -1) {
+                cache[existingIdx] = submission;
+            } else {
+                cache.push(submission);
+            }
+            localStorage.setItem('event_raids_approved_cache', JSON.stringify(cache));
+        } catch (e) {
+            console.warn("Could not cache approved submission to localStorage:", e);
         }
     }
 
