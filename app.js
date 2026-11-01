@@ -1830,6 +1830,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        const addCustomLinkBtn = document.getElementById('add-custom-link-btn');
+        if (addCustomLinkBtn) {
+            addCustomLinkBtn.addEventListener('click', () => {
+                addCustomLinkRow('', '');
+            });
+        }
+
         // 7. Proposal Mode Switcher & Raw JSON Actions
         const pillForm = document.getElementById('mode-pill-form');
         const pillJson = document.getElementById('mode-pill-json');
@@ -1997,17 +2004,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
 
-                    // Collect links
-                    const links = {};
-                    const webLink = document.getElementById('form-link-website').value.trim();
-                    const regLink = document.getElementById('form-link-registration').value.trim();
-                    const fbLink = document.getElementById('form-link-facebook').value.trim();
-                    const notesLink = document.getElementById('form-link-notes').value.trim();
-
-                    if (webLink) links['Event Website'] = webLink;
-                    if (regLink) links['Registration'] = regLink;
-                    if (fbLink) links['Facebook Event'] = fbLink;
-                    if (notesLink) links['notes'] = notesLink;
+                    // Collect links (standard + custom image / doc links)
+                    const links = collectLinksFromForm();
 
                     raidData = {
                         Raid_Num: raidNum,
@@ -2553,16 +2551,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (st) subEvents.push({ title: st, details: sd });
         });
 
-        const links = {};
-        const webLink = (document.getElementById('form-link-website')?.value || '').trim();
-        const regLink = (document.getElementById('form-link-registration')?.value || '').trim();
-        const fbLink = (document.getElementById('form-link-facebook')?.value || '').trim();
-        const notesLink = (document.getElementById('form-link-notes')?.value || '').trim();
-
-        if (webLink) links['Event Website'] = webLink;
-        if (regLink) links['Registration'] = regLink;
-        if (fbLink) links['Facebook Event'] = fbLink;
-        if (notesLink) links['notes'] = notesLink;
+        const links = collectLinksFromForm();
 
         const obj = {
             Raid_Num: raidNum,
@@ -2600,7 +2589,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (data.Type) {
             const typeSel = document.getElementById('form-type');
-            if (typeSel) typeSel.value = data.Type;
+            if (typeSel) {
+                // Ensure value exists in options; if custom, create option dynamically
+                let optExists = Array.from(typeSel.options).some(o => o.value === data.Type);
+                if (!optExists) {
+                    const customOpt = document.createElement('option');
+                    customOpt.value = data.Type;
+                    customOpt.textContent = data.Type;
+                    typeSel.appendChild(customOpt);
+                }
+                typeSel.value = data.Type;
+            }
         }
         if (data.Status) {
             const stSel = document.getElementById('form-status');
@@ -2646,17 +2645,50 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dhakaCheck) dhakaCheck.checked = Boolean(data.OutsideDhaka);
 
         const links = data.links || {};
+        const standardKeys = new Set();
+
         const webInput = document.getElementById('form-link-website');
-        if (webInput) webInput.value = links['Event Website'] || links['Official Website'] || links['Official Portal'] || links['Website'] || '';
+        const webVal = links['Event Website'] || links['Official Website'] || links['Official Portal'] || links['Website'] || '';
+        if (webInput) webInput.value = webVal;
+        if (webVal) {
+            for (const k of ['Event Website', 'Official Website', 'Official Portal', 'Website']) {
+                if (links[k]) standardKeys.add(k);
+            }
+        }
 
         const regInput = document.getElementById('form-link-registration');
-        if (regInput) regInput.value = links['Registration'] || links['Registration Portal'] || links['CTF Registration'] || '';
+        const regVal = links['Registration'] || links['Registration Portal'] || links['CTF Registration'] || '';
+        if (regInput) regInput.value = regVal;
+        if (regVal) {
+            for (const k of ['Registration', 'Registration Portal', 'CTF Registration']) {
+                if (links[k]) standardKeys.add(k);
+            }
+        }
 
         const fbInput = document.getElementById('form-link-facebook');
-        if (fbInput) fbInput.value = links['Facebook Event'] || links['Facebook Post'] || '';
+        const fbVal = links['Facebook Event'] || links['Facebook Post'] || '';
+        if (fbInput) fbInput.value = fbVal;
+        if (fbVal) {
+            for (const k of ['Facebook Event', 'Facebook Post']) {
+                if (links[k]) standardKeys.add(k);
+            }
+        }
 
         const notesInput = document.getElementById('form-link-notes');
-        if (notesInput) notesInput.value = links['notes'] || '';
+        const notesVal = links['notes'] || '';
+        if (notesInput) notesInput.value = notesVal;
+        if (notesVal) standardKeys.add('notes');
+
+        // Populate custom links repeater with any other links (image links, docs, etc.)
+        const customLinksRepeater = document.getElementById('custom-links-repeater');
+        if (customLinksRepeater) {
+            customLinksRepeater.innerHTML = '';
+            Object.entries(links).forEach(([name, url]) => {
+                if (!standardKeys.has(name) && url) {
+                    addCustomLinkRow(name, url);
+                }
+            });
+        }
 
         const repeater = document.getElementById('sub-events-repeater');
         if (repeater) {
@@ -2717,36 +2749,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (formSubmittionType) formSubmittionType.value = 'update';
             if (formTargetRaidNum) formTargetRaidNum.value = existingRaid.Raid_Num;
 
-            raidNumInput.value = existingRaid.Raid_Num;
-            titleInput.value = existingRaid.title || '';
-            typeSelect.value = existingRaid.Type || 'Hackathons';
-            statusSelect.value = existingRaid.Status || 'Future';
-            dateRangeInput.value = existingRaid.dateRange || '';
-            startDateInput.value = existingRaid.startDate || '';
-            endDateInput.value = existingRaid.endDate || '';
-            regEndDateInput.value = existingRaid.RegEndDate || existingRaid.endDate || '';
-            venueInput.value = existingRaid.venue || '';
-            cityInput.value = existingRaid.city || '';
-            isOnlineCheck.checked = Boolean(existingRaid.IsOnline);
-            outsideDhakaCheck.checked = Boolean(existingRaid.OutsideDhaka);
-            feeInput.value = existingRaid.fee || '';
-            detailsInput.value = existingRaid.details || '';
-
-            const links = existingRaid.links || {};
-            webInput.value = links['Event Website'] || '';
-            regLinkInput.value = links['Registration'] || links['CTF Registration'] || '';
-            fbInput.value = links['Facebook Event'] || links['Facebook Post'] || '';
-            notesInput.value = links['notes'] || '';
+            populateFormFromRaidObject(existingRaid);
             noteInput.value = '';
 
             if (jsonRawTextarea) {
                 jsonRawTextarea.value = JSON.stringify(existingRaid, null, 2);
-            }
-
-            if (Array.isArray(existingRaid.subEvents) && existingRaid.subEvents.length > 0) {
-                existingRaid.subEvents.forEach(se => addSubEventRow(se.title, se.details));
-            } else {
-                addSubEventRow('', '');
             }
 
         } else {
@@ -2788,6 +2795,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             addSubEventRow('', '');
+            const customRepeater = document.getElementById('custom-links-repeater');
+            if (customRepeater) customRepeater.innerHTML = '';
         }
 
         updateJsonSyntaxBadge();
@@ -2814,6 +2823,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         repeater.appendChild(row);
+    }
+
+    // Helper: Add dynamic custom link row in repeater
+    function addCustomLinkRow(name = '', url = '') {
+        const repeater = document.getElementById('custom-links-repeater');
+        if (!repeater) return;
+
+        const row = document.createElement('div');
+        row.className = 'custom-link-row';
+        row.innerHTML = `
+            <input type="text" class="form-input custom-link-name-input" list="custom-link-preset-suggestions" placeholder="Label (e.g. Poster Image, Rulebook)" value="${escapeHTML(name)}" required>
+            <input type="text" class="form-input custom-link-url-input" placeholder="URL or path (https://... or doc/...)" value="${escapeHTML(url)}" required>
+            <button type="button" class="remove-custom-link-btn" title="Remove custom link">&times;</button>
+        `;
+
+        row.querySelector('.remove-custom-link-btn').addEventListener('click', () => {
+            row.remove();
+        });
+
+        repeater.appendChild(row);
+    }
+
+    // Helper: Collect all links (standard + custom rows) from proposal form
+    function collectLinksFromForm() {
+        const links = {};
+        const webLink = (document.getElementById('form-link-website')?.value || '').trim();
+        const regLink = (document.getElementById('form-link-registration')?.value || '').trim();
+        const fbLink = (document.getElementById('form-link-facebook')?.value || '').trim();
+        const notesLink = (document.getElementById('form-link-notes')?.value || '').trim();
+
+        if (webLink) links['Event Website'] = webLink;
+        if (regLink) links['Registration'] = regLink;
+        if (fbLink) links['Facebook Event'] = fbLink;
+        if (notesLink) links['notes'] = notesLink;
+
+        const customRows = document.querySelectorAll('#custom-links-repeater .custom-link-row');
+        customRows.forEach(row => {
+            const name = (row.querySelector('.custom-link-name-input')?.value || '').trim();
+            const url = (row.querySelector('.custom-link-url-input')?.value || '').trim();
+            if (name && url) {
+                links[name] = url;
+            }
+        });
+
+        return links;
     }
 
     // Open Review Dashboard Modal (Staff Only)
@@ -3022,6 +3076,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <tr><th>Fee</th><td>${escapeHTML(newRaid.fee || 'Free')}</td></tr>
                     <tr><th>Details</th><td>${escapeHTML(newRaid.details || '-')}</td></tr>
                     <tr><th>Sub-Events</th><td>${Array.isArray(newRaid.subEvents) ? newRaid.subEvents.map(s => `<strong>${escapeHTML(s.title)}</strong>`).join(', ') : 'None'}</td></tr>
+                    <tr><th>Links & Documents</th><td>${newRaid.links && Object.keys(newRaid.links).length > 0 ? Object.entries(newRaid.links).map(([k, v]) => `<strong>${escapeHTML(k)}:</strong> <a href="${escapeHTML(v)}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline;">${escapeHTML(v)}</a>`).join('<br>') : 'None'}</td></tr>
                 </tbody>
             </table>
         `;

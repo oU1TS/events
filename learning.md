@@ -283,3 +283,5 @@ graph TD
 | **Mobile Viewport & Auth Spacing** | `viewport-fit=cover`, `100dvh`, `.nav-mobile-auth-wrapper` | Elevated sidebar auth button & safe-area clearances | Prevents button overlap from mobile browser bottom address bars and OS home bars. |
 | **Calendar Dynamic Month Init** | `openModalWithData`, `initCalendar` | Sets active month/year on modal open | Opens directly to current system month instead of defaulting to July. |
 | **Approved Raid Persistence** | `syncApprovedSubmissionsFromDatabase`, `applyApprovedSubmissionsToDataset` | Merges DB-approved submissions on load & caches to `localStorage` | Guarantees approved community submissions remain visible on the portal across page reloads. |
+| **Proposal Event Types Sync** | `#form-type` options & dynamic generation | Full 8 category parity with Roadmap filter | Eliminates category mismatches between proposed events and page filter dropdowns. |
+| **Custom Links Repeater** | `addCustomLinkRow`, `collectLinksFromForm` | Repeater rows with datalist suggestions | Enables attaching poster image links, PDF brochures, rulebooks, and slide decks to raids. |

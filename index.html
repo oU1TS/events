@@ -893,6 +893,11 @@
                                 <option value="Hackathons">Hackathons</option>
                                 <option value="Contests">Contests</option>
                                 <option value="Conferences / Webinars">Conferences / Webinars</option>
+                                <option value="Congress">Congress</option>
+                                <option value="Bug Bounties / CTF">Bug Bounties / CTF</option>
+                                <option value="Expos / Fairs">Expos / Fairs</option>
+                                <option value="Idea & Bizcomps">Idea & Bizcomps</option>
+                                <option value="Olympiad / Carnival">Olympiad / Carnival</option>
                                 <option value="Showcases">Showcases</option>
                                 <option value="Bootcamps / Workshops">Bootcamps / Workshops</option>
                                 <option value="Academic">Academic</option>
@@ -975,7 +980,10 @@
 
                     <!-- Links Section -->
                     <div class="form-sub-section">
-                        <label>Official Links & Resources</label>
+                        <div class="sub-section-header">
+                            <label>Official Links & Resources</label>
+                            <button type="button" id="add-custom-link-btn" class="btn btn-secondary btn-sm">+ Add Custom Link / Document</button>
+                        </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="form-link-website">Event Website</label>
@@ -996,6 +1004,20 @@
                                 <input type="text" id="form-link-notes" class="form-input" placeholder="doc/notes/example.md">
                             </div>
                         </div>
+                        <!-- Dynamic Custom Links (Image Links, Documents, Brochures, Rulebooks, etc.) -->
+                        <div id="custom-links-repeater" class="custom-links-repeater">
+                            <!-- Dynamically populated custom link rows -->
+                        </div>
+                        <datalist id="custom-link-preset-suggestions">
+                            <option value="Poster / Banner Image">
+                            <option value="Rulebook / Guidelines (PDF)">
+                            <option value="Event Brochure">
+                            <option value="Discord Community">
+                            <option value="WhatsApp Group">
+                            <option value="Google Drive Folder">
+                            <option value="Presentation Slides">
+                            <option value="Problem Statements">
+                        </datalist>
                     </div>
                 </div>
 

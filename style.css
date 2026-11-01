@@ -3327,6 +3327,75 @@ body.light-theme .oauth-btn:hover {
     padding: 0 0.5rem;
 }
 
+/* Custom Links & Documents Repeater */
+.custom-links-repeater {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.custom-link-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.custom-link-row:hover {
+    border-color: var(--accent);
+}
+
+.custom-link-row .custom-link-name-input {
+    flex: 0 0 200px;
+}
+
+.custom-link-row .custom-link-url-input {
+    flex: 1;
+}
+
+.remove-custom-link-btn {
+    background: none;
+    border: none;
+    color: #ef4444;
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 0.4rem;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+}
+
+.remove-custom-link-btn:hover {
+    transform: scale(1.2);
+}
+
+@media (max-width: 640px) {
+    .custom-link-row {
+        flex-direction: column;
+        align-items: stretch;
+        position: relative;
+        padding-right: 2.2rem;
+    }
+    .custom-link-row .custom-link-name-input {
+        flex: 1;
+        width: 100%;
+    }
+    .custom-link-row .custom-link-url-input {
+        flex: 1;
+        width: 100%;
+    }
+    .custom-link-row .remove-custom-link-btn {
+        position: absolute;
+        top: 0.45rem;
+        right: 0.45rem;
+    }
+}
+
 /* Review Dashboard Console */
 .review-toolbar {
     display: flex;
