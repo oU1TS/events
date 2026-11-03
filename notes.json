@@ -1,0 +1,50 @@
+[
+  {
+    "id": "phoenix-summit-2026",
+    "title": "Phoenix Summit 2026 Delegation Notes",
+    "category": "Conference Notes",
+    "description": "UITS Event Raiders delegation notes, safety guidelines, industry senior advice (Rezwan bhai), and technical session highlights covering cybersecurity, Blue/Red teaming, and Wazuh detection.",
+    "file": "doc/notes/phoenix-summit-2026.md",
+    "raidNum": 1,
+    "tags": [
+      "Cybersecurity",
+      "Blue Team",
+      "Red Team",
+      "Wazuh",
+      "Delegation Notes",
+      "Career Advice"
+    ],
+    "lastUpdated": "2026-06-27"
+  },
+  {
+    "id": "amd-dev-hackathon-2026",
+    "title": "AMD Developer Hackathon: ACT II",
+    "category": "Hackathon Notes",
+    "description": "Hands-on AI hackathon building autonomous AI agents on AMD GPUs using AMD AI Developer Cloud, ROCm, and Fireworks AI API. Includes strategic insights and tutorials.",
+    "file": "doc/notes/amd-dev-hackathon-2026.md",
+    "raidNum": 2,
+    "tags": [
+      "Hackathons",
+      "AI Agents",
+      "AMD",
+      "ROCm",
+      "Delegation Notes"
+    ],
+    "lastUpdated": "2026-07-11"
+  },
+  {
+    "id": "marxcellence-2026",
+    "title": "NSU MarXcellence 2026 Delegation Notes",
+    "category": "Competition Notes",
+    "description": "Delegation notes, workshop takeaways, digital marketing case studies (eRin & Dhaka Bank), and competition realizations from NSU MarXcellence 2026.",
+    "file": "doc/notes/MarXcellence-2026.md",
+    "raidNum": 3,
+    "tags": [
+      "Business",
+      "Marketing",
+      "Case Study",
+      "Delegation Notes"
+    ],
+    "lastUpdated": "2026-07-16"
+  }
+]

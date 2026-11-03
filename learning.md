@@ -73,8 +73,10 @@ This approach delivers:
 * **Data Origin:** [raids.json](raids.json).
 
 #### How it works:
-1. When visiting `#raids` or `#notes`, the app triggers `loadPastRaids()`. It uses the browser's asynchronous `fetch()` API to retrieve event data.
-2. An internal flag (`isDataLoading`) prevents duplicate queries from running simultaneously.
+1. When visiting `#raids`, the app triggers `loadPastRaids()` to fetch `raids.json`. When visiting `#notes`, the app triggers `loadEventNotes()` to fetch `notes.json`.
+2. Dedicated flags (`isDataLoading` and `isNotesLoading`) prevent redundant concurrent network queries from running simultaneously.
+3. **Dedicated Notes Loading Engine (`notes.json`):** `loadEventNotes()` asynchronously fetches `notes.json`, caching entries in memory (`eventNotesData`). `renderEventNotes()` builds rich resource cards with category badges, raid number indicators, descriptions, tag pills, markdown viewer links (`render.html?file=...`), and campaign deep links (`#raid-<N>`).
+4. **Resilient Notes Cross-Referencing:** If an event in `raids.json` or an approved database proposal contains a custom `links.notes` markdown path not already indexed in `notes.json`, `renderEventNotes()` automatically synthesizes and appends a card dynamically, preventing note omissions.
 3. **Shortening Utility:** `getShortTitle()` programmatically extracts clean event titles (e.g. splitting at colons or brackets) to keep text blocks concise.
 4. **Dates Engine:** `formatLocalDate()` translates raw ISO date values (e.g. `2026-07-08`) into formatted local dates (e.g. `8 July 2026`).
 5. **Deadlines Checker:** Renders deadlines dynamically. It compares system time against `"RegEndDate"`. If the current time is past the deadline, it appends a red/gray `(Closed)` pill; otherwise, it computes remaining days and styles it in green.

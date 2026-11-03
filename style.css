@@ -2442,16 +2442,83 @@ body.light-theme .day-events-overlay {
     align-items: center;
 }
 
-/* Event Notes Card Specific Styling (Reduced Padding & Height) */
+/* Event Notes Card Specific Styling (Enhanced Dynamic Cards & Skeletons) */
 #notes-container .resource-card {
-    padding: 1.25rem;
-    border-radius: 12px;
+    padding: 1.5rem;
+    border-radius: 16px;
     min-height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#notes-container .resource-card.skeleton {
+    min-height: 220px;
 }
 
 #notes-container .resource-title {
     font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+#notes-container .resource-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
     margin-bottom: 1.25rem;
+    flex: 1;
+}
+
+#notes-container .note-header-badges {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+#notes-container .note-category-badge {
+    padding: 3px 10px;
+    background-color: rgba(var(--accent-rgb), 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#notes-container .note-raid-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+#notes-container .note-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+}
+
+#notes-container .note-tag {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+body.light-theme #notes-container .note-tag {
+    background-color: #f1f5f9;
+    border-color: #e2e8f0;
 }
 
 /* ==========================================================================
@@ -3919,7 +3986,8 @@ body.light-theme .mode-pill.active {
     min-height: 280px;
     white-space: pre;
     overflow-x: auto;
-}
+}
+
 /* ==========================================================================
    Home Benefits Section & Cards
    ========================================================================== */

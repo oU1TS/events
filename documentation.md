@@ -42,6 +42,7 @@ events/
 ├── OneSignalSDKWorker.js         # OneSignal background push message registration service worker
 ├── tracker.json                 # Metadata synchronization tracking registry
 ├── learning.md                  # Comprehensive JS code learning guide
+├── notes.json                   # Dynamic data file cataloging event delegation notes & guides
 ├── raids.json                   # Dynamic data file storing event lists
 ├── render.html                  # Local Markdown document rendering viewer
 ├── render.js                    # Markdown parser controller & theme syncing

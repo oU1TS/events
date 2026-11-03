@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let pastRaidsData = null;
     let isDataLoading = false;
     let pendingRaidScroll = null;
+    let eventNotesData = null;
+    let isNotesLoading = false;
     let currentFilterType = 'all';
     let showPastRaids = false;
 
@@ -139,14 +141,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     loadPastRaids();
                 }
             } else {
-                if (pastRaidsData) {
-                    if (currentHash === '#notes') {
-                        renderEventNotes(pastRaidsData);
+                if (currentHash === '#notes') {
+                    if (eventNotesData) {
+                        renderEventNotes();
                     } else {
-                        filterAndRenderRaids();
+                        loadEventNotes();
+                    }
+                    if (!pastRaidsData) {
+                        loadPastRaids();
                     }
                 } else {
-                    loadPastRaids();
+                    if (pastRaidsData) {
+                        filterAndRenderRaids();
+                    } else {
+                        loadPastRaids();
+                    }
                 }
             }
             if (window.enableFloatingCalendarBtn) {
@@ -266,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             filterAndRenderRaids();
-            renderEventNotes(pastRaidsData);
+            renderEventNotes();
 
             // 2. Fetch fresh approved submissions from Supabase in the background
             syncApprovedSubmissionsFromDatabase();
@@ -308,30 +317,138 @@ document.addEventListener('DOMContentLoaded', () => {
         return short.trim();
     }
 
-    function renderEventNotes(raids) {
+    /* ==========================================================================
+       4.1 Asynchronous Event Notes Loading & Rendering (from notes.json)
+       ========================================================================== */
+    async function loadEventNotes(options = {}) {
+        if (eventNotesData && !options.forceFresh) return eventNotesData;
+        if (isNotesLoading) return;
+
+        isNotesLoading = true;
+
+        try {
+            const fetchOptions = options.forceFresh ? { cache: 'no-cache' } : {};
+            const response = await fetch('notes.json', fetchOptions);
+
+            if (!response.ok) {
+                throw new Error(`Failed to load event notes (HTTP ${response.status})`);
+            }
+
+            eventNotesData = await response.json();
+            renderEventNotes();
+            return eventNotesData;
+        } catch (error) {
+            console.error('Error fetching event notes:', error);
+            renderNotesError(error.message);
+        } finally {
+            isNotesLoading = false;
+        }
+    }
+
+    function renderNotesError(message) {
+        const notesContainer = document.getElementById('notes-container');
+        if (!notesContainer) return;
+        notesContainer.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 2.5rem; background: var(--bg-secondary); border-radius: 16px; border: 1px dashed var(--border-color);">
+                <p style="color: var(--danger-color, #ef4444); margin-bottom: 1rem; font-weight: 600;">Failed to load event notes: ${escapeHTML(message)}</p>
+                <button class="btn btn-secondary" onclick="window.loadEventNotes && window.loadEventNotes({ forceFresh: true })">Try Again</button>
+            </div>
+        `;
+    }
+
+    function renderEventNotes(notes) {
         const notesContainer = document.getElementById('notes-container');
         if (!notesContainer) return;
 
-        notesContainer.innerHTML = '';
-
-        // Filter raids that have a "notes" link
-        const notesRaids = raids.filter(raid => raid.links && raid.links.notes);
-
-        if (notesRaids.length === 0) {
-            notesContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No notes available at the moment.</p>';
+        let notesToRender = notes || eventNotesData;
+        if (!notesToRender) {
+            loadEventNotes();
             return;
         }
 
-        notesRaids.forEach(raid => {
+        // Duplicate list to avoid mutating original
+        let combinedNotes = Array.isArray(notesToRender) ? [...notesToRender] : [];
+
+        // Track files already present in notes.json
+        const existingFiles = new Set(combinedNotes.map(n => (n.file || '').toLowerCase()).filter(Boolean));
+
+        // Cross-reference any custom notes link from pastRaidsData (e.g., from approved submissions)
+        if (pastRaidsData && Array.isArray(pastRaidsData)) {
+            pastRaidsData.forEach(raid => {
+                if (raid.links && raid.links.notes && typeof raid.links.notes === 'string') {
+                    const notePath = raid.links.notes.trim();
+                    if (notePath.endsWith('.md') && !existingFiles.has(notePath.toLowerCase())) {
+                        existingFiles.add(notePath.toLowerCase());
+                        combinedNotes.push({
+                            id: `raid-note-${raid.Raid_Num}`,
+                            title: `${getShortTitle(raid.title)} Delegation Notes`,
+                            category: 'Delegation Notes',
+                            description: `Field notes and event documentation from Raid #${raid.Raid_Num}: ${raid.title}.`,
+                            file: notePath,
+                            raidNum: raid.Raid_Num,
+                            tags: [raid.Type || 'Event Note']
+                        });
+                    }
+                }
+            });
+        }
+
+        notesContainer.innerHTML = '';
+
+        if (combinedNotes.length === 0) {
+            notesContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 2rem;">No notes available at the moment.</p>';
+            return;
+        }
+
+        combinedNotes.forEach(note => {
             const card = document.createElement('div');
             card.className = 'resource-card';
 
-            // Build card content
+            // Header badges: Category & optional Raid #
+            const headerEl = document.createElement('div');
+            headerEl.className = 'note-header-badges';
+
+            const catBadge = document.createElement('span');
+            catBadge.className = 'note-category-badge';
+            catBadge.textContent = note.category || 'Event Note';
+            headerEl.appendChild(catBadge);
+
+            if (note.raidNum) {
+                const raidBadge = document.createElement('span');
+                raidBadge.className = 'note-raid-badge';
+                raidBadge.textContent = `Raid #${note.raidNum}`;
+                headerEl.appendChild(raidBadge);
+            }
+            card.appendChild(headerEl);
+
+            // Title
             const titleEl = document.createElement('h3');
             titleEl.className = 'resource-title';
-            titleEl.textContent = getShortTitle(raid.title);
+            titleEl.textContent = note.title;
             card.appendChild(titleEl);
 
+            // Description
+            if (note.description) {
+                const descEl = document.createElement('p');
+                descEl.className = 'resource-desc';
+                descEl.textContent = note.description;
+                card.appendChild(descEl);
+            }
+
+            // Tag Pills
+            if (note.tags && Array.isArray(note.tags) && note.tags.length > 0) {
+                const tagsContainer = document.createElement('div');
+                tagsContainer.className = 'note-tags-container';
+                note.tags.forEach(tag => {
+                    const tagEl = document.createElement('span');
+                    tagEl.className = 'note-tag';
+                    tagEl.textContent = tag;
+                    tagsContainer.appendChild(tagEl);
+                });
+                card.appendChild(tagsContainer);
+            }
+
+            // Action Buttons
             const actionContainer = document.createElement('div');
             actionContainer.style.display = 'flex';
             actionContainer.style.gap = '1rem';
@@ -339,34 +456,37 @@ document.addEventListener('DOMContentLoaded', () => {
             actionContainer.style.flexWrap = 'wrap';
 
             // Link to the rendered markdown notes
-            const notesUrl = raid.links.notes;
-            const notesLink = document.createElement('a');
-            notesLink.className = 'raid-link';
-            notesLink.href = `render.html?file=${encodeURIComponent(notesUrl)}`;
-            notesLink.innerHTML = `
-                <span>View Notes</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-            `;
-            actionContainer.appendChild(notesLink);
+            if (note.file) {
+                const notesLink = document.createElement('a');
+                notesLink.className = 'raid-link';
+                notesLink.href = `render.html?file=${encodeURIComponent(note.file)}`;
+                notesLink.innerHTML = `
+                    <span>View Notes</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                `;
+                actionContainer.appendChild(notesLink);
+            }
 
-            // Link to the corresponding raid card in the #raids section
-            const cardLink = document.createElement('a');
-            cardLink.className = 'raid-link';
-            cardLink.href = `#raid-${raid.Raid_Num}`;
-            cardLink.innerHTML = `
-                <span>View Campaign</span>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="7" y1="17" x2="17" y2="7"></line>
-                    <polyline points="7 7 17 7 17 17"></polyline>
-                </svg>
-            `;
-            actionContainer.appendChild(cardLink);
+            // Link to the corresponding raid card in the #raids section (if associated with a raid)
+            if (note.raidNum) {
+                const cardLink = document.createElement('a');
+                cardLink.className = 'raid-link';
+                cardLink.href = `#raid-${note.raidNum}`;
+                cardLink.innerHTML = `
+                    <span>View Campaign</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="7" y1="17" x2="17" y2="7"></line>
+                        <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                `;
+                actionContainer.appendChild(cardLink);
+            }
 
             card.appendChild(actionContainer);
             notesContainer.appendChild(card);
@@ -1466,11 +1586,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     eventsCount: remoteTracker.eventsCount,
                     lastUpdated: remoteTracker.lastUpdated
                 }));
-                // Force fresh load of raids.json
-                await loadPastRaids({ forceFresh: true });
+                // Force fresh load of raids.json and notes.json
+                await Promise.allSettled([
+                    loadPastRaids({ forceFresh: true }),
+                    loadEventNotes({ forceFresh: true })
+                ]);
             } else {
                 // Load using standard cache profile
-                await loadPastRaids();
+                await Promise.allSettled([
+                    loadPastRaids(),
+                    loadEventNotes()
+                ]);
             }
 
             // Registration Deadline Evaluation
@@ -1480,8 +1606,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Error during cache synchronization and deadline check:', error);
-            // Fallback: load raids.json normally if tracker fails
-            await loadPastRaids();
+            // Fallback: load raids.json and notes.json normally if tracker fails
+            await Promise.allSettled([
+                loadPastRaids(),
+                loadEventNotes()
+            ]);
         }
     }
 
@@ -2346,6 +2475,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const downloadRaidsSectionBtn = document.getElementById('download-raids-json-section-btn');
         if (downloadRaidsSectionBtn) {
             downloadRaidsSectionBtn.addEventListener('click', downloadRaidsJsonFile);
+        }
+
+        function downloadNotesJsonFile() {
+            const doDownload = (jsonText) => {
+                const blob = new Blob([jsonText], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'notes.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            };
+
+            if (eventNotesData && eventNotesData.length > 0) {
+                doDownload(JSON.stringify(eventNotesData, null, 2));
+            } else {
+                fetch('notes.json')
+                    .then(res => res.text())
+                    .then(text => doDownload(text))
+                    .catch(err => {
+                        console.error('Download error:', err);
+                        alert('Could not download notes.json: ' + err.message);
+                    });
+            }
+        }
+
+        const downloadNotesSectionBtn = document.getElementById('download-notes-json-section-btn');
+        if (downloadNotesSectionBtn) {
+            downloadNotesSectionBtn.addEventListener('click', downloadNotesJsonFile);
         }
 
         const copyRaidsBtn = document.getElementById('copy-raids-json-btn');
@@ -3461,7 +3621,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const changed = applyApprovedSubmissionsToDataset(data);
                 if (changed) {
                     filterAndRenderRaids();
-                    renderEventNotes(pastRaidsData);
+                    renderEventNotes();
                     if (window.renderCalendarGrid) {
                         window.renderCalendarGrid();
                     }
@@ -3702,6 +3862,9 @@ document.addEventListener('DOMContentLoaded', () => {
             showModalAlert('mod-management-alert', err.message || 'Failed to update moderator role.');
         }
     }
+
+    window.loadEventNotes = loadEventNotes;
+    window.renderEventNotes = renderEventNotes;
 
     /* ==========================================================================
        9. Initialize Application
