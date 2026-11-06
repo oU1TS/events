@@ -187,10 +187,15 @@ document.addEventListener('DOMContentLoaded', () => {
         activeRaidScrollTimeout = setTimeout(() => {
             const card = document.getElementById(`raid-card-${raidNum}`);
             if (card) {
-                if (card.tagName.toLowerCase() === 'details') {
+                if (card.tagName.toLowerCase() === 'details' && !card.open) {
                     card.open = true;
                 }
                 card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // If this card is already highlighted and actively running its pulse, do not restart
+                if (card.classList.contains('highlighted') && activeHighlightTimeout) {
+                    return;
+                }
 
                 // Reset and re-apply highlight smoothly with forced reflow
                 card.classList.remove('highlighted');
@@ -262,7 +267,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`Failed to load data (HTTP ${response.status})`);
             }
 
-            pastRaidsData = await response.json();
+            const freshData = await response.json();
+
+            // If forced fresh but data is identical to what is already rendered, avoid re-rendering to prevent UI flicker
+            if (pastRaidsData && options.forceFresh && JSON.stringify(freshData) === JSON.stringify(pastRaidsData)) {
+                return;
+            }
+
+            pastRaidsData = freshData;
 
             // 1. Immediately apply cached approved submissions from localStorage
             applyCachedApprovedSubmissions();
@@ -3580,18 +3592,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (sub.submission_type === 'update') {
                 const index = pastRaidsData.findIndex(r => r.Raid_Num === targetRaidNum);
                 if (index !== -1) {
-                    pastRaidsData[index] = Object.assign({}, pastRaidsData[index], raidPayload);
-                    hasChanges = true;
+                    const existingJson = JSON.stringify(pastRaidsData[index]);
+                    const merged = Object.assign({}, pastRaidsData[index], raidPayload);
+                    if (JSON.stringify(merged) !== existingJson) {
+                        pastRaidsData[index] = merged;
+                        hasChanges = true;
+                    }
                 }
             } else {
                 // New raid: Check if already present to avoid duplicates
                 const index = pastRaidsData.findIndex(r => r.Raid_Num === raidPayload.Raid_Num);
                 if (index !== -1) {
-                    pastRaidsData[index] = Object.assign({}, pastRaidsData[index], raidPayload);
+                    const existingJson = JSON.stringify(pastRaidsData[index]);
+                    const merged = Object.assign({}, pastRaidsData[index], raidPayload);
+                    if (JSON.stringify(merged) !== existingJson) {
+                        pastRaidsData[index] = merged;
+                        hasChanges = true;
+                    }
                 } else {
                     pastRaidsData.unshift(raidPayload);
+                    hasChanges = true;
                 }
-                hasChanges = true;
             }
         });
 
