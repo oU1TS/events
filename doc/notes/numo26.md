@@ -1,3 +1,14 @@
+---
+title: "Event Raiders Delegation Notes: NUMO 2026"
+category: "Olympiad Notes"
+raid: 22
+date: "2026-11-06"
+venue: "BRAC University (Dhaka North) & DU Ganit Bhaban"
+organizer: "Bangladesh Mathematical Society & AFMRF"
+tags: [numo, mathematics, olympiad, problem-solving, bracu, afmrf, kaykobad, ai-in-math, eigenvalues, riemann-integrability, combinatorics]
+summary: "Delegation notes, problem breakdown, audio logs, BRACU venue observations, and keynote addresses by Prof. Mohammad Kaykobad from the 17th National Undergraduate Mathematics Olympiad 2026."
+---
+
 # Event Raiders Delegation Notes: NUMO 2026
 
 ![](https://res.cloudinary.com/b1tranger/image/upload/v1793991989/IMG-20261106-WA0020_x6ubzt.jpg)

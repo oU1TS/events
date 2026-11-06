@@ -1,6 +1,12 @@
-<!--
-  tags: phoenix-summit, delegation-notes, cybersecurity, blue-team, red-team, wazuh, ai-agents, career-advice
-  -->
+---
+title: "Event Raiders Delegation Notes: Phoenix Summit 2026"
+category: "Conference Notes"
+raid: 1
+date: "2026-06-26"
+venue: "Dhaka, Bangladesh"
+tags: [phoenix-summit, cybersecurity, blue-team, red-team, wazuh, ai-agents, career-advice, delegation-notes, networking]
+summary: "UITS Event Raiders delegation notes, safety guidelines, industry senior advice (Rezwan bhai), and technical session highlights covering cybersecurity, Blue/Red teaming, and Wazuh detection."
+---
 
 # Event Raiders Delegation Notes: Phoenix Summit 2026
 

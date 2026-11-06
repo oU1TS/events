@@ -1,6 +1,12 @@
-<!--
-  tags: 
-  -->
+---
+title: "Event Raiders Delegation Notes: AMD Developer Hackathon: ACT II"
+category: "Hackathon Notes"
+raid: 2
+date: "2026-07-11"
+platform: "Lablab.ai"
+tags: [hackathons, ai-agents, amd, rocm, fireworks-ai, lablab-ai, gpu-compute, delegation-notes]
+summary: "Hands-on AI hackathon building autonomous AI agents on AMD GPUs using AMD AI Developer Cloud, ROCm, and Fireworks AI API. Includes strategic insights and tutorials."
+---
 
 # Event Raiders Delegation Notes: AMD Developer Hackathon: ACT II
 

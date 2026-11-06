@@ -134,8 +134,10 @@
             }
 
             try {
+                // Strip YAML front matter before passing to marked so it doesn't render raw metadata at top
+                let processedMarkdown = rawMarkdown.replace(/^---\s*\r?\n[\s\S]*?\r?\n---\s*\r?\n?/, '');
                 // Replace <<pagebreak>> with a div
-                let processedMarkdown = rawMarkdown.replace(/(`+)(?:[\s\S]*?)\1|<<pagebreak>>/g, (match, ticks) => ticks ? match : '\n\n<div class="page-break"></div>\n\n');
+                processedMarkdown = processedMarkdown.replace(/(`+)(?:[\s\S]*?)\1|<<pagebreak>>/g, (match, ticks) => ticks ? match : '\n\n<div class="page-break"></div>\n\n');
 
                 const htmlContent = marked.parse(processedMarkdown);
                 const cleanHtml = DOMPurify.sanitize(htmlContent, {
@@ -522,10 +524,32 @@
 
         function parseTags(markdown) {
             if (!markdown) return [];
-            const regex = /<!--[\s\S]*?tags:\s*([^\r\n\--->]+)[\s\S]*?-->/i;
-            const match = markdown.match(regex);
-            if (match) {
-                return match[1].split(',').map(t => t.trim()).filter(Boolean);
+
+            // 1. Check YAML front matter (--- ... ---)
+            const yamlMatch = markdown.match(/^---\s*\r?\n([\s\S]*?)\r?\n---/);
+            if (yamlMatch) {
+                const yamlContent = yamlMatch[1];
+                // Support bracketed inline list: tags: [a, b, c]
+                const inlineListMatch = yamlContent.match(/tags:\s*\[(.*?)\]/i);
+                if (inlineListMatch) {
+                    return inlineListMatch[1].split(',').map(t => t.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
+                }
+                // Support bulleted list: tags:\n  - a\n  - b
+                const bulletListMatch = yamlContent.match(/tags:\s*\r?\n((?:\s*-\s*[^\r\n]+\r?\n?)+)/i);
+                if (bulletListMatch) {
+                    return bulletListMatch[1].split(/\r?\n/).map(line => line.replace(/^\s*-\s*/, '').trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
+                }
+                // Support comma-separated: tags: a, b, c
+                const commaMatch = yamlContent.match(/tags:\s*([^\r\n]+)/i);
+                if (commaMatch) {
+                    return commaMatch[1].split(',').map(t => t.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
+                }
+            }
+
+            // 2. Legacy HTML comment tags (<!-- tags: ... -->)
+            const commentMatch = markdown.match(/<!--[\s\S]*?tags:\s*([^\r\n\--->]+)[\s\S]*?-->/i);
+            if (commentMatch) {
+                return commentMatch[1].split(',').map(t => t.trim()).filter(Boolean);
             }
             return [];
         }

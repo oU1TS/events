@@ -1,6 +1,9 @@
-<!--
-  tags: competitions, contests, programming, hackathons, ctf, ai, ml, cse, bangladesh
-  -->
+---
+title: "Competitions for CSE Students of Bangladesh"
+category: "Directory & Guide"
+tags: [competitions, contests, programming, hackathons, ctf, ai, ml, cse, bangladesh, icpc, nsu, buet, baps]
+summary: "Curated guide and directory of programming contests, hackathons, and technical competitions available for undergraduate CSE students in Bangladesh."
+---
 
 # Competitions for CSE Students of Bangladesh
 Source: https://tamimehsan.github.io/interview-questions-bangladesh/companies/competitions

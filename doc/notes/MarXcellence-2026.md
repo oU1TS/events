@@ -1,6 +1,12 @@
-<!--
-  tags: 
-  -->
+---
+title: "Event Raiders Delegation Notes: MarXcellence 2026"
+category: "Competition Notes"
+raid: 3
+date: "2026-07-16"
+venue: "North South University (NSU)"
+tags: [business, marketing, case-study, nsu, marxcellence, digital-marketing, delegation-notes]
+summary: "Delegation notes, workshop takeaways, digital marketing case studies (eRin & Dhaka Bank), and competition realizations from NSU MarXcellence 2026."
+---
 
 # Event Raiders Delegation Notes: MarXcellence 2026
 
