@@ -93,6 +93,8 @@ Question idea: [link](https://drive.google.com/drive/u/1/folders/16vlLmD04mgDvFp
 * **Rest:** Need much more sleep; ensure ample rest before big events.
 * **Networking:** Failed to deliver greetings properly; work on active communication skills and breathing techniques.
 * **Mindset:** Be more enthusiastic and observant overall.
-* **OUTS Instructions:** 
+
+
+### OU1TS Instructions:
   * Add full schedules in markdown format.
   * Attempt reconstructing the Olympiad questions for practice.
