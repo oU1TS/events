@@ -1,5 +1,22 @@
 [
   {
+    "id": "numo-2026",
+    "title": "NUMO 2026 Delegation Notes",
+    "category": "Olympiad Notes",
+    "description": "Delegation notes, problem breakdown, audio logs, BRACU venue observations, and keynote takeaways by Prof. Mohammad Kaykobad from the 17th National Undergraduate Mathematics Olympiad 2026.",
+    "file": "doc/notes/numo26.md",
+    "raidNum": 22,
+    "tags": [
+      "Mathematics",
+      "Olympiad",
+      "Problem Solving",
+      "AI in Mathematics",
+      "Delegation Notes",
+      "BRACU"
+    ],
+    "lastUpdated": "2026-11-06"
+  },
+  {
     "id": "phoenix-summit-2026",
     "title": "Phoenix Summit 2026 Delegation Notes",
     "category": "Conference Notes",

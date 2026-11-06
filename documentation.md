@@ -137,7 +137,17 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.16.1 — Raid Card Deep Link Stability & Highlight Pulse Bugfix (Current)
+### 🚀 v1.16.2 — Highlight Pulse Animation Bubble Guard, Sticky Navbar Clearance & Storage Protection (Current)
+* **Bugfixes & UI Polish:**
+  * **NUMO 2026 Delegation Notes Integration**: Added `doc/notes/numo26.md` to `notes.json` and linked it directly to Raid #22 in `raids.json`. Features bi-directional cross-referencing between `#notes` and `#raid-22`, deep-merged link resilience during Supabase proposal merges, and local markdown rendering with YouTube audio logs and Olympiad problem breakdowns.
+  * **Event Bubbling Guard in `animationend`**: Fixed critical timing glitch where child animations (`parentFadeIn` inside `.parent-raid-body` lasting ~190ms) bubbled up the DOM to `.raid-card`, causing the un-guarded listener to mistake it for the completion of `highlightPulse`. This previously stripped `.highlighted` after only 190ms and fired the queued background re-render, wiping out the DOM. Guarded listeners with `if (e.target !== card || e.animationName !== 'highlightPulse') return;`.
+  * **Sticky Navbar Scroll Clearance**: Switched `card.scrollIntoView` from `block: 'center'` to `block: 'start'` and added `scroll-margin-top: 100px;` to `.raid-card` in `style.css`. Cards now settle with ~30px of breathing room under the fixed navbar (`top: 99.5px`), preventing card titles, badges, and copy buttons from being hidden above the viewport.
+  * **Pure Luminous Glow (Zero Subpixel Scaling)**: Replaced `transform: scale(...)` in `@keyframes highlightPulse` with pure box-shadow luminosity transitions, eliminating 1px border strobing and text re-rasterization on high-DPI displays.
+  * **DOM Lock During Animation**: Configured `filterAndRenderRaids` to lock DOM mutations while any card is actively undergoing its highlight pulse, cleanly queuing background Supabase sync updates until the 3.5s pulse completes.
+  * **Safe Storage Adapter**: Implemented safe in-memory fallback adapter for Supabase client, preventing Tracking Prevention warnings and storage access DOMExceptions across Edge, Brave, and Safari.
+  * **Inline SVG Favicon**: Added embedded SVG favicon in `<head>` to prevent root domain `404 (Not Found)` errors.
+
+### 🚀 v1.16.1 — Raid Card Deep Link Stability & Highlight Pulse Bugfix
 * **Bugfixes & UI Polish:**
   * **Deep Link State Preservation & Retraction Fix**: Resolved race condition where accessing direct raid card URLs (`#raid-<num>`) caused the targeted card to flicker, abort its highlight pulse halfway through, and retract to collapsed default view.
   * **Background Auth Re-Render Guard**: Guarded `syncAuthState` in `app.js` to only re-render the card grid if the user's role or identity actually changed, preventing asynchronous initial auth queries from tearing down and rebuilding active DOM cards.

@@ -190,12 +190,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (card.tagName.toLowerCase() === 'details' && !card.open) {
                     card.open = true;
                 }
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
                 // If this card is already highlighted and actively running its pulse, do not restart
                 if (card.classList.contains('highlighted') && activeHighlightTimeout) {
                     return;
                 }
+
+                // If another card had a highlight, remove it
+                document.querySelectorAll('.raid-card.highlighted').forEach(el => {
+                    if (el !== card) el.classList.remove('highlighted');
+                });
 
                 // Reset and re-apply highlight smoothly with forced reflow
                 card.classList.remove('highlighted');
@@ -208,15 +213,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 activeHighlightTimeout = setTimeout(() => {
                     card.classList.remove('highlighted');
                     activeHighlightTimeout = null;
-                }, 3800);
+                    if (pendingReRender) {
+                        const fn = pendingReRender;
+                        pendingReRender = null;
+                        fn();
+                    }
+                }, 3600);
 
-                card.addEventListener('animationend', () => {
+                const onAnimationEnd = (e) => {
+                    if (e.target !== card || e.animationName !== 'highlightPulse') return;
+                    card.removeEventListener('animationend', onAnimationEnd);
                     card.classList.remove('highlighted');
                     if (activeHighlightTimeout) {
                         clearTimeout(activeHighlightTimeout);
                         activeHighlightTimeout = null;
                     }
-                }, { once: true });
+                    if (pendingReRender) {
+                        const fn = pendingReRender;
+                        pendingReRender = null;
+                        fn();
+                    }
+                };
+                card.addEventListener('animationend', onAnimationEnd);
             }
         }, 120);
     }
@@ -300,8 +318,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function filterAndRenderRaids() {
+    let pendingReRender = null;
+
+    function filterAndRenderRaids(options = {}) {
         if (!pastRaidsData) return;
+
+        // If a raid card is actively undergoing its highlight pulse, lock the DOM and queue re-render
+        const raidsContainer = document.getElementById('raids-container');
+        if (!options.forceImmediate && raidsContainer && raidsContainer.querySelector('.raid-card.highlighted')) {
+            pendingReRender = () => filterAndRenderRaids({ forceImmediate: true });
+            return;
+        }
 
         let filtered = pastRaidsData;
 
@@ -640,9 +667,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Restore active highlight if re-rendered during pulse animation
             if (highlightedCardId === card.id) {
                 card.classList.add('highlighted');
-                card.addEventListener('animationend', () => {
+                const onRestoreAnimationEnd = (e) => {
+                    if (e.target !== card || e.animationName !== 'highlightPulse') return;
+                    card.removeEventListener('animationend', onRestoreAnimationEnd);
                     card.classList.remove('highlighted');
-                }, { once: true });
+                };
+                card.addEventListener('animationend', onRestoreAnimationEnd);
             }
 
             // Create Summary Header Element (<summary>)
@@ -1006,11 +1036,20 @@ document.addEventListener('DOMContentLoaded', () => {
             bodyDiv.appendChild(detailsDropdown);
 
             // Important Links Section
-            if (raid.links && Object.keys(raid.links).length > 0) {
+            // Cross-reference notes.json so View Notes appears even if database submission omitted it
+            let raidLinks = raid.links ? Object.assign({}, raid.links) : {};
+            if (!raidLinks.notes && eventNotesData && Array.isArray(eventNotesData)) {
+                const matchingNote = eventNotesData.find(n => n.raidNum === raid.Raid_Num && n.file);
+                if (matchingNote) {
+                    raidLinks.notes = matchingNote.file;
+                }
+            }
+
+            if (Object.keys(raidLinks).length > 0) {
                 const linksWrapper = document.createElement('div');
                 linksWrapper.className = 'raid-links-wrapper';
 
-                Object.entries(raid.links).forEach(([linkName, url]) => {
+                Object.entries(raidLinks).forEach(([linkName, url]) => {
                     const anchor = document.createElement('a');
                     anchor.className = 'raid-link';
 
@@ -1848,10 +1887,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const supabaseUrl = env.SUPABASE_URL || 'https://bennnocwssmcpiqradvc.supabase.co';
         const supabaseKey = env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlbm5ub2N3c3NtY3BpcXJhZHZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3Mjk0MjAsImV4cCI6MjEwNTMwNTQyMH0.fOi4e7zdQDkPGA94a9__MgN_Q4u57Pj4-fBl4zz56Bc';
 
+        // Safe storage adapter to prevent Tracking Prevention DOMExceptions
+        const memoryStorage = {};
+        const safeStorage = {
+            getItem: (key) => {
+                try {
+                    return window.localStorage.getItem(key);
+                } catch (e) {
+                    return memoryStorage[key] || null;
+                }
+            },
+            setItem: (key, value) => {
+                try {
+                    window.localStorage.setItem(key, value);
+                } catch (e) {
+                    memoryStorage[key] = value;
+                }
+            },
+            removeItem: (key) => {
+                try {
+                    window.localStorage.removeItem(key);
+                } catch (e) {
+                    delete memoryStorage[key];
+                }
+            }
+        };
+
         if (window.supabase && window.supabase.createClient) {
             try {
                 supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey, {
                     auth: {
+                        storage: safeStorage,
                         persistSession: true,
                         autoRefreshToken: true
                     }
@@ -3593,7 +3659,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const index = pastRaidsData.findIndex(r => r.Raid_Num === targetRaidNum);
                 if (index !== -1) {
                     const existingJson = JSON.stringify(pastRaidsData[index]);
+                    const mergedLinks = (pastRaidsData[index].links || raidPayload.links)
+                        ? Object.assign({}, pastRaidsData[index].links || {}, raidPayload.links || {})
+                        : undefined;
                     const merged = Object.assign({}, pastRaidsData[index], raidPayload);
+                    if (mergedLinks) merged.links = mergedLinks;
                     if (JSON.stringify(merged) !== existingJson) {
                         pastRaidsData[index] = merged;
                         hasChanges = true;
@@ -3638,7 +3708,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (data && Array.isArray(data)) {
-                localStorage.setItem('event_raids_approved_cache', JSON.stringify(data));
+                try {
+                    localStorage.setItem('event_raids_approved_cache', JSON.stringify(data));
+                } catch (e) { }
                 const changed = applyApprovedSubmissionsToDataset(data);
                 if (changed) {
                     filterAndRenderRaids();
