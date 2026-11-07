@@ -178,6 +178,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeRaidScrollTimeout = null;
     let activeHighlightTimeout = null;
+    let isProgrammaticScrollOpening = false;
+
+    function stopHighlightAnimation(card) {
+        if (!card) return;
+        card.classList.remove('highlighted');
+        if (activeHighlightTimeout) {
+            clearTimeout(activeHighlightTimeout);
+            activeHighlightTimeout = null;
+        }
+        if (pendingReRender) {
+            const fn = pendingReRender;
+            pendingReRender = null;
+            fn();
+        }
+    }
 
     function scrollToRaid(raidNum) {
         if (activeRaidScrollTimeout) {
@@ -188,7 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.getElementById(`raid-card-${raidNum}`);
             if (card) {
                 if (card.tagName.toLowerCase() === 'details' && !card.open) {
+                    isProgrammaticScrollOpening = true;
                     card.open = true;
+                    setTimeout(() => { isProgrammaticScrollOpening = false; }, 80);
                 }
                 card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -211,28 +228,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     clearTimeout(activeHighlightTimeout);
                 }
                 activeHighlightTimeout = setTimeout(() => {
-                    card.classList.remove('highlighted');
-                    activeHighlightTimeout = null;
-                    if (pendingReRender) {
-                        const fn = pendingReRender;
-                        pendingReRender = null;
-                        fn();
-                    }
-                }, 3600);
+                    stopHighlightAnimation(card);
+                }, 2200);
 
                 const onAnimationEnd = (e) => {
                     if (e.target !== card || e.animationName !== 'highlightPulse') return;
                     card.removeEventListener('animationend', onAnimationEnd);
-                    card.classList.remove('highlighted');
-                    if (activeHighlightTimeout) {
-                        clearTimeout(activeHighlightTimeout);
-                        activeHighlightTimeout = null;
-                    }
-                    if (pendingReRender) {
-                        const fn = pendingReRender;
-                        pendingReRender = null;
-                        fn();
-                    }
+                    stopHighlightAnimation(card);
                 };
                 card.addEventListener('animationend', onAnimationEnd);
             }
@@ -633,6 +635,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderRaids(raids) {
+        // Check if cards were already rendered in the DOM before clearing
+        const hasRenderedBefore = raidsContainer.querySelector('.parent-raid-card') !== null;
         // Preserve open card IDs and active highlight state across re-renders
         const openCardIds = new Set(
             Array.from(raidsContainer.querySelectorAll('details.parent-raid-card[open]')).map(el => el.id)
@@ -657,12 +661,22 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'raid-card parent-raid-card';
             card.id = `raid-card-${raid.Raid_Num}`;
 
-            // Automatically open if previously open, pending scroll, or targeted by current URL hash
-            const isTargetedRaid = (pendingRaidScroll === raid.Raid_Num) ||
-                (window.location.hash === `#raid-${raid.Raid_Num}`);
-            if (openCardIds.has(card.id) || isTargetedRaid) {
-                card.open = true;
+            // Preserve card open state: if cards were already rendered, strictly preserve user's open/close state.
+            // Only auto-open from URL hash or pending scroll on the initial fresh render.
+            if (hasRenderedBefore) {
+                card.open = openCardIds.has(card.id);
+            } else {
+                const isTargetedRaid = (pendingRaidScroll === raid.Raid_Num) ||
+                    (window.location.hash === `#raid-${raid.Raid_Num}`);
+                card.open = openCardIds.has(card.id) || isTargetedRaid;
             }
+
+            // Stop highlight animation immediately on manual expansion toggle
+            card.addEventListener('toggle', () => {
+                if (card.classList.contains('highlighted') && !isProgrammaticScrollOpening) {
+                    stopHighlightAnimation(card);
+                }
+            });
 
             // Restore active highlight if re-rendered during pulse animation
             if (highlightedCardId === card.id) {
@@ -678,6 +692,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create Summary Header Element (<summary>)
             const summaryEl = document.createElement('summary');
             summaryEl.className = 'parent-raid-summary';
+            summaryEl.addEventListener('click', () => {
+                if (card.classList.contains('highlighted')) {
+                    stopHighlightAnimation(card);
+                }
+            });
 
             // Meta Section
             const metaDiv = document.createElement('div');
@@ -806,6 +825,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             titleEl.addEventListener('click', (e) => {
                 e.stopPropagation();
+
+                if (card.classList.contains('highlighted')) {
+                    stopHighlightAnimation(card);
+                }
 
                 const hasSelection = window.getSelection() && window.getSelection().toString().trim().length > 0;
                 if (isDraggingTitle || hasSelection || e.detail > 1) {

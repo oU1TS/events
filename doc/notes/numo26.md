@@ -13,99 +13,104 @@ summary: "Delegation notes, problem breakdown, audio logs, BRACU venue observati
 
 ![](https://res.cloudinary.com/b1tranger/image/upload/v1793991989/IMG-20261106-WA0020_x6ubzt.jpg)
 
----
-
-### Resources & Audio Logs
-* **Audio-1 (Opening Ceremony):** [YouTube Link](https://youtu.be/s7ilT1tSyi4) 
-* **Audio-2 (Closing Ceremony Part 1):** [YouTube Link](https://youtu.be/wDLOsSWB-zo)
-* **Audio-3 (Closing Ceremony Part 2):** [YouTube Link](https://youtu.be/QZ0H7W5xep8)
-
-Question idea: [link](https://drive.google.com/drive/u/1/folders/16vlLmD04mgDvFpaioZ_2xfIV1E_2j7UM) / [backup](doc/files/NUMO/v5_NUMO26-reconstruct.pdf)
+Participation Certificates: [link](https://drive.google.com/open?id=1hYSo1ZgFT0r0p8CZWwcB9mAtX41WFNRJ&usp=drive_fs) / [backup](doc/files/NUMO/NUMO2026certificatesUITS.pdf)
 
 ---
 
-### Event Logistics & Realizations
-* Be sure to check for on-site registrations in advance, as that information can sometimes feel gatekept.
-* **Recording Tip:** Do not place the audio recorder directly under your notebook; it picks up unwanted scratching noises.
-* There was an on-spot registration option available that we were initially unaware of.
-* The National Anthem played without vocals oddly felt much better and more "patriotic."
+## 1. Arrival & Event Schedule
+
+The delegation arrived at BRAC University (Dhaka North campus) for the 17th National Undergraduate Mathematics Olympiad 2026. Below is the official schedule for the day:
+
+| Event | Time | Venue |
+| :--- | :--- | :--- |
+| Registration | 08:00 AM – 08:45 AM | 09E–20T |
+| Breakfast | 08:50 AM – 09:30 AM | 6th Floor |
+| Opening Ceremony | 09:35 AM – 09:55 AM | 09E–20T |
+| Olympiad Contest | 10:00 AM – 12:00 PM | 09A–01C to 09A–05C |
+| Prayer Break | 12:10 PM – 02:00 PM | — |
+| Lunch | 02:00 PM – 03:00 PM | 6th Floor |
+| Closing Ceremony | 03:30 PM – 04:30 PM | 09E–20T |
+| Snacks | 04:30 PM – 05:00 PM | 6th Floor |
 
 ---
 
-### BRACU Venue Observations
-* Conference rooms are surprisingly compact yet accommodate large groups efficiently (designed like duplex homes built between two floors).
-* Safety rules and guidelines are posted clearly everywhere.
-* Washrooms were consistently well-cleaned and restocked.
-* Noticed a vending machine for renting power banks (couldn't get a closer look).
+## 2. Logistics & Venue Observations
+
+* **Registration & Realizations:** We discovered there was an on-site registration option available that we were initially unaware of. It is always best to check for on-site registration details in advance, as such information can sometimes feel gatekept.
+* **BRACU Venue Layout:** Conference rooms are surprisingly compact yet accommodate large groups efficiently, constructed like duplex homes built between two floors. Safety rules and guidelines are posted everywhere, washrooms were consistently well-cleaned and restocked, and a power bank rental vending machine was spotted on-site.
+* **Recording Tip:** Never place an audio recorder directly underneath your notebook; it picks up unwanted scratching and friction noises.
+* **Opening Ceremony Note:** The National Anthem played without vocals oddly felt much better and more "patriotic."
+* **Team & Delegation Management:** This experience made me realize that we need to put more thought into who we ask to volunteer, since the group photo with Kaykobad Sir was messed up by one such fellow.
+* **Personal Presentation:** Need to put some work on outfit and appearance.
 
 ---
 
-### Distinguished Guests Mentioned
-* Prof. Amulya Chandra Mandal
-* Dr. Muhammad Humayun Kabir
-* Dr. Md. Zavid Iqbal Bangalee
-* Prof. Anwar Hossain *(Mentioned)*
-* Prof. Mohammad Kaykobad
-* Ms. Hasina (NSU)
-* Ms. Sharmin ("Money matters" $\leftarrow$ AFMRF)
+## 3. The Olympiad Experience & Problem Breakdown
+
+Re-constructed Question Papers & Ideas: [link](https://drive.google.com/drive/u/1/folders/16vlLmD04mgDvFpaioZ_2xfIV1E_2j7UM) / [backup](doc/files/NUMO/v5_NUMO26-reconstruct.pdf)  
+Previous Question Bank (For Practice): [link](https://drive.google.com/drive/folders/1odKI8XoueNBcHzuBZXQZMCqAyKLapZqZ?usp=drive_link) / [backup](doc/files/NUMO/Question-bank-for-NUMO-2019.pdf)
+
+* **Strategy & Mindset:** Answering questions in reverse helped with time management, but a noticeable gap in core theory made certain advanced sections challenging. Solving past question papers beforehand is essential preparation. 
+* **Scoring Takeaway:** There are no strictly rigid, definite single-line answers for several questions; whatever coherent mathematical reasoning and derivation you write serves as your answer. The ultimate goal of participating is developing deep skills rather than merely winning the event.
+* **Problem Analysis:**
+  * **Q1:** Successfully solved (proved the expression involving $1, 2, 3, 4^{241}$ and $4^{240}$ is/isn't divisible by 5).
+  * **Q2 & Q4:** Skipped due to lack of familiarity with matrices, eigenvalues, and Riemann integrability (though noted that CSE-57 students could solve questions on eigenvalues and Riemann integrables).
+  * **Q8:** Visualized geometrically, but lacked knowledge on plane rotation $T_k$ and composition $R(x,y)$.
+  * **Q7:** Visualized the board and domino setup, but lacked foundational combinatorics background[cite: 1, 2, 4, 5, 6].
+
+---
+
+## 4. Closing Ceremony & Key Speeches
 
 ![](https://res.cloudinary.com/b1tranger/image/upload/v1793991879/IMG_20261106_235017_nn60uh.jpg)
 
----
+### Distinguished Guests & Faculty Mentioned
+* **Professors & Dignitaries:** Prof. Amulya Chandra Mandal, Dr. Muhammad Humayun Kabir, Dr. Md. Zavid Iqbal Bangalee, Prof. Anwar Hossain, and Prof. Mohammad Kaykobad.
+* **Faculty Speakers:** Ms. Hasina (NSU) and Ms. Sharmin (AFMRF).
 
-### Olympiad Experience & Problem Breakdown
-* **Strategy notes:** Answering questions in reverse; noting a current lack of core theory. Solving past questions beforehand would be extremely helpful. 
-* **Scoring takeaway:** No strictly rigid definite answers in places; whatever coherent mathematical reasoning is written serves as the answer.
-* **The Goal:** Focus on developing deep mathematical skills rather than just trying to win the event.
-
-#### Question Analysis:
-* **Q1:** Solved successfully (proved the expression involving $1, 2, 3, 4^{241}$ and $4^{240}$ is/isn't divisible by 5).
-* **Q2 & Q4:** Skipped (lacked familiarity with eigenvalues and Riemann integrability).
-* **Q8:** Visualized, but lacked knowledge on plane rotation $T_k$ and composition $R(x,y)$.
-* **Q7:** Visualized board and domino setup, but lacked foundational combinatorics background.
+### Ceremony Highlights & Discussions
+* **Opening Flow:** Kicked off with an engaging hook ("Anyone share their experience?") followed by certificate distributions and sponsor acknowledgments.
+* **Sponsorship:** Supported by the AFMRF (A.F. Mujibur Rahman Foundation), with remarks noting that *"Money matters"* when driving large academic initiatives.
+* **International Opportunities:** Announced the upcoming International Mathematics Competition scheduled around July in Bulgaria.
+* **What Does It Mean to Be Good at Math?** True mathematical research involves persevering with unsolved problems where no answer sheet exists, unlike timed exams. Tenacity and the patience to shift your perspective are paramount.
+* **The AI Era & Human Contribution:** With AI handling symbolic calculations and proofs, humans must contribute by asking meaningful questions, detecting hidden assumptions, and catching subtle errors. Avoid over-relying blindly on AI tools.
 
 ---
 
-### Closing Ceremony & Key Addresses
+## 5. Audio Transcripts & Summaries by Speaker
 
-#### Opening & Structure
-* **Hook used for engagement:** *"Anyone share their experience?"*
-* **Certificates distributed.**
-* **Sponsor:** AFMRF (supported by Mujibur Rahman; note: "Money matters").
-* **Announcements:** International Math Contest scheduled around July in Bulgaria.
+Audio Logs: [Opening Ceremony](https://youtu.be/s7ilT1tSyi4) | [Closing Ceremony Part 1](https://youtu.be/wDLOsSWB-zo) | [Closing Ceremony Part 2](https://youtu.be/QZ0H7W5xep8)
 
-#### Core Discussions: "What does it mean to be good at math?"
-* Persevering with a problem in active research differs vastly from solving one under standard exam conditions. 
-* **Tenacity** is a crucial mathematical virtue, alongside having the patience to shift your perspective.
-* **The Fields Medal:** Viewed as a tier above a standard gold award.
-* **Symbolic Computation & AI:** *"We will work on math in a different world compared to one so far $\leftarrow$ due to AI."*
+Transcripts: [NUMO26 - Closing Ceremony Part 1](<doc/notes/transcripts/NUMO26 - Closing Ceremony Part 1.txt>) | [NUMO26 - Closing Ceremony Part 2](<doc/notes/transcripts/NUMO26 - Closing Ceremony Part 2.txt>) | [NUMO26 - Opening Ceremony](<doc/notes/transcripts/NUMO26 - Opening Ceremony.txt>)
 
-#### The AI Era & Human Contribution
-* *If AI can do math, what must humans contribute?*
-  * Asking meaningful questions.
-  * Addressing flawed or "heathen" remarks.
-  * Catching subtle errors.
-* **The Danger:** Growing overly dependent on AI tools for every single math problem.
-* *"One carefully... problems"* — Do not fear hard problems or place arbitrary limits on your potential.
+### Prof. Dr. Amulya Chandra Mondal
+* Recounted the history of the Olympiad movement in Bangladesh, starting from school-level competitions in 2000 and expanding to undergraduate levels.
+* Highlighted the essential funding and continuous patronage provided by the A.F. Mujibur Rahman Foundation in constructing the Ganit Bhaban and supporting nationwide math promotion.
+* Emphasized that math sharpens critical thinking, and participation holds far more value than simply winning awards[cite: 13].
 
-#### Prof. Mohammad Kaykobad's Insights
-* Mentioned **Etang Zhang** (China) $\rightarrow$ proved something similar to the **Twin Prime Conjecture**.
-* Mentioned **Prof. Apel** and the **Four Color Theorem**.
-* *Bengali Proverb/Advice shared:* 
-  * ছাত্রদের তুচ্ছ তাচ্ছিল্য করবে না; তারা যেকোনো সময় ঘুরে দাঁড়াতে পারে। *(Do not look down on students; they can turn things around at any time.)*
-  * If you think you're truly determined, you probably aren't yet. স্রোতের বিপরীতে চলতে হবে, *(You have to swim against the current.)*
-* Historical parallel: **Isaac Newton** during the Plague wrote *"The Elements"* (Philosophiae Naturalis Principia Mathematica).
-* *Metaphor shared:* একটা নৌকায় পা দিয়ে সেখানে ভালো করতে হবে। একাধিক নৌকায় পা দিলে হবে না। *(Commit fully to one boat and excel there; do not try to put your feet in multiple boats at once.)*
-* Guided thinking concepts.
+### Prof. Dr. M. Humayun Kabir
+* Welcomed participants on behalf of the Bangladesh Mathematical Society to the Dhaka North regional round hosted at BRAC University.
+* Emphasized the growing importance of mathematics in the era of artificial intelligence, machine learning, and data science.
+* Noted that the Olympiad serves as a rigorous platform to cultivate critical problem-solving skills and intellectual resilience[cite: 13].
+
+### Prof. Dr. Syed Hasnul Hasan Zahiruddin
+* Addressed what it means to be good at mathematics, drawing a sharp contrast between exam problem-solving and open-ended mathematical research.
+* Cited historical icons like Terence Tao, Maryam Mirzakhani, Artur Avila, and Peter Scholze to illustrate long-term academic journeys.
+* Warned against AI dependency and stressed the human responsibility to formulate meaningful questions and detect hidden assumptions[cite: 11].
+
+### Prof. Dr. Mohammad Kaykobad
+* Shared the inspiring, resilient journey of mathematician Zhang Yitang, who spent years working odd jobs and living out of his car before proving a breakthrough near the Twin Prime Conjecture.
+* Reminded attendees never to look down on students, as anyone can turn things around with fierce determination ("স্রোতের বিপরীতে চলতে হবে").
+* Drew parallels to Isaac Newton formulating calculus and writing *The Elements* during the Great Plague while isolated without modern laboratory tools.
+* Advised students to commit fully to a single path ("একটা নৌকায় পা দিয়ে সেখানে ভালো করতে হবে")[cite: 12].
+
+### Ms. Sharmin
+* Acknowledged the vital operational backing of the A.F. Mujibur Rahman Foundation, reiterating that financial backing ("Money matters") is the lifeblood of large-scale academic competitions[cite: 11].
 
 ---
 
-### Self-Advice & Action Items
-* **Rest:** Need much more sleep; ensure ample rest before big events.
-* **Networking:** Failed to deliver greetings properly; work on active communication skills and breathing techniques.
-* **Mindset:** Be more enthusiastic and observant overall.
+## 6. Self-Advice & Action Items
 
-
-### OU1TS Instructions:
-  * Add full schedules in markdown format.
-  * Attempt reconstructing the Olympiad questions for practice.
+* **Rest & Recovery:** Ensure ample sleep before high-focus academic events.
+* **Networking & Communication:** Work on active communication skills, breathing techniques, and delivering greetings smoothly.
+* **Mindset:** Maintain high enthusiasm and sharp observation in academic environments.
