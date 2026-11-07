@@ -187,11 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(activeHighlightTimeout);
             activeHighlightTimeout = null;
         }
-        if (pendingReRender) {
-            const fn = pendingReRender;
-            pendingReRender = null;
-            fn();
-        }
     }
 
     function scrollToRaid(raidNum) {
@@ -320,17 +315,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    let pendingReRender = null;
-
-    function filterAndRenderRaids(options = {}) {
+    function filterAndRenderRaids() {
         if (!pastRaidsData) return;
-
-        // If a raid card is actively undergoing its highlight pulse, lock the DOM and queue re-render
-        const raidsContainer = document.getElementById('raids-container');
-        if (!options.forceImmediate && raidsContainer && raidsContainer.querySelector('.raid-card.highlighted')) {
-            pendingReRender = () => filterAndRenderRaids({ forceImmediate: true });
-            return;
-        }
 
         let filtered = pastRaidsData;
 
@@ -637,9 +623,19 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderRaids(raids) {
         // Check if cards were already rendered in the DOM before clearing
         const hasRenderedBefore = raidsContainer.querySelector('.parent-raid-card') !== null;
-        // Preserve open card IDs and active highlight state across re-renders
+        // Preserve open card IDs, inner dropdown states, and active highlight state across re-renders
         const openCardIds = new Set(
             Array.from(raidsContainer.querySelectorAll('details.parent-raid-card[open]')).map(el => el.id)
+        );
+        const openInnerDetailsCardIds = new Set(
+            Array.from(raidsContainer.querySelectorAll('details.details-dropdown[open]'))
+                .map(el => el.closest('.parent-raid-card')?.id)
+                .filter(Boolean)
+        );
+        const openScheduleTitles = new Set(
+            Array.from(raidsContainer.querySelectorAll('details.schedule-dropdown[open] > summary'))
+                .map(el => el.textContent.trim())
+                .filter(Boolean)
         );
         const highlightedCard = raidsContainer.querySelector('.raid-card.highlighted');
         const highlightedCardId = highlightedCard ? highlightedCard.id : null;
@@ -656,6 +652,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         raids.forEach(raid => {
+            // Wrapper div for card + protruding buttons (ensures copy-link-btn stays visible when <details> is collapsed)
+            const cardWrapper = document.createElement('div');
+            cardWrapper.className = 'raid-card-wrapper';
+
             // Create Parent Collapsible Card Element (<details>)
             const card = document.createElement('details');
             card.className = 'raid-card parent-raid-card';
@@ -671,8 +671,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.open = openCardIds.has(card.id) || isTargetedRaid;
             }
 
-            // Stop highlight animation immediately on manual expansion toggle
-            card.addEventListener('toggle', () => {
+            // Stop highlight animation immediately on manual expansion toggle of the PARENT card only
+            // Use the 'toggle' event but guard against bubbled toggles from nested <details> (e.g. the inner "Details" dropdown)
+            card.addEventListener('toggle', (e) => {
+                if (e.target !== card) return; // Ignore bubbled toggle events from nested <details> elements
                 if (card.classList.contains('highlighted') && !isProgrammaticScrollOpening) {
                     stopHighlightAnimation(card);
                 }
@@ -735,8 +737,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentSessionUser) {
                 const metaRight = metaDiv.querySelector('.raid-meta-right');
                 if (metaRight) {
-                    const editBtn = document.createElement('button');
-                    editBtn.type = 'button';
+                    const editBtn = document.createElement('span');
                     editBtn.className = 'raid-edit-suggest-btn';
                     editBtn.innerHTML = `
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -758,8 +759,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Protruding Copy Link Button at top-right corner of card
+            // Protruding Copy Link Button at top-right corner of card (appended to card directly to avoid disallowed interactive summary descendant)
             const copyBtn = document.createElement('button');
+            copyBtn.type = 'button';
             copyBtn.className = 'copy-raid-link-btn';
             copyBtn.title = 'Copy link to this raid';
             copyBtn.setAttribute('aria-label', 'Copy link to this raid');
@@ -793,7 +795,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.error('Failed to copy link: ', err);
                 });
             });
-            summaryEl.appendChild(copyBtn);
 
             summaryEl.appendChild(metaDiv);
 
@@ -880,18 +881,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 summaryEl.appendChild(typeTag);
             }
 
-            // Venue Location Badge (Bottom-Right Corner of card summary)
+            // Venue Location Badge (Bottom-Right Corner of card summary - phrasing span avoids disallowed interactive summary descendant)
+            const mapQueryUrl = raid.venue ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(raid.venue)}` : '';
+            const handleMapClick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (mapQueryUrl) {
+                    window.open(mapQueryUrl, '_blank', 'noopener,noreferrer');
+                }
+            };
+
             if (raid.OutsideDhaka) {
                 // Outside Dhaka: Dynamic 2-second toggle between <s>Dhaka</s> and location icon only
-                const cornerBadge = document.createElement('a');
+                const cornerBadge = document.createElement('span');
                 cornerBadge.className = 'raid-venue-corner-badge outside-dhaka-tag map-link';
-                cornerBadge.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(raid.venue)}`;
-                cornerBadge.target = '_blank';
-                cornerBadge.rel = 'noopener noreferrer';
                 cornerBadge.title = 'View venue location on Google Maps';
-                cornerBadge.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                });
+                cornerBadge.addEventListener('click', handleMapClick);
 
                 const pinSvg = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
 
@@ -924,15 +929,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 summaryEl.appendChild(cornerBadge);
             } else {
                 // OutsideDhaka = False & Physical Venue: Static borderless/backgroundless location icon linked to Google Maps
-                const cornerBadge = document.createElement('a');
+                const cornerBadge = document.createElement('span');
                 cornerBadge.className = 'raid-venue-corner-badge static-location-tag map-link icon-only';
-                cornerBadge.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(raid.venue)}`;
-                cornerBadge.target = '_blank';
-                cornerBadge.rel = 'noopener noreferrer';
                 cornerBadge.title = `View venue location on Google Maps`;
-                cornerBadge.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                });
+                cornerBadge.addEventListener('click', handleMapClick);
                 cornerBadge.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
                 summaryEl.appendChild(cornerBadge);
             }
@@ -963,6 +963,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Details Dropdown (Venue, Fees, Sub Events)
             const detailsDropdown = document.createElement('details');
             detailsDropdown.className = 'details-dropdown';
+            if (openInnerDetailsCardIds.has(card.id)) {
+                detailsDropdown.open = true;
+            }
             detailsDropdown.addEventListener('click', (e) => {
                 e.stopPropagation();
             });
@@ -1028,6 +1031,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     raid.subEvents.forEach(sub => {
                         const subDetailsEl = document.createElement('details');
                         subDetailsEl.className = 'schedule-dropdown';
+                        if (sub.title && openScheduleTitles.has(sub.title.trim())) {
+                            subDetailsEl.open = true;
+                        }
                         subDetailsEl.addEventListener('click', (e) => {
                             e.stopPropagation();
                         });
@@ -1148,8 +1154,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.appendChild(bodyDiv);
 
-            // Append Card to container
-            raidsContainer.appendChild(card);
+            // Append Card inside its wrapper, then protruding copy-link button on top, then wrapper to container
+            cardWrapper.appendChild(card);
+            cardWrapper.appendChild(copyBtn);
+            raidsContainer.appendChild(cardWrapper);
         });
 
         // Check for pending raid scroll
@@ -3304,10 +3312,10 @@ document.addEventListener('DOMContentLoaded', () => {
         row.className = 'sub-event-row';
         row.innerHTML = `
             <div class="sub-event-row-top">
-                <input type="text" class="form-input sub-event-title-input" placeholder="Sub-event / Track title (e.g. 48-Hour CTF)" value="${escapeHTML(title)}" required>
-                <button type="button" class="remove-sub-event-btn" title="Remove sub-event">&times;</button>
+                <input type="text" class="form-input sub-event-title-input" placeholder="Sub-event / Track title (e.g. 48-Hour CTF)" value="${escapeHTML(title)}" aria-label="Sub-event or track title" required>
+                <button type="button" class="remove-sub-event-btn" title="Remove sub-event" aria-label="Remove sub-event">&times;</button>
             </div>
-            <textarea class="form-input form-textarea sub-event-details-input" rows="2" placeholder="Sub-event description or schedule details...">${escapeHTML(details)}</textarea>
+            <textarea class="form-input form-textarea sub-event-details-input" rows="2" placeholder="Sub-event description or schedule details..." aria-label="Sub-event description or schedule details">${escapeHTML(details)}</textarea>
         `;
 
         row.querySelector('.remove-sub-event-btn').addEventListener('click', () => {
@@ -3325,9 +3333,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const row = document.createElement('div');
         row.className = 'custom-link-row';
         row.innerHTML = `
-            <input type="text" class="form-input custom-link-name-input" list="custom-link-preset-suggestions" placeholder="Label (e.g. Poster Image, Rulebook)" value="${escapeHTML(name)}" required>
-            <input type="text" class="form-input custom-link-url-input" placeholder="URL or path (https://... or doc/...)" value="${escapeHTML(url)}" required>
-            <button type="button" class="remove-custom-link-btn" title="Remove custom link">&times;</button>
+            <input type="text" class="form-input custom-link-name-input" list="custom-link-preset-suggestions" placeholder="Label (e.g. Poster Image, Rulebook)" value="${escapeHTML(name)}" aria-label="Custom link or document title" required>
+            <input type="text" class="form-input custom-link-url-input" placeholder="URL or path (https://... or doc/...)" value="${escapeHTML(url)}" aria-label="Custom link URL or relative path" required>
+            <button type="button" class="remove-custom-link-btn" title="Remove custom link" aria-label="Remove custom link">&times;</button>
         `;
 
         row.querySelector('.remove-custom-link-btn').addEventListener('click', () => {

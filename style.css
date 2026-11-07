@@ -63,6 +63,19 @@ body.light-theme {
 /* ==========================================================================
    Reset & Core Boilerplate
    ========================================================================== */
+/* Accessible visually-hidden utility for screen-reader text & labels */
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -489,6 +502,17 @@ body.light-theme .btn-primary {
     align-items: start;
 }
 
+/* Raid Card Wrapper: Positioned container for the <details> card + protruding copy-link button
+   (ensures the copy button is always visible even when the card is collapsed) */
+.raid-card-wrapper {
+    position: relative;
+    overflow: visible;
+}
+
+.raid-card-wrapper:has(.raid-card.highlighted) {
+    z-index: 15;
+}
+
 .raid-card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -614,8 +638,8 @@ details.parent-raid-card[open] .parent-raid-arrow {
 
 .copy-raid-link-btn {
     position: absolute;
-    top: -30px;
-    right: -30px;
+    top: -10px;
+    right: -10px;
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -627,7 +651,7 @@ details.parent-raid-card[open] .parent-raid-arrow {
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 10;
+    z-index: 20;
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
         background-color 0.2s ease,
         border-color 0.2s ease,
@@ -677,7 +701,7 @@ body.light-theme .copy-raid-link-btn.copied {
     justify-content: center;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 10;
+    z-index: 20;
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
         background-color 0.2s ease,
         border-color 0.2s ease,

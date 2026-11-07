@@ -88,8 +88,9 @@
     <div id="search-container" class="search-container-hidden">
         <div class="search-bar-header">
             <div class="search-input-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-input-icon"></i>
-                <input type="text" id="search-input" placeholder="Search document..." autocomplete="off">
+                <label for="search-input" class="visually-hidden">Search document</label>
+                <i class="fa-solid fa-magnifying-glass search-input-icon" aria-hidden="true"></i>
+                <input type="text" id="search-input" placeholder="Search document..." autocomplete="off" aria-label="Search document">
                 <button id="search-clear-btn" title="Clear Search" style="display: none;">
                     <i class="fa-solid fa-xmark"></i>
                 </button>

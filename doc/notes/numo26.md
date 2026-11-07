@@ -56,7 +56,7 @@ Previous Question Bank (For Practice): [link](https://drive.google.com/drive/fol
   * **Q1:** Successfully solved (proved the expression involving $1, 2, 3, 4^{241}$ and $4^{240}$ is/isn't divisible by 5).
   * **Q2 & Q4:** Skipped due to lack of familiarity with matrices, eigenvalues, and Riemann integrability (though noted that CSE-57 students could solve questions on eigenvalues and Riemann integrables).
   * **Q8:** Visualized geometrically, but lacked knowledge on plane rotation $T_k$ and composition $R(x,y)$.
-  * **Q7:** Visualized the board and domino setup, but lacked foundational combinatorics background[cite: 1, 2, 4, 5, 6].
+  * **Q7:** Visualized the board and domino setup, but lacked foundational combinatorics background.
 
 ---
 
@@ -86,26 +86,26 @@ Transcripts: [NUMO26 - Closing Ceremony Part 1](<doc/notes/transcripts/NUMO26 - 
 ### Prof. Dr. Amulya Chandra Mondal
 * Recounted the history of the Olympiad movement in Bangladesh, starting from school-level competitions in 2000 and expanding to undergraduate levels.
 * Highlighted the essential funding and continuous patronage provided by the A.F. Mujibur Rahman Foundation in constructing the Ganit Bhaban and supporting nationwide math promotion.
-* Emphasized that math sharpens critical thinking, and participation holds far more value than simply winning awards[cite: 13].
+* Emphasized that math sharpens critical thinking, and participation holds far more value than simply winning awards.
 
 ### Prof. Dr. M. Humayun Kabir
 * Welcomed participants on behalf of the Bangladesh Mathematical Society to the Dhaka North regional round hosted at BRAC University.
 * Emphasized the growing importance of mathematics in the era of artificial intelligence, machine learning, and data science.
-* Noted that the Olympiad serves as a rigorous platform to cultivate critical problem-solving skills and intellectual resilience[cite: 13].
+* Noted that the Olympiad serves as a rigorous platform to cultivate critical problem-solving skills and intellectual resilience.
 
 ### Prof. Dr. Syed Hasnul Hasan Zahiruddin
 * Addressed what it means to be good at mathematics, drawing a sharp contrast between exam problem-solving and open-ended mathematical research.
 * Cited historical icons like Terence Tao, Maryam Mirzakhani, Artur Avila, and Peter Scholze to illustrate long-term academic journeys.
-* Warned against AI dependency and stressed the human responsibility to formulate meaningful questions and detect hidden assumptions[cite: 11].
+* Warned against AI dependency and stressed the human responsibility to formulate meaningful questions and detect hidden assumptions.
 
 ### Prof. Dr. Mohammad Kaykobad
 * Shared the inspiring, resilient journey of mathematician Zhang Yitang, who spent years working odd jobs and living out of his car before proving a breakthrough near the Twin Prime Conjecture.
 * Reminded attendees never to look down on students, as anyone can turn things around with fierce determination ("স্রোতের বিপরীতে চলতে হবে").
 * Drew parallels to Isaac Newton formulating calculus and writing *The Elements* during the Great Plague while isolated without modern laboratory tools.
-* Advised students to commit fully to a single path ("একটা নৌকায় পা দিয়ে সেখানে ভালো করতে হবে")[cite: 12].
+* Advised students to commit fully to a single path ("একটা নৌকায় পা দিয়ে সেখানে ভালো করতে হবে").
 
 ### Ms. Sharmin
-* Acknowledged the vital operational backing of the A.F. Mujibur Rahman Foundation, reiterating that financial backing ("Money matters") is the lifeblood of large-scale academic competitions[cite: 11].
+* Acknowledged the vital operational backing of the A.F. Mujibur Rahman Foundation, reiterating that financial backing ("Money matters") is the lifeblood of large-scale academic competitions.
 
 ---
 
