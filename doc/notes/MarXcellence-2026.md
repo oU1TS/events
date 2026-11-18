@@ -10,7 +10,7 @@ summary: "Delegation notes, workshop takeaways, digital marketing case studies (
 
 # Event Raiders Delegation Notes: MarXcellence 2026
 
- ---
+---
 
 ## Event Realization
 
@@ -18,37 +18,33 @@ summary: "Delegation notes, workshop takeaways, digital marketing case studies (
 - A 6 Hour+ headroom should be ensured before any submission deadline.
 - Proper planning for presentation and visual decisions.
 
- ---
+---
 
- ## Workshop-1
+## Workshop-1
 
- - Slides [ver-1](https://drive.google.com/open?id=10wn1JOFha8XsD5WY2QTqIpDFEEYymPfT&usp=drive_fs) / [mirror-1](https://github.com/user-attachments/files/29901705/MarXcellence.Workshop-1.slides.ver-1.pdf) / [mirror-2](https://github.com/oU1TS/events/releases/tag/Archive-1) | ...
- - Audio [YT](https://www.youtube.com/watch?v=C9JxIxrDsH0) / [mirror](https://t.me/b1tranger_stash/15?comment=1049)
- - Notes [PDF](https://drive.google.com/open?id=1oh-Ai7LFBnMzKi2M6nZ9-SwAUSfa4Th-&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29905271/MarXcellence.Workshop-1.handnote.pdf)
+- Slides [ver-1](https://drive.google.com/open?id=10wn1JOFha8XsD5WY2QTqIpDFEEYymPfT&usp=drive_fs) / [mirror-1](https://github.com/user-attachments/files/29901705/MarXcellence.Workshop-1.slides.ver-1.pdf) / [mirror-2](https://github.com/oU1TS/events/releases/tag/Archive-1) | ...
+- Audio [YT](https://www.youtube.com/watch?v=C9JxIxrDsH0) / [mirror](https://t.me/b1tranger_stash/15?comment=1049)
+- Notes [PDF](https://drive.google.com/open?id=1oh-Ai7LFBnMzKi2M6nZ9-SwAUSfa4Th-&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29905271/MarXcellence.Workshop-1.handnote.pdf)
 
- --- 
- 
- ## Case
- 
- Email: [PDF](https://drive.google.com/open?id=1FzrmdjksEsXoCYx52zqL9sPMe1fBv8O6&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29952264/Case_MarXcellence.2026_Round.1.Case.pdf)
- 
- 
- Case-Related stuff
- - eRin Device App on Playstore: [link](https://play.google.com/store/apps/details?id=com.erindevice.app&hl=en) | [Screenshots](https://drive.google.com/open?id=1Kj0YeDFJquBrrT9wo1lzJ9nJ_LIPAMo8&usp=drive_fs) | [Details](https://drive.google.com/open?id=1voO4wbxpvCnedYMo_xvydUtfj21qsF3h&usp=drive_fs)
- - Dhaka Bank: [website](https://dhakabank.com.bd/) | [eRin Device App](https://dhakabank.com.bd/e-rin-device-app/) / [mirror](https://drive.google.com/open?id=1s_Chjscve3XqWJ9LwX3xuu5P9w6ZLgrh&usp=drive_fs) | [eRin FAQ](https://dhakabank.com.bd/e-rin-faq-bn/) / [mirror](https://drive.google.com/open?id=123cCyoBPXMOsxlrpMUIpEc88JtfevO-9&usp=drive_fs) | [eRin Privacy Policy](https://dhakabank.com.bd/privacy-policy-e-rin-bn/) / [mirror](https://drive.google.com/open?id=1as0M7uNVzFIasxcX-c76JPJA3CtAIKZe&usp=drive_fs) | [eRin Terms and Conditions](https://dhakabank.com.bd/terms-and-conditions-of-e-rin-bn/) / [mirror](https://drive.google.com/open?id=1F54erkX5k1qodDbUvReSqx1X9zXkv-rO&usp=drive_fs) | [eRin Specific Terms](https://dhakabank.com.bd/e-rin-specific-terms-conditions-bn/) / [mirror](https://drive.google.com/open?id=1QnAcgvM_37HTfXxytmP2hDLqq3jX6fxw&usp=drive_fs)
- 
- 
+---
 
- ---
+## Case
 
- ## References
+Email: [PDF](https://drive.google.com/open?id=1FzrmdjksEsXoCYx52zqL9sPMe1fBv8O6&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29952264/Case_MarXcellence.2026_Round.1.Case.pdf)
 
- Ridaun:
- - Post by Waliullah Turjo in Business Competition Bangladesh | [link](https://github.com/user-attachments/files/29756316/Waliullah.Turjo.-.bizcomp.-.Business.Competition.Bangladesh.pdf) | [archive](https://drive.google.com/open?id=157E-KIZu1L9sisg90lNiznVmNgcsVu7I&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29756048/Waliullah.Turjo.-.bizcomp.-.Business.Competition.Bangladesh.pdf)
- - Abir Ershad / "Team Khichuri" [post](https://www.facebook.com/share/p/18HtiURwVA/) | [Notion](https://teamkhichuri.notion.site) / [mirror-1](https://drive.google.com/open?id=1u_jmrI_2CBYmF9g-UzmDofdrmv2Hmmxr&usp=drive_fs) / [mirror-2](https://t.me/b1tranger_stash/15?comment=1048)
- - AI Chat: [explain-1](https://chatgpt.com/c/6a5154b2-5f4c-83e8-bdee-beda55ed5d4f) / [mirror-1](https://drive.google.com/open?id=1mc7LoGAwxdjbs_2AUGjguOK82UPp4v2-&usp=drive_fs) / [mirror-2](https://github.com/user-attachments/files/29906171/Business.Terms.Overview_GPT.pdf)
+Case-Related stuff
+- eRin Device App on Playstore: [link](https://play.google.com/store/apps/details?id=com.erindevice.app&hl=en) | [Screenshots](https://drive.google.com/open?id=1Kj0YeDFJquBrrT9wo1lzJ9nJ_LIPAMo8&usp=drive_fs) | [Details](https://drive.google.com/open?id=1voO4wbxpvCnedYMo_xvydUtfj21qsF3h&usp=drive_fs)
+- Dhaka Bank: [website](https://dhakabank.com.bd/) | [eRin Device App](https://dhakabank.com.bd/e-rin-device-app/) / [mirror](https://drive.google.com/open?id=1s_Chjscve3XqWJ9LwX3xuu5P9w6ZLgrh&usp=drive_fs) | [eRin FAQ](https://dhakabank.com.bd/e-rin-faq-bn/) / [mirror](https://drive.google.com/open?id=123cCyoBPXMOsxlrpMUIpEc88JtfevO-9&usp=drive_fs) | [eRin Privacy Policy](https://dhakabank.com.bd/privacy-policy-e-rin-bn/) / [mirror](https://drive.google.com/open?id=1as0M7uNVzFIasxcX-c76JPJA3CtAIKZe&usp=drive_fs) | [eRin Terms and Conditions](https://dhakabank.com.bd/terms-and-conditions-of-e-rin-bn/) / [mirror](https://drive.google.com/open?id=1F54erkX5k1qodDbUvReSqx1X9zXkv-rO&usp=drive_fs) | [eRin Specific Terms](https://dhakabank.com.bd/e-rin-specific-terms-conditions-bn/) / [mirror](https://drive.google.com/open?id=1QnAcgvM_37HTfXxytmP2hDLqq3jX6fxw&usp=drive_fs)
 
- b1tranger:
- - Team Centaurs, the Champions of BizNation 2.0 ~ IUT Career and Business Society - IUT CBS | [link](https://www.facebook.com/reel/1691387458851155) / [mirror](https://drive.google.com/open?id=1YufKl6e8BAbjLpstLSKqbJIyravx8Mir&usp=drive_fs)
- - AI Chat: [example-1](https://drive.google.com/open?id=1xAGd2ehxU-opQIFWLJzxMiYATj0Munmp&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29756439/example-1_digital.marketing.case.competition.pdf) | [Terms](https://drive.google.com/open?id=1TGwP7sc50hHFTGCz2rHnU7bS8nt57var&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29906298/Business.Case.Competitions.Terms_GEMINI.pdf)
+---
 
+## References
+
+Ridaun:
+- Post by Waliullah Turjo in Business Competition Bangladesh | [link](https://github.com/user-attachments/files/29756316/Waliullah.Turjo.-.bizcomp.-.Business.Competition.Bangladesh.pdf) | [archive](https://drive.google.com/open?id=157E-KIZu1L9sisg90lNiznVmNgcsVu7I&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29756048/Waliullah.Turjo.-.bizcomp.-.Business.Competition.Bangladesh.pdf)
+- Abir Ershad / "Team Khichuri" [post](https://www.facebook.com/share/p/18HtiURwVA/) | [Notion](https://teamkhichuri.notion.site) / [mirror-1](https://drive.google.com/open?id=1u_jmrI_2CBYmF9g-UzmDofdrmv2Hmmxr&usp=drive_fs) / [mirror-2](https://t.me/b1tranger_stash/15?comment=1048)
+- AI Chat: [explain-1](https://chatgpt.com/c/6a5154b2-5f4c-83e8-bdee-beda55ed5d4f) / [mirror-1](https://drive.google.com/open?id=1mc7LoGAwxdjbs_2AUGjguOK82UPp4v2-&usp=drive_fs) / [mirror-2](https://github.com/user-attachments/files/29906171/Business.Terms.Overview_GPT.pdf)
+
+b1tranger:
+- Team Centaurs, the Champions of BizNation 2.0 ~ IUT Career and Business Society - IUT CBS | [link](https://www.facebook.com/reel/1691387458851155) / [mirror](https://drive.google.com/open?id=1YufKl6e8BAbjLpstLSKqbJIyravx8Mir&usp=drive_fs)
+- AI Chat: [example-1](https://drive.google.com/open?id=1xAGd2ehxU-opQIFWLJzxMiYATj0Munmp&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29756439/example-1_digital.marketing.case.competition.pdf) | [Terms](https://drive.google.com/open?id=1TGwP7sc50hHFTGCz2rHnU7bS8nt57var&usp=drive_fs) / [mirror](https://github.com/user-attachments/files/29906298/Business.Case.Competitions.Terms_GEMINI.pdf)

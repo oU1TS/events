@@ -137,7 +137,15 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.16.3 — Accessibility Hardening, Card Wrapper Architecture & Dropdown Freedom (Current)
+### 🚀 v1.16.4 — Markdown Reader TOC Bookmark Overlap & Flexbox Layout Fix (Current)
+* **Markdown Viewer Layout Polish:**
+  * **TOC Bookmark Overlap Resolution**: Fixed flexbox shrink collapsing in `#nav-pane`'s `#toc-list` (`css/render.css`) where documents with numerous headings squeezed `.toc-link` elements below their line-height and padding, causing bottom bookmarks to overlap top ones. Added `flex-shrink: 0; min-height: 2.2rem; display: flex; align-items: center; box-sizing: border-box;` and `min-height: 0;` on `#toc-list`, guaranteeing that bookmarks maintain their full readable height and scroll smoothly via `overflow-y: auto`.
+  * **H4 Heading Indentation**: Added explicit `.toc-link.h4` styling (`padding-left: 3rem; font-size: 0.75rem; color: var(--text-muted);`) to support 4th-level document outlines.
+  * **Reader Container Flex Protection**: Added `flex: 1 0 auto; box-sizing: border-box;` to `.viewer-container` ensuring the main reader container never shrinks under flex column body constraints.
+  * **Markdown Syntax & Whitespace Formatting**: Cleaned up `doc/notes/MarXcellence-2026.md` by stripping extraneous leading spaces on headings and lists to ensure consistent CommonMark/GFM rendering.
+  * **Search Results Flex-Shrink Guard**: Added `flex-shrink: 0;` to `.search-result-item` inside `#search-container` to prevent vertical compression in search result lists.
+
+### 🚀 v1.16.3 — Accessibility Hardening, Card Wrapper Architecture & Dropdown Freedom
 * **Accessibility & Interactive Polish:**
   * **Card Wrapper Architecture & Permanent Copy Button Visibility**: Wrapped all raid cards inside `.raid-card-wrapper` (`position: relative; overflow: visible;`) with `copyBtn` layered on top at `z-index: 20;`. This eliminates the issue where non-summary children inside `<details>` were hidden when cards were collapsed, ensuring `.copy-raid-link-btn` is permanently visible at the top-right corner of the card in both collapsed and expanded states while strictly remaining outside `<summary>` to preserve W3C HTML5 compliance.
   * **Unrestricted Dropdown & Category Filter Interactions**: Completely removed the artificial DOM lock (`pendingReRender`) inside `filterAndRenderRaids`. User category dropdown filters and card accordion toggles now respond instantly without being queued or blocked during the 2.1s pulse animation. Also added state retention in `renderRaids` for inner Details dropdowns (`details.details-dropdown[open]`) and Schedule dropdowns (`details.schedule-dropdown[open]`).

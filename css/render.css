@@ -302,7 +302,8 @@ header {
     width: 100%;
     margin: 0 auto;
     padding: 3rem 2rem;
-    flex: 1;
+    flex: 1 0 auto;
+    box-sizing: border-box;
 }
 
 /* ==========================================================================
@@ -506,6 +507,7 @@ header {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    min-height: 0;
 }
 
 .toc-link {
@@ -518,6 +520,11 @@ header {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-shrink: 0;
+    min-height: 2.2rem;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
 }
 
 .toc-link:hover {
@@ -528,6 +535,7 @@ header {
 .toc-link.h1 { font-weight: 700; padding-left: 0.75rem; }
 .toc-link.h2 { padding-left: 1.5rem; font-size: 0.85rem; }
 .toc-link.h3 { padding-left: 2.25rem; font-size: 0.8rem; color: var(--text-muted); }
+.toc-link.h4 { padding-left: 3rem; font-size: 0.75rem; color: var(--text-muted); }
 
 /* ==========================================================================
    Footer
@@ -803,6 +811,7 @@ body.light-theme .search-bar-header button:not(#search-clear-btn):hover:not(:dis
     line-height: 1.4;
     transition: background-color 0.2s;
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
 .search-result-item:hover {

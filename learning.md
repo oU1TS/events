@@ -301,4 +301,5 @@ graph TD
 | **Unrestricted Dropdown & Filter Actions** | `filterAndRenderRaids`, `stopHighlightAnimation` | Instant category filtering & inner dropdown preservation | Eliminates highlight-based DOM locks; category dropdown filter and card toggles operate instantly without being blocked or reset during animation. |
 | **Form Field Label Compliance** | `index.html`, `render.html`, `app.js` | `.visually-hidden` `<label>` tags & explicit `aria-label`s | Eliminates 2 unlabeled input violations in DevTools Issues tab, ensuring full accessibility for assistive tech and keyboard navigation. |
 | **Client-Side AdBlocker Guard** | `index.html` inline OneSignal init | Defensive `try...catch` & `onerror` | Prevents uncaught promise rejections when `OneSignalSDK.page.js` is blocked by uBlock Origin or Brave Shields (`net::ERR_BLOCKED_BY_CLIENT`). |
+| **Reader TOC Bookmark Flex-Shrink Fix** | `#toc-list`, `.toc-link` in `css/render.css` | `flex-shrink: 0; min-height: 2.2rem;` & container `min-height: 0;` | Prevents vertical compression and overlapping of document outline bookmarks when reading notes with extensive headings. |
 

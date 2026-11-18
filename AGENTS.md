@@ -10,39 +10,25 @@
   - Add version entries to the Changelog in [`documentation.md`](documentation.md) and record UX impact mappings in [`learning.md`](learning.md).
 
 ## 2. Mandatory Prompt, Plan & Walkthrough Archiving
-- **Automatic Full Conversation Archiving**:
-  - After chat prompt-response cycles, maintain and update the session's comprehensive conversation archive in [`doc/prompts/<Prefix>. <Session Title>.md`](doc/prompts/) by appending new turn contents to it.
-  - **DO NOT** create a new file for each individual prompt turn within the same session (avoid creating fragmented files like `<Prefix>.3`, `<Prefix>.4`, `<Prefix>.5`, etc.).
-  - Append the turn's verbatim user request, reasoning process (`### Thinking`), and final response (`### AI Response`) directly to the session archive file, separated by horizontal rules (`---`).
-  - Keep conversation records intact with high fidelity so that complete context and design rationale are preserved across the project lifecycle.
+- **Target Location & Serial Session Folders**:
+  - All conversation, prompt, plan, and walkthrough records reside inside [`doc/prompts/`](doc/prompts) in dedicated serial folders named with an incrementing major integer prefix:
+    `doc/prompts/<N>. <Session Title>/` (e.g., `doc/prompts/14. Event Registration Modal/`).
+  - **Determining `<N>`**: Inspect `doc/prompts/` to find the highest existing major integer prefix across both existing session folders and legacy flat `<N>. ...md` files, and assign `N = N_max + 1` for an entirely distinct, new conversation session.
+  - **Session Continuity**: Whenever an existing conversation or chat thread is continued, resumed, or revisited, locate and update **that same session folder** (`doc/prompts/<N>. <Session Title>/`); do NOT create a new major folder `<N+1>` per turn.
+- **Required Files Inside `doc/prompts/<N>. <Session Title>/`**:
+  1. **`transcript_full.jsonl`**: An exact UTF-8 copy of `<appDataDir>/brain/<conversation-id>/.system_generated/logs/transcript_full.jsonl`. Never truncate or reformat lines (except redacting raw secrets if any appear before committing).
+  2. **`conversation.md` (Full Authentic Chat Archive)**: A complete Markdown rendering that **looks exactly the same as the AI response in the chat interface, alongside the user prompts**. It structures turns sequentially (`## Turn <N>`) with `### 👤 User` (verbatim prompt, secrets redacted), `### 🧠 AI Thinking` (collapsible reasoning `<details><summary>Click to expand internal reasoning</summary>...</details>`), and `### 🤖 Assistant Response` (exact full response with all markdown headings, code, and explanations verbatim). Do NOT replace or truncate with high-level synthetic summaries (such as the legacy `summary.md` format).
+  3. **Companion Plans & Walkthroughs (Fractional Suffixes Reserved for Plans & Walkthroughs Only)**: Stored in the same `doc/prompts/<N>. <Session Title>/` folder:
+     - Implementation plan: `<N>.1 Implementation Plan - <Plan Title>.md` (dual-write whenever creating/updating `implementation_plan.md` before user review)
+     - Walkthrough document: `<N>.2 Walkthrough - <Title>.md` (dual-write whenever creating/updating `walkthrough.md` upon completion)
+     - Subsequent plans/walkthroughs in the same session: `<N>.3 Implementation Plan - ...`, `<N>.4 Walkthrough - ...`, etc.
 - **Mandatory Secret Redaction & Placeholder Replacement**:
   - **Zero Secrets in Archives & Docs**: Whenever API keys, database passwords, JWT tokens (such as Supabase `anon` or `service_role` keys), OAuth secrets, or personal access tokens appear in user requests, internal reasoning, code diffs, or responses, you MUST sanitize them by replacing them with descriptive placeholders (e.g., `<YOUR_SUPABASE_URL>`, `<YOUR_SUPABASE_ANON_KEY>`, `[REDACTED_SECRET]`).
   - Never allow raw secrets, keys, or sensitive credentials to be stored or committed in `doc/prompts/`, documentation, or any markdown files.
-- **Session Continuity & Updating Past Archives**:
-  - Whenever an existing conversation or chat thread is continued, resumed, or revisited, locate and update the corresponding existing archive in `doc/prompts/<Prefix>. <Session Title>.md` by appending the new turns directly to it.
-  - **DO NOT** create a new major sequence number or split an ongoing dialogue across multiple files when resuming or updating an existing chat.
-  - If a past archive file missed earlier turns from the current conversation, retroactively synchronize and append missing turns so that the file contains the complete, uninterrupted history.
-- **Fractional Suffixes Reserved for Plans & Walkthroughs Only**:
-  - Minor/fractional prefixes (e.g., `<Prefix>.1`, `<Prefix>.2`, etc.) are reserved **exclusively** for companion implementation plans and walkthroughs:
-    - Primary chat session: `doc/prompts/<Prefix>. <Session Title>.md` (contains turns sequentially)
-    - Implementation plan: `doc/prompts/<Prefix>.1 Implementation Plan - <Plan Title>.md`
-    - Walkthrough document: `doc/prompts/<Prefix>.2 Walkthrough - <Title>.md`
-    - Subsequent plans/walkthroughs within the same session: `<Prefix>.3 Implementation Plan - ...`, `<Prefix>.4 Walkthrough - ...`, etc.
-- **Mandatory Dual-Write on Every Turn**:
-  - **Implementation Plans**: Whenever creating or updating an implementation plan artifact (`implementation_plan.md`), simultaneously write a copy to `doc/prompts/<Prefix>.<N> Implementation Plan - <Plan Title>.md` before pausing for user review.
-  - **Walkthroughs**: Whenever creating or updating a walkthrough artifact (`walkthrough.md`), simultaneously write a copy to `doc/prompts/<Prefix>.<N> Walkthrough - <Title>.md` upon completing execution.
-  - **Full Conversation Archive**: Update and append the active turn to `doc/prompts/<Prefix>. <Session Title>.md` immediately upon generating the response.
-- **Target Location**: All prompt, plan, and walkthrough records reside in the [`doc/prompts`](doc/prompts) directory.
-- **Prefix Sequencing Strategy**:
-  - Inspect existing files in `doc/prompts/` to identify the current major sequence integer (e.g., `1.`, `2.`, ..., `12.`, `13.`, etc.).
-  - Increment the sequence integer ONLY when starting an entirely distinct, new conversation session that does not belong to a pre-existing thread.
-  - Keep all conversation turns for that session inside the main file `doc/prompts/<Prefix>. <Session Title>.md`.
-- **Chat Archive Fidelity & Sanitization**:
-  - Reproduce the conversation with full fidelity: user request blocks verbatim (with sensitive keys redacted), structured reasoning summary in `### Thinking Process`, and complete verbatim `### AI Response`.
-  - Include all diagrams (Mermaid flowcharts, sequence charts, architectural layouts), callouts, step-by-step guides, and suggested Git commits exactly as presented in the live dialogue—never truncate, abridge, or omit diagrams or response sections.
-  - Maintain high-level reasoning summaries in `### Thinking Process` covering requirements analysis, architectural decisions, and verification steps while omitting internal scratchpad backtracking.
-  - Verify that all API keys and secrets have been replaced with placeholders before writing.
-  - Preserve frontmatter tags comments (e.g., `<!-- Frontmatter Tags: ... -->`) at the top of the archive file.
+- **Update Cadence (Keeping the Archive Current)**:
+  - Because the runtime writes a turn's final `PLANNER_RESPONSE` (final `thinking` and `content`) to `transcript_full.jsonl` after the turn finishes:
+    1. **At the start of each turn (or when continuing from a prior `<conversation-id>`):** Copy `<appDataDir>/brain/<conversation-id>/.system_generated/logs/transcript_full.jsonl` to `doc/prompts/<N>. <Session Title>/transcript_full.jsonl` and regenerate `conversation.md` (with secrets redacted) so the previous turn's finalized `thinking` and `content` are captured verbatim (and sync the prior conversation's folder if continuing).
+    2. **Before sending each new final response:** Re-copy `transcript_full.jsonl`, regenerate `conversation.md` (with secrets redacted) to capture all completed steps of the current turn, append the exact final response under `### 🤖 Assistant Response (Pre-Commit)` (noting it will be replaced verbatim from `transcript_full.jsonl` on the next sync).
 
 ## 3. Code Quality & Styling Standards
 - Follow established vanilla JavaScript and CSS conventions across the repository (`index.html`, `style.css`, `app.js`).
@@ -51,5 +37,5 @@
 
 ## 4. Commit Message & Chat Summary Generation
 - **Commit Message & Description Suggestion**:
-  - At the end of responses completing substantial work, summarize the work completed across the chat session (referencing the active prompt archive in `doc/prompts/<Prefix>. <Session Title>.md`).
+  - At the end of responses completing substantial work, summarize the work completed across the chat session (referencing the active session folder in `doc/prompts/<N>. <Session Title>/`).
   - Suggest a ready-to-use Git commit message with a structured commit description at the very end of the response.
