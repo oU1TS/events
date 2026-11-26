@@ -1,5 +1,35 @@
 [
   {
+    "Raid_Num": 24,
+    "title": "International Quantum Olympiad (IQO) 2026",
+    "Status": "Future",
+    "Type": "Olympiad / Carnival",
+    "dateRange": "27 - 29 December 2026",
+    "startDate": "2026-12-27",
+    "endDate": "2026-12-29",
+    "RegEndDate": "2026-11-30",
+    "venue": "Kuala Lumpur Convention Centre (KLCC), Kuala Lumpur, Malaysia",
+    "fee": "Primary Application: Free; Grand Finale: USD $3,500 per qualifying team (self-funded or institutional/corporate sponsorship)",
+    "details": "Organized by Qubit Education and International Education Summit under the theme 'Think Quantum, Solve Quantum!' to coincide with the International Year of Quantum (2025–2026), the inaugural International Quantum Olympiad (IQO) 2026 invites Senior Category teams (3 undergraduate or postgraduate students aged 18–25 as of December 2026) to compete on a global stage. Endorsed for UITS CSE students by Head of Department Mostafijur Rahman and coordinated regionally by Nazia Tahsin, the competition evaluates participants across six core quantum domains.",
+    "subEvents": [
+      {
+        "title": "Primary Online Application & Nomination",
+        "details": "Free online registration closing on November 30, 2026, for 3-member student teams nominated by their respective university departments."
+      },
+      {
+        "title": "Grand Finale (Kuala Lumpur, Malaysia)",
+        "details": "Held from December 27–29, 2026 (website also notes December 28–31, 2026) at KLCC, examining finalists across six domains: Quantum Mechanics and Foundations, Quantum Computing and Algorithms, Quantum Information Theory, Quantum Optics and Photonics, Condensed Matter and Quantum Materials, and Experimental Design and Quantum Sensing."
+      }
+    ],
+    "links": {
+      "Event Website": "https://www.quantumolympiad.com/",
+      "Secretariat Email": "mailto:info@quantumolympiad.com"
+    },
+    "OutsideDhaka": true,
+    "IsOnline": false,
+    "city": "Kuala Lumpur"
+  },
+  {
     "Raid_Num": 23,
     "title": "GDG Dhaka DevFest 2026",
     "Status": "Future",

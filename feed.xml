@@ -5,8 +5,25 @@
     <link>https://ou1ts.github.io/events/</link>
     <description>Live feed of active tech contests, hackathons, olympiads, and symposiums for UITS students.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 26 Nov 2026 16:22:31 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 26 Nov 2026 16:28:31 GMT</lastBuildDate>
     <atom:link href="https://ou1ts.github.io/events/feed.xml" rel="self" type="application/rss+xml" />
+
+    <item>
+      <title><![CDATA[[Olympiad / Carnival] International Quantum Olympiad (IQO) 2026]]></title>
+      <link>https://ou1ts.github.io/events/#raid-24</link>
+      <guid isPermaLink="false">uits-raid-24</guid>
+      <pubDate>Sun, 27 Dec 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[Olympiad / Carnival]]></category>
+      <description><![CDATA[<p><strong>Category:</strong> Olympiad / Carnival</p>
+      <p><strong>Date:</strong> 27 - 29 December 2026</p>
+      <p><strong>Registration Deadline:</strong> 2026-11-30</p>
+      <p><strong>Venue:</strong> Kuala Lumpur Convention Centre (KLCC), Kuala Lumpur, Malaysia</p>
+      <p><strong>Fee:</strong> Primary Application: Free; Grand Finale: USD $3,500 per qualifying team (self-funded or institutional/corporate sponsorship)</p>
+      <p><strong>Details:</strong> Organized by Qubit Education and International Education Summit under the theme &apos;Think Quantum, Solve Quantum!&apos; to coincide with the International Year of Quantum (2025–2026), the inaugural International Quantum Olympiad (IQO) 2026 invites Senior Category teams (3 undergraduate or postgraduate students aged 18–25 as of December 2026) to compete on a global stage. Endorsed for UITS CSE students by Head of Department Mostafijur Rahman and coordinated regionally by Nazia Tahsin, the competition evaluates participants across six core quantum domains.</p>
+      <h4>Sub-Events:</h4><ul><li><strong>Primary Online Application &amp; Nomination:</strong> Free online registration closing on November 30, 2026, for 3-member student teams nominated by their respective university departments.</li><li><strong>Grand Finale (Kuala Lumpur, Malaysia):</strong> Held from December 27–29, 2026 (website also notes December 28–31, 2026) at KLCC, examining finalists across six domains: Quantum Mechanics and Foundations, Quantum Computing and Algorithms, Quantum Information Theory, Quantum Optics and Photonics, Condensed Matter and Quantum Materials, and Experimental Design and Quantum Sensing.</li></ul>
+      <h4>Related Links:</h4><ul><li><a href="https://www.quantumolympiad.com/">Event Website</a></li><li><a href="mailto:info@quantumolympiad.com">Secretariat Email</a></li></ul>
+      <p><a href="https://ou1ts.github.io/events/#raid-24">View Full Raid on UITS Event Raiders &rarr;</a></p>]]></description>
+    </item>
 
     <item>
       <title><![CDATA[[Conferences / Webinars] GDG Dhaka DevFest 2026]]></title>
