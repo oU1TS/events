@@ -1,5 +1,31 @@
 [
   {
+    "Raid_Num": 23,
+    "title": "GDG Dhaka DevFest 2026",
+    "Status": "Future",
+    "Type": "Conferences / Webinars",
+    "dateRange": "TBA",
+    "startDate": "2026-12-01",
+    "endDate": "2026-12-31",
+    "RegEndDate": "TBA",
+    "venue": "Dhaka, Bangladesh (Exact venue TBA)",
+    "fee": "Free",
+    "details": "Organized by Google Developer Group (GDG) Dhaka, DevFest 2026 is the community's flagship annual developer conference bringing together software engineers, students, tech leads, and innovators across Bangladesh. The event features technical keynotes, hands-on codelabs, and interactive sessions covering Android, Web, Cloud, AI/ML, and Google developer technologies.",
+    "subEvents": [
+      {
+        "title": "Technical Sessions & Codelabs",
+        "details": "Deep-dive talks, workshops, and community networking focused on Google Cloud, Gemini/AI integration, mobile engineering, and modern web architectures."
+      }
+    ],
+    "links": {
+      "Organizer Site": "https://gdgdhaka.org/",
+      "RSVP / Event Portal": "https://gdgdhaka.org/rsvp/gdg-dhaka-devfest-2026"
+    },
+    "OutsideDhaka": false,
+    "IsOnline": false,
+    "city": "Dhaka"
+  },
+  {
     "Raid_Num": 22,
     "title": "17th National Undergraduate Mathematics Olympiad 2026",
     "Status": "Future",
