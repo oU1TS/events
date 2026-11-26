@@ -22,7 +22,7 @@ While formal university clubs and wings (like the UITS Cyber Security Wing, coor
 
 The afternoon started casually—sitting on the grass, catching up on mundane things about people and community efforts. Fazle Rabbi, the admin of TPC, shared his thoughts on FOSS and his experiences leading TPC over the years. He noted how much harder it has become nowadays to catch up regularly due to everyone's busy schedules, yet he kept coming back to a simple truth about real communities: "Wherever you go, you should be able to seek people out, and people who are nearby will show up." Throughout the conversation, he would joke about the realities of society and describe his peers through "Penguinified" metaphors—which explains why [Penguinify](https://hd189b.space/penguinify/) exists.
 
-As more people arrived, Rabbi bhai turned the spotlight toward me and asked about my vision for oU1TS and how it came about. He seemed genuinely interested, so I shared the origin story: what started as a simple resource-sharing group gradually scaled into a broader community. I had to create the parent initiative oU1TS (a wordplay on "UITS" with an "o" prefix standing for an online-based community) simply to bring multiple specialized initiatives together under one unified umbrella. 
+As more people arrived, Fazle bhai turned the spotlight toward me and asked about my vision for oU1TS and how it came about. He seemed genuinely interested, so I shared the origin story: what started as a simple resource-sharing group gradually scaled into a broader community. I had to create the parent initiative oU1TS (a wordplay on "UITS" with an "o" prefix standing for an online-based community) simply to bring multiple specialized initiatives together under one unified umbrella. 
 
 ![](../files/oU1TS.webp)
 
@@ -30,7 +30,7 @@ At its core, the reason was straightforward—we lacked a proper community, so w
 
 Both Fazle Rabbi and Infinite went on to share their own experiences leading active student tech communities at BRACU and DIU, respectively. Hearing their stories was deeply reassuring—it felt good to know that the time and effort I have been pouring into the people around oU1TS wasn't in vain.
 
-Soon after, others joined in alongside Utsob bhai and @bdeshi, and the party truly kicked off. One detail that stood out about @bdeshi bhai was his background with OSSU—Rabbi bhai introduced him as an OSSU graduate, which added real weight to his presence and his Why FOSS? session. In a lighthearted yet telling moment, Rabbi bhai also outright declared Utsob bhai as the next person to lead TPC.
+Soon after, others joined in alongside Utsob bhai and @bdeshi, and the party truly kicked off. One detail that stood out about @bdeshi bhai was his background with OSSU—Fazle bhai introduced him as an OSSU graduate, which added real weight to his presence and his Why FOSS? session. In a lighthearted yet telling moment, Rabbi bhai also outright declared Utsob bhai as the next person to lead TPC.
 
 Then there was Tanjim, easily the nerdiest of the bunch, who had a sharp, thoughtful remark on virtually every topic that came up. When asked what he thought about our university student portal getting hacked, his reply was instant and deadpan: "So what?" I am still processing some of the angles from those conversations, but the bigger takeaway felt clear: in the grand scheme of things, real progress comes down to trial and error—learning from past mistakes and communicating well to see things through. Later, @bdeshi bhai pulled out his massive collection of open-source and tech stickers, and everyone lined up to pick their favorites—while Tanjim bhai casually named almost every single sticker at a glance.
 
@@ -58,13 +58,13 @@ Everyone grabbed a slice, gathered for a group photo, and hung around chatting a
 ### People, Conversations & Takeaways
 
 ![](https://res.cloudinary.com/b1tranger/image/upload/v1795712967/penguinified4_mvkykw.webp)
-This is b1tranger and Fazle Rabbi
+This is b1tranger and Fazle Rabbi bhai
 
 #### Saif
 
 * Discussed tutoring and monthly university-guidance sessions tied to monthly pay/compensation.
 
-#### Rabbi Bhai
+#### Fazle Bhai
 
 * **Community Building & Reputation:** Focused on how communities are built, collaboration and reputation dynamics, and advice around community naming/legitimacy (such as when an unofficial clone is registered).
 * **Proposed Monthly In-Person Session Structure (1 to 1.5 hours):**
