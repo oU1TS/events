@@ -49,7 +49,7 @@ Everyone grabbed a slice, gathered for a group photo, and hung around chatting a
 * **Realization — Always Bring a Bag:** Bring a bag to every outing—formal or informal—because loose, small items are easy to misplace when moving around or sitting outdoors.
 * **Tasks**
 * Capture and organize sticker photos from the meetup.
-* Prepare censored group photos for event notes/write-ups.
+* Prepare censored group photos for event notes/write-ups. (Note from by Fazle bhai: please use [penguinify](https://hd189b.space/penguinify/) as much as possibe and report bugs and contribute! 🙏)
 
 
 
