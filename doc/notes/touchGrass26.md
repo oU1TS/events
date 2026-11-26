@@ -96,7 +96,7 @@ This is b1tranger and Fazle Rabbi bhai
 
 
 * **Pull Requests (PRs) & AI Context:** Question to revisit later on pull requests—what is the point when avoiding duplicate effort already done elsewhere? Also noted that AI scales action rather than replacing people, freeing humans to focus on what matters between people.
-* **`Tux.bd` Portfolio:** Mentioned [`Tux.bd`](Tux.bd) portfolio and but denied its possible connection to `TuxTalk`.
+* **`Tux.bd` Portfolio:** Mentioned [`Tux.bd`](https://tux.bd/) portfolio and but denied its possible connection to `TuxTalk`.
 * **Learning Linux from Scratch (Prompted by Ridaun bhai's question):** Remove the illusion that learning Linux has a fixed start and end; explore systems fundamentals through practical internals:
 * *How Docker runs Linux:* Containers do not boot a full virtual machine; instead, they share the host's Linux kernel while isolating processes, filesystems, and networks using kernel features like **namespaces** and **cgroups**.
 * *Alpine Linux:* A minimal, security-oriented Linux distribution built around **musl libc** and **BusyBox** instead of GNU coreutils, making it tiny (~5 MB base image) and ideal for understanding the bare essentials of a Linux userland and container environment.
