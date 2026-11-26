@@ -1,5 +1,22 @@
 [
   {
+    "id": "touch-grass-2026",
+    "title": "Touch Grass — TPC 9th Birthday Party",
+    "category": "Community Notes",
+    "description": "oU1TS and Penguins_Cafe_UITS delegation notes from Touch Grass: The Penguins Club 9th Birthday Party at Justice Shahabuddin Ahmed Park, covering FOSS & Linux community-building insights, embedded systems, CKA/CKAD, and TPC collaboration.",
+    "file": "doc/notes/touchGrass26.md",
+    "raidNum": 25,
+    "tags": [
+      "FOSS",
+      "Linux",
+      "The Penguins Club",
+      "Community",
+      "Delegation Notes",
+      "Penguins Cafe"
+    ],
+    "lastUpdated": "2026-11-26"
+  },
+  {
     "id": "numo-2026",
     "title": "NUMO 2026 Delegation Notes",
     "category": "Olympiad Notes",

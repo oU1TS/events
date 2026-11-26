@@ -552,12 +552,12 @@ body.light-theme .btn-primary {
     transform: scaleY(1);
 }
 
-/* Parent Collapsible Raid Card Styling */
-details.parent-raid-card {
+/* Parent Raid Card Styling (Summary triggers expanded details modal) */
+.parent-raid-card {
     cursor: default;
 }
 
-details.parent-raid-card summary.parent-raid-summary {
+.parent-raid-summary {
     list-style: none;
     cursor: pointer;
     user-select: none;
@@ -566,10 +566,44 @@ details.parent-raid-card summary.parent-raid-summary {
     position: relative;
 }
 
-details.parent-raid-card summary.parent-raid-summary::-webkit-details-marker,
-details.parent-raid-card summary.parent-raid-summary::marker {
-    display: none;
-    content: "";
+.raid-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-tertiary);
+    color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.raid-expand-btn:hover {
+    transform: scale(1.08);
+    background-color: rgba(var(--accent-rgb), 0.14);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.25);
+}
+
+.raid-expand-btn:active {
+    transform: scale(0.95);
+}
+
+.raid-expand-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.raid-expand-btn svg {
+    width: 17px;
+    height: 17px;
+    display: block;
 }
 
 .parent-raid-title-row {
@@ -4143,5 +4177,206 @@ body.light-theme .mode-pill.active {
 
     .benefit-card {
         padding: 1.5rem;
+    }
+}
+
+/* ==========================================================================
+   Raid Details Expanded Modal (FLIP Expand / Minimize Animation)
+   ========================================================================== */
+.raid-details-modal {
+    transition: visibility 0.38s ease;
+}
+
+.raid-details-modal.measuring {
+    visibility: visible;
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
+}
+
+.raid-details-modal.closing {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: none;
+}
+
+.raid-details-modal .custom-modal-backdrop {
+    opacity: 0;
+    transition: opacity 0.32s ease;
+}
+
+.raid-details-modal.open .custom-modal-backdrop {
+    opacity: 1;
+}
+
+.raid-details-modal.closing .custom-modal-backdrop {
+    opacity: 0;
+}
+
+.raid-details-modal-content {
+    max-width: 680px;
+    padding: 1.75rem;
+    gap: 1.15rem;
+    transform: scale(0.92) translateY(20px);
+    opacity: 0;
+    transform-origin: center center;
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease;
+    will-change: transform, opacity;
+}
+
+.raid-details-modal.open .raid-details-modal-content {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+}
+
+.raid-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.raid-modal-meta-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.raid-modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.raid-modal-action-btn,
+.raid-modal-icon-btn,
+.raid-modal-copy-content-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    border-radius: 9px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.raid-modal-action-btn {
+    padding: 0.4rem 0.75rem;
+}
+
+.raid-modal-icon-btn {
+    width: 34px;
+    height: 34px;
+}
+
+.raid-modal-copy-content-btn {
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+}
+
+.raid-modal-action-btn:hover,
+.raid-modal-icon-btn:hover,
+.raid-modal-copy-content-btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background-color: rgba(var(--accent-rgb), 0.1);
+}
+
+.raid-modal-icon-btn.copied,
+.raid-modal-copy-content-btn.copied {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-primary);
+}
+
+body.light-theme .raid-modal-icon-btn.copied,
+body.light-theme .raid-modal-copy-content-btn.copied {
+    color: #ffffff;
+}
+
+.raid-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.raid-modal-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.raid-modal-title {
+    margin-bottom: 0;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.raid-modal-badges {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.raid-modal-badges .raid-venue-corner-badge {
+    position: static;
+    margin-left: auto;
+}
+
+.raid-modal-body .raid-details.expanded {
+    margin-bottom: 0;
+}
+
+.raid-modal-body .raid-info-group {
+    margin-bottom: 0;
+}
+
+.raid-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.raid-modal-minimize-btn {
+    padding: 0.55rem 1.25rem;
+    font-size: 0.88rem;
+}
+
+@media (max-width: 640px) {
+    .raid-details-modal-content {
+        padding: 1.25rem;
+        gap: 0.9rem;
+    }
+
+    .raid-modal-footer .raid-modal-minimize-btn {
+        width: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .raid-details-modal,
+    .raid-details-modal .custom-modal-backdrop,
+    .raid-details-modal-content {
+        transition-duration: 0.01ms !important;
     }
 }

@@ -302,4 +302,5 @@ graph TD
 | **Form Field Label Compliance** | `index.html`, `render.html`, `app.js` | `.visually-hidden` `<label>` tags & explicit `aria-label`s | Eliminates 2 unlabeled input violations in DevTools Issues tab, ensuring full accessibility for assistive tech and keyboard navigation. |
 | **Client-Side AdBlocker Guard** | `index.html` inline OneSignal init | Defensive `try...catch` & `onerror` | Prevents uncaught promise rejections when `OneSignalSDK.page.js` is blocked by uBlock Origin or Brave Shields (`net::ERR_BLOCKED_BY_CLIENT`). |
 | **Reader TOC Bookmark Flex-Shrink Fix** | `#toc-list`, `.toc-link` in `css/render.css` | `flex-shrink: 0; min-height: 2.2rem;` & container `min-height: 0;` | Prevents vertical compression and overlapping of document outline bookmarks when reading notes with extensive headings. |
+| **Raid Details Modal & FLIP Animation** | `openRaidDetailsModal`, `closeRaidDetailsModal`, `#raid-details-modal` | Compact cards + centered modal with card-to-modal expand & minimize-to-card animation | Eliminates grid layout shifts from inline card expansion while preserving spatial continuity back to the source card. |
 

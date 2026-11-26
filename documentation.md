@@ -107,11 +107,10 @@ events/
 * **Toggle Controls & Dual Sync**: An inline toggle button (`#toggle-past-raids-btn`) and stacked floating eye action button (`#floating-past-raids-btn`) allow users to unhide/hide past raids dynamically. Clicking either button synchronizes active styles, eye/eye-off icons, aria attributes, and triggers re-rendering.
 * **Deep-Link Auto-Unhide**: Opening a past raid via deep-link URL (e.g. `#raid-1`) automatically sets `showPastRaids = true`, updates toggle UI states to "unhide", renders the target card, and scrolls to it.
 
-### I. Parent Collapsible Raid Card View
-* **Nested `<details>` Card Schema**: Each raid item in `#raids-container` is rendered as a parent collapsible `<details class="raid-card parent-raid-card">` element.
-* **Summary View**: The card's `<summary>` presents a clean overview containing `"dateRange"`, `"Type"` tag, `"Status"` badge, `"title"`, copy link button, bottom-right venue location badge, and rotating chevron indicator.
-* **Expanded View**: Opening the parent card reveals `.parent-raid-body` with full event descriptions, mobile "See More" toggle, venue/fee/schedule details dropdown, and resource links.
-* **Auto-Expansion on Deep-Link**: `scrollToRaid()` sets `card.open = true` automatically when deep-linking to a campaign.
+### I. Raid Card Summary & Expanded Details Modal
+* **Compact Summary Cards**: Each raid item in `#raids-container` is rendered as a `<div class="raid-card parent-raid-card">` inside `.raid-card-wrapper`, displaying `"dateRange"`, `"Type"` tag, `"Status"` badge, selectable `"title"`, protruding copy-link button, bottom-right venue location badge, and an explicit `.raid-expand-btn` button.
+* **Expanded Details Modal (`#raid-details-modal`)**: Clicking the expand button (or card summary) opens `#raid-details-modal` instead of expanding the card downward at the bottom. The modal displays the full description, Venue, Fees, Registration Deadline, collapsible Schedule sub-events, resource links, and Copy Link / Copy Details / Edit actions.
+* **FLIP Expand & Minimize Animation**: `openRaidDetailsModal()` measures the source card's viewport rect and animates the modal from the card's exact position and scale to center; `closeRaidDetailsModal()` reverses the transform to minimize the modal smoothly back to the initial raid card position.
 
 ### J. Venue Location Corner Badges & Map Link Integration
 * **Corner Badge Placement**: Positioned at the bottom-right corner of each raid card summary header (`.parent-raid-summary`) using absolute positioning (`.raid-venue-corner-badge`).
@@ -137,7 +136,14 @@ events/
 
 ## 4. Version History & Changelog
 
-### 🚀 v1.16.4 — Markdown Reader TOC Bookmark Overlap & Flexbox Layout Fix (Current)
+### 🚀 v1.17.0 — Raid Details Modal & FLIP Expand-Minimize Animation (Current)
+* **Expanded Raid Details Modal (`#raid-details-modal`):**
+  * Replaced inline bottom-expanding `<details>` bodies on raid cards with a dedicated glassmorphic `#raid-details-modal` dialog (`index.html`, `style.css`, `app.js`).
+  * Added an explicit `.raid-expand-btn` on each raid card's title row (while preserving selectable titles, protruding copy-link buttons, and venue map badges).
+  * Implemented FLIP-based `openRaidDetailsModal()` and `closeRaidDetailsModal()` animations so clicking expand zooms the modal out from the clicked card's viewport bounding box and dismissing it (via close button, backdrop click, or `Escape`) animates it minimizing back to the initial raid card position.
+  * Preserved all card features inside the modal: full event description, Venue, Fees, Registration Deadline, collapsible `.schedule-dropdown` items, resource/`View Notes` links, formatted text copy (`Copy Details`), link copy, and authenticated `Edit` proposal trigger.
+
+### 🚀 v1.16.4 — Markdown Reader TOC Bookmark Overlap & Flexbox Layout Fix
 * **Markdown Viewer Layout Polish:**
   * **TOC Bookmark Overlap Resolution**: Fixed flexbox shrink collapsing in `#nav-pane`'s `#toc-list` (`css/render.css`) where documents with numerous headings squeezed `.toc-link` elements below their line-height and padding, causing bottom bookmarks to overlap top ones. Added `flex-shrink: 0; min-height: 2.2rem; display: flex; align-items: center; box-sizing: border-box;` and `min-height: 0;` on `#toc-list`, guaranteeing that bookmarks maintain their full readable height and scroll smoothly via `overflow-y: auto`.
   * **H4 Heading Indentation**: Added explicit `.toc-link.h4` styling (`padding-left: 3rem; font-size: 0.75rem; color: var(--text-muted);`) to support 4th-level document outlines.

@@ -1,5 +1,40 @@
 [
   {
+    "Raid_Num": 25,
+    "title": "Touch Grass: The Penguins Club 9th Birthday Party",
+    "Status": "Past",
+    "Type": "Conferences / Webinars",
+    "dateRange": "21 November 2026 (Starts 2:30 PM)",
+    "startDate": "2026-11-21",
+    "endDate": "2026-11-21",
+    "RegEndDate": "2026-11-21",
+    "venue": "Justice Shahabuddin Ahmed Park, Gulshan 2, Dhaka",
+    "fee": "Free (Limited seats; registration required)",
+    "details": "The Penguins Club is turning 9, and you're invited!\nNine years of free software, late-night terminals, and a growing community. This Saturday, we're celebrating the only way a Linux club should: outside, away from screens, with cake.\n\nWhether you've never installed Linux, or you dream in shell, there's a spot on the grass for you.",
+    "subEvents": [
+      {
+        "title": "History of The Penguins Club w/ @linuxhasan",
+        "details": "Looking back at nine years of free software, late-night terminals, and growing the TPC community (https://t.me/linuxhasan)."
+      },
+      {
+        "title": "Why FOSS? w/ @bdeshi",
+        "details": "Exploring why Free and Open-Source Software matters and going FOSS as a newcomer (https://t.me/bdeshi)."
+      },
+      {
+        "title": "Community Hangout, Cake & TPC Updates",
+        "details": "Meet fellow penguins, enjoy cake (it's not a lie), get flyers & updates on what's next for TPC, plus fun sessions and a quiz for a chance to win swag."
+      }
+    ],
+    "links": {
+      "Registration": "https://ezyform.app/2dd2387c-b399-46fd-bd02-44c06cc17858",
+      "More Details": "https://thepenguins.club/events/touch-grass/",
+      "notes": "doc/notes/touchGrass26.md"
+    },
+    "OutsideDhaka": false,
+    "IsOnline": false,
+    "city": "Dhaka"
+  },
+  {
     "Raid_Num": 24,
     "title": "International Quantum Olympiad (IQO) 2026",
     "Status": "Future",

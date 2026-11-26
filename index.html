@@ -1314,6 +1314,66 @@
         </div>
     </div>
 
+    <!-- 6. RAID DETAILS EXPANDED MODAL -->
+    <div id="raid-details-modal" class="custom-modal raid-details-modal" aria-hidden="true" role="dialog"
+        aria-modal="true" aria-labelledby="raid-modal-title">
+        <div class="custom-modal-backdrop" data-close-modal="raid-details-modal"></div>
+        <div class="custom-modal-content raid-details-modal-content">
+            <div class="raid-modal-header">
+                <div class="raid-modal-meta-left">
+                    <div class="raid-date-wrapper" id="raid-modal-date"></div>
+                    <span class="status-badge" id="raid-modal-status"></span>
+                </div>
+                <div class="raid-modal-header-actions">
+                    <button type="button" class="raid-modal-action-btn" id="raid-modal-edit-btn"
+                        title="Propose an update for this raid" aria-label="Propose an update for this raid"
+                        style="display: none;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        <span>Edit</span>
+                    </button>
+                    <button type="button" class="raid-modal-icon-btn" id="raid-modal-copy-link-btn"
+                        title="Copy link to this raid" aria-label="Copy link to this raid">
+                        <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="custom-modal-close" data-close-modal="raid-details-modal"
+                        aria-label="Minimize raid details modal">&times;</button>
+                </div>
+            </div>
+
+            <div class="raid-modal-body" id="raid-modal-body">
+                <div class="raid-modal-title-block">
+                    <h3 class="raid-title raid-modal-title" id="raid-modal-title"></h3>
+                    <div class="raid-modal-badges" id="raid-modal-badges"></div>
+                </div>
+                <p class="raid-details expanded" id="raid-modal-description"></p>
+                <div class="details-content raid-info-group" id="raid-modal-info-group"></div>
+                <div class="raid-links-wrapper" id="raid-modal-links" style="display: none;"></div>
+            </div>
+
+            <div class="raid-modal-footer">
+                <button type="button" class="raid-modal-copy-content-btn" id="raid-modal-copy-content-btn"
+                    title="Copy card contents (formatted text)" aria-label="Copy card contents in formatted text">
+                    <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy Details</span>
+                </button>
+                <button type="button" class="btn btn-secondary raid-modal-minimize-btn"
+                    data-close-modal="raid-details-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Core SPA Router & App Scripts -->
     <script src="app.js"></script>
 </body>

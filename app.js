@@ -615,23 +615,415 @@ document.addEventListener('DOMContentLoaded', () => {
         return lines.join('\n');
     }
 
+    function createVenueBadge(raid) {
+        const mapQueryUrl = raid.venue ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(raid.venue)}` : '';
+        const handleMapClick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (mapQueryUrl) {
+                window.open(mapQueryUrl, '_blank', 'noopener,noreferrer');
+            }
+        };
+
+        if (raid.OutsideDhaka) {
+            const cornerBadge = document.createElement('span');
+            cornerBadge.className = 'raid-venue-corner-badge outside-dhaka-tag map-link';
+            cornerBadge.title = 'View venue location on Google Maps';
+            cornerBadge.addEventListener('click', handleMapClick);
+
+            const pinSvg = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
+            const htmlStateDhaka = `<s>Dhaka</s>`;
+            cornerBadge.innerHTML = htmlStateDhaka;
+
+            let showIconOnly = false;
+            const cycleInterval = setInterval(() => {
+                if (!document.body.contains(cornerBadge)) {
+                    clearInterval(cycleInterval);
+                    return;
+                }
+                showIconOnly = !showIconOnly;
+                cornerBadge.classList.add('fade-transition');
+                setTimeout(() => {
+                    cornerBadge.innerHTML = showIconOnly ? pinSvg : htmlStateDhaka;
+                    cornerBadge.classList.toggle('icon-only', showIconOnly);
+                    cornerBadge.classList.remove('fade-transition');
+                }, 180);
+            }, 2000);
+
+            return cornerBadge;
+        }
+
+        if (raid.IsOnline) {
+            const cornerBadge = document.createElement('span');
+            cornerBadge.className = 'raid-venue-corner-badge is-online-tag';
+            cornerBadge.textContent = 'Online';
+            return cornerBadge;
+        }
+
+        const cornerBadge = document.createElement('span');
+        cornerBadge.className = 'raid-venue-corner-badge static-location-tag map-link icon-only';
+        cornerBadge.title = 'View venue location on Google Maps';
+        cornerBadge.addEventListener('click', handleMapClick);
+        cornerBadge.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
+        return cornerBadge;
+    }
+
+    let activeRaidModalNum = null;
+    let activeRaidModalCloseTimer = null;
+
+    function openRaidDetailsModal(raid, sourceCardEl) {
+        const modal = document.getElementById('raid-details-modal');
+        if (!modal || !raid) return;
+        const modalContent = modal.querySelector('.raid-details-modal-content');
+        if (!modalContent) return;
+
+        if (activeRaidModalCloseTimer) {
+            clearTimeout(activeRaidModalCloseTimer);
+            activeRaidModalCloseTimer = null;
+        }
+        modal.classList.remove('closing');
+
+        activeRaidModalNum = raid.Raid_Num;
+
+        const dateEl = document.getElementById('raid-modal-date');
+        const statusEl = document.getElementById('raid-modal-status');
+        const editBtn = document.getElementById('raid-modal-edit-btn');
+        const copyLinkBtn = document.getElementById('raid-modal-copy-link-btn');
+        const titleEl = document.getElementById('raid-modal-title');
+        const badgesEl = document.getElementById('raid-modal-badges');
+        const descEl = document.getElementById('raid-modal-description');
+        const infoGroupEl = document.getElementById('raid-modal-info-group');
+        const linksEl = document.getElementById('raid-modal-links');
+        const copyContentBtn = document.getElementById('raid-modal-copy-content-btn');
+        const modalBodyEl = document.getElementById('raid-modal-body');
+
+        const statusText = raid.Status || 'Future';
+        const statusClass = statusText.toLowerCase() === 'future' ? 'status-future' : 'status-past';
+
+        if (dateEl) {
+            dateEl.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span>${escapeHTML(raid.dateRange)}</span>
+            `;
+        }
+
+        if (statusEl) {
+            statusEl.className = `status-badge ${statusClass}`;
+            statusEl.textContent = statusText;
+        }
+
+        if (editBtn) {
+            if (currentSessionUser) {
+                editBtn.style.display = 'inline-flex';
+                editBtn.onclick = () => {
+                    closeRaidDetailsModal();
+                    if (window.openEventFormModal) {
+                        window.openEventFormModal('update', raid);
+                    }
+                };
+            } else {
+                editBtn.style.display = 'none';
+                editBtn.onclick = null;
+            }
+        }
+
+        const copyIconSvg = `
+            <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+        `;
+        const checkIconSvg = `
+            <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        `;
+
+        if (copyLinkBtn) {
+            copyLinkBtn.classList.remove('copied');
+            copyLinkBtn.innerHTML = copyIconSvg;
+            copyLinkBtn.onclick = () => {
+                const raidUrl = window.location.href.split('#')[0] + '#raid-' + raid.Raid_Num;
+                navigator.clipboard.writeText(raidUrl).then(() => {
+                    copyLinkBtn.classList.add('copied');
+                    copyLinkBtn.innerHTML = checkIconSvg;
+                    setTimeout(() => {
+                        copyLinkBtn.classList.remove('copied');
+                        copyLinkBtn.innerHTML = copyIconSvg;
+                    }, 2000);
+                }).catch(err => console.error('Failed to copy link: ', err));
+            };
+        }
+
+        if (titleEl) {
+            titleEl.textContent = raid.title;
+        }
+
+        if (badgesEl) {
+            badgesEl.innerHTML = '';
+            if (raid.Type) {
+                const typeTag = document.createElement('span');
+                typeTag.className = 'raid-type-tag';
+                typeTag.textContent = raid.Type;
+                badgesEl.appendChild(typeTag);
+            }
+            badgesEl.appendChild(createVenueBadge(raid));
+        }
+
+        if (descEl) {
+            descEl.textContent = raid.details || '';
+        }
+
+        if (infoGroupEl) {
+            infoGroupEl.innerHTML = '';
+            infoGroupEl.appendChild(createInfoItem('Venue', raid.venue));
+            infoGroupEl.appendChild(createInfoItem('Fees', raid.fee));
+
+            if (raid.RegEndDate) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const regDate = new Date(raid.RegEndDate);
+                const isValidDate = !isNaN(regDate.getTime());
+                let isClosed = false;
+                let regText = raid.RegEndDate;
+
+                if (isValidDate) {
+                    regDate.setHours(0, 0, 0, 0);
+                    isClosed = today > regDate;
+                    const formattedRegDate = formatLocalDate(raid.RegEndDate);
+                    regText = isClosed ? `${formattedRegDate} (Closed)` : formattedRegDate;
+                }
+
+                const regEndItem = createInfoItem('Reg Deadline', regText);
+                const valSpan = regEndItem.querySelector('.raid-info-value');
+                if (valSpan) {
+                    if (isClosed) {
+                        valSpan.style.color = 'var(--text-muted)';
+                    } else {
+                        valSpan.style.color = 'var(--success-color)';
+                        valSpan.style.fontWeight = '600';
+                    }
+                }
+                infoGroupEl.appendChild(regEndItem);
+            }
+
+            if (raid.subEvents) {
+                const subEventsItem = document.createElement('div');
+                subEventsItem.className = 'raid-info-item raid-schedule-group';
+
+                const labelSpan = document.createElement('span');
+                labelSpan.className = 'raid-info-label';
+                labelSpan.textContent = 'Schedule';
+                subEventsItem.appendChild(labelSpan);
+
+                const valueSpan = document.createElement('div');
+                valueSpan.className = 'raid-info-value';
+
+                if (Array.isArray(raid.subEvents)) {
+                    raid.subEvents.forEach(sub => {
+                        const subDetailsEl = document.createElement('details');
+                        subDetailsEl.className = 'schedule-dropdown';
+
+                        const subSummaryEl = document.createElement('summary');
+                        subSummaryEl.className = 'schedule-summary';
+                        subSummaryEl.textContent = sub.title;
+
+                        const contentDiv = document.createElement('div');
+                        contentDiv.className = 'schedule-dropdown-content raid-sub-events';
+                        contentDiv.textContent = sub.details;
+
+                        subDetailsEl.appendChild(subSummaryEl);
+                        subDetailsEl.appendChild(contentDiv);
+                        valueSpan.appendChild(subDetailsEl);
+                    });
+                } else {
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'raid-sub-events';
+                    textSpan.textContent = raid.subEvents;
+                    valueSpan.appendChild(textSpan);
+                }
+
+                subEventsItem.appendChild(valueSpan);
+                infoGroupEl.appendChild(subEventsItem);
+            }
+        }
+
+        if (linksEl) {
+            linksEl.innerHTML = '';
+            let raidLinks = raid.links ? Object.assign({}, raid.links) : {};
+            if (!raidLinks.notes && eventNotesData && Array.isArray(eventNotesData)) {
+                const matchingNote = eventNotesData.find(n => n.raidNum === raid.Raid_Num && n.file);
+                if (matchingNote) {
+                    raidLinks.notes = matchingNote.file;
+                }
+            }
+
+            if (Object.keys(raidLinks).length > 0) {
+                linksEl.style.display = 'flex';
+                Object.entries(raidLinks).forEach(([linkName, url]) => {
+                    const anchor = document.createElement('a');
+                    anchor.className = 'raid-link';
+
+                    if (linkName.toLowerCase() === 'notes') {
+                        anchor.href = `render.html?file=${encodeURIComponent(url)}`;
+                        anchor.innerHTML = `
+                            <span>View Notes</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        `;
+                    } else {
+                        anchor.href = url;
+                        anchor.target = '_blank';
+                        anchor.rel = 'noopener noreferrer';
+                        anchor.innerHTML = `
+                            <span>${escapeHTML(linkName)}</span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="7" y1="17" x2="17" y2="7"></line>
+                                <polyline points="7 7 17 7 17 17"></polyline>
+                            </svg>
+                        `;
+                    }
+                    linksEl.appendChild(anchor);
+                });
+            } else {
+                linksEl.style.display = 'none';
+            }
+        }
+
+        if (copyContentBtn) {
+            copyContentBtn.classList.remove('copied');
+            copyContentBtn.innerHTML = `${copyIconSvg}<span>Copy Details</span>`;
+            copyContentBtn.onclick = () => {
+                const formattedText = formatRaidCardText(raid);
+                navigator.clipboard.writeText(formattedText).then(() => {
+                    copyContentBtn.classList.add('copied');
+                    copyContentBtn.innerHTML = `${checkIconSvg}<span>Copied!</span>`;
+                    setTimeout(() => {
+                        copyContentBtn.classList.remove('copied');
+                        copyContentBtn.innerHTML = `${copyIconSvg}<span>Copy Details</span>`;
+                    }, 2000);
+                }).catch(err => console.error('Failed to copy card contents: ', err));
+            };
+        }
+
+        if (modalBodyEl) {
+            modalBodyEl.scrollTop = 0;
+        }
+
+        // Measure target centered rect and compute FLIP transform from source card
+        modalContent.style.transition = 'none';
+        modalContent.style.transform = 'none';
+        modalContent.style.opacity = '1';
+        modal.classList.add('measuring');
+        modal.setAttribute('aria-hidden', 'false');
+
+        const targetRect = modalContent.getBoundingClientRect();
+        const cardEl = sourceCardEl || document.getElementById(`raid-card-${raid.Raid_Num}`);
+        if (cardEl && targetRect.width > 0 && targetRect.height > 0) {
+            const sourceRect = cardEl.getBoundingClientRect();
+            const dx = (sourceRect.left + sourceRect.width / 2) - (targetRect.left + targetRect.width / 2);
+            const dy = (sourceRect.top + sourceRect.height / 2) - (targetRect.top + targetRect.height / 2);
+            const sx = Math.max(0.2, sourceRect.width / targetRect.width);
+            const sy = Math.max(0.2, sourceRect.height / targetRect.height);
+            modalContent.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+            modalContent.style.opacity = '0.35';
+            void modalContent.offsetWidth;
+        } else {
+            modalContent.style.transform = 'scale(0.92) translateY(20px)';
+            modalContent.style.opacity = '0';
+            void modalContent.offsetWidth;
+        }
+
+        modal.classList.remove('measuring');
+        document.body.style.overflow = 'hidden';
+
+        requestAnimationFrame(() => {
+            modalContent.style.transition = '';
+            modalContent.style.transform = '';
+            modalContent.style.opacity = '';
+            modal.classList.add('open');
+        });
+    }
+
+    function closeRaidDetailsModal() {
+        const modal = document.getElementById('raid-details-modal');
+        if (!modal) return;
+        if (!modal.classList.contains('open') && !modal.classList.contains('measuring')) return;
+
+        const modalContent = modal.querySelector('.raid-details-modal-content');
+        if (!modalContent) return;
+
+        if (activeRaidModalCloseTimer) {
+            clearTimeout(activeRaidModalCloseTimer);
+            activeRaidModalCloseTimer = null;
+        }
+
+        const sourceCardEl = activeRaidModalNum ? document.getElementById(`raid-card-${activeRaidModalNum}`) : null;
+        const targetRect = modalContent.getBoundingClientRect();
+
+        modal.classList.remove('open', 'measuring');
+        modal.classList.add('closing');
+
+        if (sourceCardEl && document.body.contains(sourceCardEl) && targetRect.width > 0 && targetRect.height > 0) {
+            const sourceRect = sourceCardEl.getBoundingClientRect();
+            if (sourceRect.width > 0 && sourceRect.height > 0) {
+                const dx = (sourceRect.left + sourceRect.width / 2) - (targetRect.left + targetRect.width / 2);
+                const dy = (sourceRect.top + sourceRect.height / 2) - (targetRect.top + targetRect.height / 2);
+                const sx = Math.max(0.18, sourceRect.width / targetRect.width);
+                const sy = Math.max(0.18, sourceRect.height / targetRect.height);
+                modalContent.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+                modalContent.style.opacity = '0';
+            } else {
+                modalContent.style.transform = 'scale(0.88) translateY(16px)';
+                modalContent.style.opacity = '0';
+            }
+        } else {
+            modalContent.style.transform = 'scale(0.88) translateY(16px)';
+            modalContent.style.opacity = '0';
+        }
+
+        const finishClose = () => {
+            if (activeRaidModalCloseTimer) {
+                clearTimeout(activeRaidModalCloseTimer);
+                activeRaidModalCloseTimer = null;
+            }
+            modal.classList.remove('closing');
+            modal.setAttribute('aria-hidden', 'true');
+            modalContent.style.transition = '';
+            modalContent.style.transform = '';
+            modalContent.style.opacity = '';
+            activeRaidModalNum = null;
+
+            const anyOpen = document.querySelectorAll('.custom-modal.open, .calendar-modal.open');
+            if (anyOpen.length === 0) {
+                document.body.style.overflow = '';
+            }
+        };
+
+        const onTransitionEnd = (e) => {
+            if (e.target !== modalContent || e.propertyName !== 'transform') return;
+            modalContent.removeEventListener('transitionend', onTransitionEnd);
+            finishClose();
+        };
+        modalContent.addEventListener('transitionend', onTransitionEnd);
+        activeRaidModalCloseTimer = setTimeout(() => {
+            modalContent.removeEventListener('transitionend', onTransitionEnd);
+            finishClose();
+        }, 420);
+    }
+
     function renderRaids(raids) {
-        // Check if cards were already rendered in the DOM before clearing
-        const hasRenderedBefore = raidsContainer.querySelector('.parent-raid-card') !== null;
-        // Preserve open card IDs, inner dropdown states, and active highlight state across re-renders
-        const openCardIds = new Set(
-            Array.from(raidsContainer.querySelectorAll('details.parent-raid-card[open]')).map(el => el.id)
-        );
-        const openInnerDetailsCardIds = new Set(
-            Array.from(raidsContainer.querySelectorAll('details.details-dropdown[open]'))
-                .map(el => el.closest('.parent-raid-card')?.id)
-                .filter(Boolean)
-        );
-        const openScheduleTitles = new Set(
-            Array.from(raidsContainer.querySelectorAll('details.schedule-dropdown[open] > summary'))
-                .map(el => el.textContent.trim())
-                .filter(Boolean)
-        );
+        // Preserve active highlight state across re-renders
         const highlightedCard = raidsContainer.querySelector('.raid-card.highlighted');
         const highlightedCardId = highlightedCard ? highlightedCard.id : null;
 
@@ -647,27 +1039,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         raids.forEach(raid => {
-            // Wrapper div for card + protruding buttons (ensures copy-link-btn stays visible when <details> is collapsed)
+            // Wrapper div for card + protruding copy-link button
             const cardWrapper = document.createElement('div');
             cardWrapper.className = 'raid-card-wrapper';
 
-            // Create Parent Collapsible Card Element (<details>)
-            const card = document.createElement('details');
+            // Create Compact Raid Card Element (expands into modal on click)
+            const card = document.createElement('div');
             card.className = 'raid-card parent-raid-card';
             card.id = `raid-card-${raid.Raid_Num}`;
-
-            // Preserve card open state strictly; never force-open from URL hash/slug.
-            // Deep link URL slugs only scroll + highlight; they never expand a card.
-            card.open = openCardIds.has(card.id);
-
-            // Stop highlight animation immediately on manual expansion toggle of the PARENT card only
-            // Use the 'toggle' event but guard against bubbled toggles from nested <details> (e.g. the inner "Details" dropdown)
-            card.addEventListener('toggle', (e) => {
-                if (e.target !== card) return; // Ignore bubbled toggle events from nested <details> elements
-                if (card.classList.contains('highlighted') && !isProgrammaticScrollOpening) {
-                    stopHighlightAnimation(card);
-                }
-            });
 
             // Restore active highlight if re-rendered during pulse animation
             if (highlightedCardId === card.id) {
@@ -680,13 +1059,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.addEventListener('animationend', onRestoreAnimationEnd);
             }
 
-            // Create Summary Header Element (<summary>)
-            const summaryEl = document.createElement('summary');
+            // Create Summary Header Element
+            const summaryEl = document.createElement('div');
             summaryEl.className = 'parent-raid-summary';
             summaryEl.addEventListener('click', () => {
                 if (card.classList.contains('highlighted')) {
                     stopHighlightAnimation(card);
                 }
+                openRaidDetailsModal(raid, card);
             });
 
             // Meta Section
@@ -835,30 +1215,40 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                // Single click without drag or text selection - smoothly toggles card
+                // Single click without drag or text selection - opens expanded raid modal
                 titleClickTimeout = setTimeout(() => {
                     titleClickTimeout = null;
                     const currentSelection = window.getSelection() && window.getSelection().toString().trim().length > 0;
                     if (!currentSelection) {
-                        card.open = !card.open;
+                        openRaidDetailsModal(raid, card);
                     }
                 }, 220);
             });
 
             titleRow.appendChild(titleEl);
 
-            const arrowSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            arrowSvg.setAttribute('class', 'parent-raid-arrow');
-            arrowSvg.setAttribute('width', '20');
-            arrowSvg.setAttribute('height', '20');
-            arrowSvg.setAttribute('viewBox', '0 0 24 24');
-            arrowSvg.setAttribute('fill', 'none');
-            arrowSvg.setAttribute('stroke', 'currentColor');
-            arrowSvg.setAttribute('stroke-width', '2.5');
-            arrowSvg.setAttribute('stroke-linecap', 'round');
-            arrowSvg.setAttribute('stroke-linejoin', 'round');
-            arrowSvg.innerHTML = '<polyline points="6 9 12 15 18 9"></polyline>';
-            titleRow.appendChild(arrowSvg);
+            const expandBtn = document.createElement('button');
+            expandBtn.type = 'button';
+            expandBtn.className = 'raid-expand-btn';
+            expandBtn.title = 'Expand raid details';
+            expandBtn.setAttribute('aria-label', `Expand details for ${raid.title}`);
+            expandBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
+            `;
+            expandBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (card.classList.contains('highlighted')) {
+                    stopHighlightAnimation(card);
+                }
+                openRaidDetailsModal(raid, card);
+            });
+            titleRow.appendChild(expandBtn);
 
             summaryEl.appendChild(titleRow);
 
@@ -870,278 +1260,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 summaryEl.appendChild(typeTag);
             }
 
-            // Venue Location Badge (Bottom-Right Corner of card summary - phrasing span avoids disallowed interactive summary descendant)
-            const mapQueryUrl = raid.venue ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(raid.venue)}` : '';
-            const handleMapClick = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (mapQueryUrl) {
-                    window.open(mapQueryUrl, '_blank', 'noopener,noreferrer');
-                }
-            };
-
-            if (raid.OutsideDhaka) {
-                // Outside Dhaka: Dynamic 2-second toggle between <s>Dhaka</s> and location icon only
-                const cornerBadge = document.createElement('span');
-                cornerBadge.className = 'raid-venue-corner-badge outside-dhaka-tag map-link';
-                cornerBadge.title = 'View venue location on Google Maps';
-                cornerBadge.addEventListener('click', handleMapClick);
-
-                const pinSvg = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
-
-                const htmlStateDhaka = `<s>Dhaka</s>`;
-                const htmlStateIcon = pinSvg;
-
-                cornerBadge.innerHTML = htmlStateDhaka;
-
-                let showIconOnly = false;
-                const cycleInterval = setInterval(() => {
-                    if (!document.body.contains(cornerBadge)) {
-                        clearInterval(cycleInterval);
-                        return;
-                    }
-                    showIconOnly = !showIconOnly;
-                    cornerBadge.classList.add('fade-transition');
-                    setTimeout(() => {
-                        cornerBadge.innerHTML = showIconOnly ? htmlStateIcon : htmlStateDhaka;
-                        cornerBadge.classList.toggle('icon-only', showIconOnly);
-                        cornerBadge.classList.remove('fade-transition');
-                    }, 180);
-                }, 2000);
-
-                summaryEl.appendChild(cornerBadge);
-            } else if (raid.IsOnline) {
-                // Online Event: Online pill badge
-                const cornerBadge = document.createElement('span');
-                cornerBadge.className = 'raid-venue-corner-badge is-online-tag';
-                cornerBadge.textContent = 'Online';
-                summaryEl.appendChild(cornerBadge);
-            } else {
-                // OutsideDhaka = False & Physical Venue: Static borderless/backgroundless location icon linked to Google Maps
-                const cornerBadge = document.createElement('span');
-                cornerBadge.className = 'raid-venue-corner-badge static-location-tag map-link icon-only';
-                cornerBadge.title = `View venue location on Google Maps`;
-                cornerBadge.addEventListener('click', handleMapClick);
-                cornerBadge.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
-                summaryEl.appendChild(cornerBadge);
-            }
+            // Venue Location Badge (Bottom-Right Corner of card summary)
+            summaryEl.appendChild(createVenueBadge(raid));
 
             card.appendChild(summaryEl);
-
-            // Parent Body Container (Revealed when expanded)
-            const bodyDiv = document.createElement('div');
-            bodyDiv.className = 'parent-raid-body';
-
-            // Detailed Description (Supports multi-line display via pre-line)
-            const detailsEl = document.createElement('p');
-            detailsEl.className = 'raid-details';
-            detailsEl.textContent = raid.details;
-            bodyDiv.appendChild(detailsEl);
-
-            // Highlighted "See More" / "See Less" Button for Mobile
-            const seeMoreBtn = document.createElement('button');
-            seeMoreBtn.className = 'see-more-btn';
-            seeMoreBtn.textContent = 'See More';
-            seeMoreBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isExpanded = detailsEl.classList.toggle('expanded');
-                seeMoreBtn.textContent = isExpanded ? 'See Less' : 'See More';
-            });
-            bodyDiv.appendChild(seeMoreBtn);
-
-            // Details Dropdown (Venue, Fees, Sub Events)
-            const detailsDropdown = document.createElement('details');
-            detailsDropdown.className = 'details-dropdown';
-            if (openInnerDetailsCardIds.has(card.id)) {
-                detailsDropdown.open = true;
-            }
-            detailsDropdown.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-
-            const detailsSummary = document.createElement('summary');
-            detailsSummary.className = 'details-summary';
-            detailsSummary.textContent = 'Details';
-            detailsDropdown.appendChild(detailsSummary);
-
-            // Information Group
-            const infoGroup = document.createElement('div');
-            infoGroup.className = 'details-content raid-info-group';
-
-            // Venue Info
-            const venueItem = createInfoItem('Venue', raid.venue);
-            infoGroup.appendChild(venueItem);
-
-            // Fee Info
-            const feeItem = createInfoItem('Fees', raid.fee);
-            infoGroup.appendChild(feeItem);
-
-            // Registration Deadline Info
-            if (raid.RegEndDate) {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                const regDate = new Date(raid.RegEndDate);
-                const isValidDate = !isNaN(regDate.getTime());
-                let isClosed = false;
-                let regText = raid.RegEndDate;
-
-                if (isValidDate) {
-                    regDate.setHours(0, 0, 0, 0);
-                    isClosed = today > regDate;
-                    const formattedRegDate = formatLocalDate(raid.RegEndDate);
-                    regText = isClosed ? `${formattedRegDate} (Closed)` : formattedRegDate;
-                }
-
-                const regEndItem = createInfoItem('Reg Deadline', regText);
-                const valSpan = regEndItem.querySelector('.raid-info-value');
-                if (isClosed) {
-                    valSpan.style.color = 'var(--text-muted)';
-                } else {
-                    valSpan.style.color = 'var(--success-color)';
-                    valSpan.style.fontWeight = '600';
-                }
-                infoGroup.appendChild(regEndItem);
-            }
-
-            // Sub Events Info (Supports string or array of collapsible schedule items)
-            if (raid.subEvents) {
-                const subEventsItem = document.createElement('div');
-                subEventsItem.className = 'raid-info-item raid-schedule-group';
-
-                const labelSpan = document.createElement('span');
-                labelSpan.className = 'raid-info-label';
-                labelSpan.textContent = 'Schedule';
-                subEventsItem.appendChild(labelSpan);
-
-                const valueSpan = document.createElement('div');
-                valueSpan.className = 'raid-info-value';
-
-                if (Array.isArray(raid.subEvents)) {
-                    raid.subEvents.forEach(sub => {
-                        const subDetailsEl = document.createElement('details');
-                        subDetailsEl.className = 'schedule-dropdown';
-                        if (sub.title && openScheduleTitles.has(sub.title.trim())) {
-                            subDetailsEl.open = true;
-                        }
-                        subDetailsEl.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                        });
-
-                        const subSummaryEl = document.createElement('summary');
-                        subSummaryEl.className = 'schedule-summary';
-                        subSummaryEl.textContent = sub.title;
-
-                        const contentDiv = document.createElement('div');
-                        contentDiv.className = 'schedule-dropdown-content raid-sub-events';
-                        contentDiv.textContent = sub.details;
-
-                        subDetailsEl.appendChild(subSummaryEl);
-                        subDetailsEl.appendChild(contentDiv);
-                        valueSpan.appendChild(subDetailsEl);
-                    });
-                } else {
-                    const textSpan = document.createElement('span');
-                    textSpan.className = 'raid-sub-events';
-                    textSpan.textContent = raid.subEvents;
-                    valueSpan.appendChild(textSpan);
-                }
-
-                subEventsItem.appendChild(valueSpan);
-                infoGroup.appendChild(subEventsItem);
-            }
-
-            detailsDropdown.appendChild(infoGroup);
-            bodyDiv.appendChild(detailsDropdown);
-
-            // Important Links Section
-            // Cross-reference notes.json so View Notes appears even if database submission omitted it
-            let raidLinks = raid.links ? Object.assign({}, raid.links) : {};
-            if (!raidLinks.notes && eventNotesData && Array.isArray(eventNotesData)) {
-                const matchingNote = eventNotesData.find(n => n.raidNum === raid.Raid_Num && n.file);
-                if (matchingNote) {
-                    raidLinks.notes = matchingNote.file;
-                }
-            }
-
-            if (Object.keys(raidLinks).length > 0) {
-                const linksWrapper = document.createElement('div');
-                linksWrapper.className = 'raid-links-wrapper';
-
-                Object.entries(raidLinks).forEach(([linkName, url]) => {
-                    const anchor = document.createElement('a');
-                    anchor.className = 'raid-link';
-
-                    if (linkName.toLowerCase() === 'notes') {
-                        anchor.href = `render.html?file=${encodeURIComponent(url)}`;
-                        anchor.innerHTML = `
-                            <span>View Notes</span>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                <polyline points="10 9 9 9 8 9"></polyline>
-                            </svg>
-                        `;
-                    } else {
-                        anchor.href = url;
-                        anchor.target = '_blank';
-                        anchor.rel = 'noopener noreferrer';
-                        anchor.innerHTML = `
-                            <span>${escapeHTML(linkName)}</span>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="7" y1="17" x2="17" y2="7"></line>
-                                <polyline points="7 7 17 7 17 17"></polyline>
-                            </svg>
-                        `;
-                    }
-                    linksWrapper.appendChild(anchor);
-                });
-
-                bodyDiv.appendChild(linksWrapper);
-            }
-
-            // Protruding Copy Content Button at bottom-right corner of card (only visible when expanded)
-            const copyContentBtn = document.createElement('button');
-            copyContentBtn.type = 'button';
-            copyContentBtn.className = 'copy-raid-content-btn';
-            copyContentBtn.title = 'Copy card contents (formatted text)';
-            copyContentBtn.setAttribute('aria-label', 'Copy card contents in formatted text');
-            copyContentBtn.innerHTML = `
-                <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-            `;
-            copyContentBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const formattedText = formatRaidCardText(raid);
-                navigator.clipboard.writeText(formattedText).then(() => {
-                    copyContentBtn.classList.add('copied');
-                    copyContentBtn.innerHTML = `
-                        <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    `;
-                    copyContentBtn.title = 'Card contents copied!';
-                    setTimeout(() => {
-                        copyContentBtn.classList.remove('copied');
-                        copyContentBtn.innerHTML = `
-                            <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                        `;
-                        copyContentBtn.title = 'Copy card contents (formatted text)';
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy card contents: ', err);
-                });
-            });
-            bodyDiv.appendChild(copyContentBtn);
-
-            card.appendChild(bodyDiv);
 
             // Append Card inside its wrapper, then protruding copy-link button on top, then wrapper to container
             cardWrapper.appendChild(card);
@@ -1875,6 +1997,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeModal(modalId) {
+        if (modalId === 'raid-details-modal') {
+            closeRaidDetailsModal();
+            return;
+        }
         const modal = document.getElementById(modalId);
         if (!modal) return;
         modal.classList.remove('open');
