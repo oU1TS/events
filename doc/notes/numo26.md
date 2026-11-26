@@ -42,6 +42,7 @@ The delegation arrived at BRAC University (Dhaka North campus) for the 17th Nati
 * **Opening Ceremony Note:** The National Anthem played without vocals oddly felt much better and more "patriotic."
 * **Team & Delegation Management:** This experience made me realize that we need to put more thought into who we ask to volunteer, since the group photo with Kaykobad Sir was messed up by one such fellow.
 * **Personal Presentation:** Need to put some work on outfit and appearance.
+* Didn't notice they had free wifi at NUMO 2026 (provided alongside the food tokens).
 
 ---
 

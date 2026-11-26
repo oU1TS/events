@@ -197,11 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
         activeRaidScrollTimeout = setTimeout(() => {
             const card = document.getElementById(`raid-card-${raidNum}`);
             if (card) {
-                if (card.tagName.toLowerCase() === 'details' && !card.open) {
-                    isProgrammaticScrollOpening = true;
-                    card.open = true;
-                    setTimeout(() => { isProgrammaticScrollOpening = false; }, 80);
-                }
                 card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
                 // If this card is already highlighted and actively running its pulse, do not restart
@@ -661,15 +656,9 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'raid-card parent-raid-card';
             card.id = `raid-card-${raid.Raid_Num}`;
 
-            // Preserve card open state: if cards were already rendered, strictly preserve user's open/close state.
-            // Only auto-open from URL hash or pending scroll on the initial fresh render.
-            if (hasRenderedBefore) {
-                card.open = openCardIds.has(card.id);
-            } else {
-                const isTargetedRaid = (pendingRaidScroll === raid.Raid_Num) ||
-                    (window.location.hash === `#raid-${raid.Raid_Num}`);
-                card.open = openCardIds.has(card.id) || isTargetedRaid;
-            }
+            // Preserve card open state strictly; never force-open from URL hash/slug.
+            // Deep link URL slugs only scroll + highlight; they never expand a card.
+            card.open = openCardIds.has(card.id);
 
             // Stop highlight animation immediately on manual expansion toggle of the PARENT card only
             // Use the 'toggle' event but guard against bubbled toggles from nested <details> (e.g. the inner "Details" dropdown)
