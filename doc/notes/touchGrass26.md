@@ -58,7 +58,7 @@ Everyone grabbed a slice, gathered for a group photo, and hung around chatting a
 ### People, Conversations & Takeaways
 
 ![](https://res.cloudinary.com/b1tranger/image/upload/v1795712967/penguinified4_mvkykw.webp)
-This is b1tranger and @fazlerabbi37
+This is @b1tranger and @fazlerabbi37
 
 
 #### @fazlerabbi37
@@ -130,3 +130,11 @@ This is b1tranger and @fazlerabbi37
 * Noted game-dev activity/group work around Linux Bangla (alongside the upcoming December 6 DIU Game Jam mention).
 
 ![](https://res.cloudinary.com/b1tranger/image/upload/v1795712412/penguinified_4_agztfq.webp)
+
+---
+
+<br><br><br><br><br>
+
+A successful delegation by: @b1tranger and @RedHat_Saif_800 
+
+![](https://res.cloudinary.com/b1tranger/image/upload/v1795868752/penguinified_2_ylbpz0.webp)
