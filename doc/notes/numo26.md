@@ -5,7 +5,7 @@ raid: 22
 date: "2026-11-06"
 venue: "BRAC University (Dhaka North) & DU Ganit Bhaban"
 organizer: "Bangladesh Mathematical Society & AFMRF"
-tags: [numo, mathematics, olympiad, problem-solving, bracu, afmrf, kaykobad, ai-in-math, eigenvalues, riemann-integrability, combinatorics]
+tags: [numo, mathematics, olympiad, problem-solving, bracu, afmrf, kaykobad, AI, eigenvalues, Riemann, combinatorics]
 summary: "Delegation notes, problem breakdown, audio logs, BRACU venue observations, and keynote addresses by Prof. Mohammad Kaykobad from the 17th National Undergraduate Mathematics Olympiad 2026."
 ---
 

@@ -4,7 +4,7 @@ category: "Competition Notes"
 raid: 3
 date: "2026-07-16"
 venue: "North South University (NSU)"
-tags: [business, marketing, case-study, nsu, marxcellence, digital-marketing, delegation-notes]
+tags: [MarXcellence, Delegation Notes, Business, Case, Workshop, Dhaka Bank, eRin, BizNation]
 summary: "Delegation notes, workshop takeaways, digital marketing case studies (eRin & Dhaka Bank), and competition realizations from NSU MarXcellence 2026."
 ---
 

@@ -1,6 +1,13 @@
-
-
-
+---
+title: "Event Note: Touch Grass — The Penguins Club 9th Birthday Party"
+category: "Community Notes"
+raid: 25
+date: "2026-11-21"
+venue: "Justice Shahabuddin Ahmed Park, Gulshan 2, Dhaka"
+organizer: "The Penguins Club (TPC)"
+tags: [FOSS, Linux, TPC, oU1TS, Penguins Cafe, embedded systems, Docker, Alpine Linux, LLVM, Valgrind, SSH, Alan Kay, Carl Hewitt, community]
+summary: "oU1TS and Penguins_Cafe_UITS delegation notes from Touch Grass: The Penguins Club 9th Birthday Party at Justice Shahabuddin Ahmed Park, covering FOSS & Linux community-building insights, embedded systems, Docker/Alpine/LLVM/Valgrind, security notes, and TPC collaboration."
+---
 
 ## Event Note: *Touch Grass* — The Penguins Club 9th Birthday Party
 

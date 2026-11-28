@@ -4,7 +4,7 @@ category: "Conference Notes"
 raid: 1
 date: "2026-06-26"
 venue: "Dhaka, Bangladesh"
-tags: [phoenix-summit, cybersecurity, blue-team, red-team, wazuh, ai-agents, career-advice, delegation-notes, networking]
+tags: [Phoenix Summit, cybersecurity, Blue Team, Red Team, Wazuh, Claude, Delegation Notes, networking, TryHackMe, SIEM]
 summary: "UITS Event Raiders delegation notes, safety guidelines, industry senior advice (Rezwan bhai), and technical session highlights covering cybersecurity, Blue/Red teaming, and Wazuh detection."
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Event Trackers & Developer Competitions Master Directory"
 category: "Directory & Guide"
-tags: [event-trackers, platforms, hackathons, conferences, game-jams, competitive-programming, directories, codolio, devpost, itch-io, lablab-ai]
+tags: [event trackers, platforms, hackathons, conferences, game jams, competitive programming, directory, Codolio, Devpost, Itch.io, Lablab.ai, Kaggle]
 summary: "Curated directory and strategic guide for tracking developer competitions, hackathons, game jams, and tech community gatherings across global platforms."
 ---
 
